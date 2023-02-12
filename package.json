@@ -11,7 +11,8 @@
         "lodash": "^4.17.19",
         "postcss": "^8.1.14",
         "vite": "^3.2.5",
-        "vite-plugin-mkcert": "^1.13.0"
+        "vite-plugin-mkcert": "^1.13.0",
+        "vue-loader": "^17.0.1"
     },
     "dependencies": {
         "@popperjs/core": "^2.11.6",
@@ -30,7 +31,6 @@
         "vue": "^3.2.36",
         "vue-axios": "^3.5.2",
         "vue-google-oauth2": "^1.5.8",
-        "vue-loader": "^17.0.1",
         "vue-phone-number-input": "^1.12.13",
         "vue-router": "^4.1.6",
         "vue-slick": "^1.2.0",

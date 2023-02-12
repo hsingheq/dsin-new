@@ -13,6 +13,7 @@ import $ from 'jquery';
 
 import swal from 'sweetalert';
 const base_url = import.meta.env.VITE_MY_ENV_VARIABLE;
+const google_client_id = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
  axios.defaults.withCredentials = true;
 axios.defaults.baseURL=base_url;
@@ -56,22 +57,22 @@ import vue3GoogleLogin from 'vue3-google-login';
  * AXIOS CALLING FOR IMPORTANT SETTINGS
  */
 /*  */
-  let clientIds='';
-
-        await axios({
-          method:'get',
-          url:'/api/social_settings',
-          baseURL: axios.defaults.baseURL,
-        }).then(res=>{
-      clientIds = res.data.data.google_client_id;
-     
-      }); 
+ /* let google_client_id='';
+		axios.get('/api/social_settings')
+            .then(
+                ({ data }) => {
+					//console.log(data.data.google_client_id);
+                    google_client_id = data.data.google_client_id;
+                    //console.log(this.result.data);
+                    //this.results = this.result.data
+                }
+            );*/
 
 
 
 createApp(App)
  .use(vue3GoogleLogin, {
-  clientId: clientIds
+  clientId: google_client_id
 }) 
 .use(router)
 

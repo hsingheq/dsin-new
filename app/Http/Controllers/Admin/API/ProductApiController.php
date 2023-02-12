@@ -24,7 +24,7 @@ class ProductApiController extends Controller
 					'currency'  => get_setting('currency'),
 					'message'    => 'getting categories..'
 				); 
-        $vals =  response()->json($res); 
+        $vals =  response()->json($result); 
         return $vals;
     }
 
@@ -43,7 +43,7 @@ class ProductApiController extends Controller
 					'currency'  => get_setting('currency'),
 					'message'    => 'getting categories..'
 				); 
-        $vals =  response()->json($res); 
+        $vals =  response()->json($result); 
         return $vals;
     }
 
