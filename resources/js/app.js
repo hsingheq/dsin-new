@@ -1,0 +1,80 @@
+import './bootstrap';
+import {createApp} from 'vue';
+
+  import axios from 'axios'; 
+//  import VueAxios from 'vue-axios';
+  // import VueRouter from 'vue-router';
+import router from './router';
+// import store from './store/index.js';
+import App from './layouts/App.vue';
+import './asset/js/jquery.js'; 
+import jQuery from "jquery";
+import $ from 'jquery';
+
+import swal from 'sweetalert';
+const base_url = import.meta.env.VITE_MY_ENV_VARIABLE;
+
+ axios.defaults.withCredentials = true;
+axios.defaults.baseURL=base_url;
+const token = localStorage.getItem('token');
+if(token){
+    axios.defaults.headers.common['Authorization'] = token
+} 
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap";
+// import vue3GoogleLogin from 'vue3-google-login';
+
+import 'jquery-nice-select/js/jquery.nice-select';
+import './asset/css/default.css';
+import './asset/vendor/bootstrap-icons/bootstrap-icons.css';
+import './asset/css/mega-menu.css';
+import './asset/css/animate.css';
+import './asset/css/magnific-popup.css';
+import 'jquery-nice-select/css/nice-select.css';
+import './asset/css/style.css';
+
+
+//js
+ 
+
+import './asset/js/mega-menu.js';
+
+import './asset/js/magnific-popup.js';
+import './asset/js/backtotop.js';
+ import './asset/js/nice-select.js'; 
+import './asset/js/countdown.min.js';
+import './asset/js/counterup.js';
+import './asset/js/isotope-pkgd.js';
+import './asset/js/imagesloaded-pkgd.js';
+/*  import './asset/js/main.js';   */
+ import './asset/js/theme-scripts.js';
+import { createPinia } from 'pinia';
+import vue3GoogleLogin from 'vue3-google-login';
+
+
+/**
+ * AXIOS CALLING FOR IMPORTANT SETTINGS
+ */
+/*  */
+  let clientIds='';
+
+        await axios({
+          method:'get',
+          url:'/api/social_settings',
+          baseURL: axios.defaults.baseURL,
+        }).then(res=>{
+      clientIds = res.data.data.google_client_id;
+     
+      }); 
+
+
+
+createApp(App)
+ .use(vue3GoogleLogin, {
+  clientId: clientIds
+}) 
+.use(router)
+
+.use(createPinia())
+// .use(store)
+.mount("#app")

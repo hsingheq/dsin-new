@@ -1,0 +1,207 @@
+
+/*# sourceMappingURL=custom.min.css.map */
+.placeholderimg{
+    width:110px;
+    height:81px;
+    object-fit: cover;
+}
+
+.thumbnail{
+    width:75px;
+    height:60px;
+}
+
+#placeholderimg {
+    text-indent: -10000px
+}
+
+img.admin-gallery-img {
+    border: 1px solid #ddd;
+    border-radius: 0px;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+  }
+  .mfileupload{
+    display:none;
+}
+.middle{
+    position: absolute;
+}
+
+ .reader_file_remove{
+   
+    border: none;
+   
+    padding: 5px;
+    z-index: 999;
+  
+  
+    color: #fff;
+    background: #000;
+} 
+
+.aiz-notify.alert-success{
+    color: #fff;  
+}
+
+.aiz-notify.alert-danger{
+    color: #fff;  
+}
+.aiz-notify{
+    border: none;
+}
+
+
+
+.mycard{
+    min-height:500px;
+    padding-top: 50px;
+}
+
+.nav-pills .nav-link.active {
+    border-radius:none!important;
+    -webkit-border-radius:none!important;
+    -moz-border-radius:none!important;
+    -ms-border-radius:none!important;
+    -o-border-radius:none!important;
+}
+
+.nav-pills {
+    --vz-nav-pills-border-radius: 0rem;
+}
+
+.bb{
+border-bottom:none!important;
+}
+
+.nav-pills .nav-link.active {
+    border:none!important;
+}
+
+.category_box{
+    padding:10px;
+    height:150px;
+    overflow-y: scroll;
+    border:1px solid #e5e5e5;
+}
+.category_box p{
+    font-size: 16px;
+    margin-bottom: 0rem!important;
+}
+.dropdown-menu{
+	position: absolute;
+	inset: 0px auto auto 0px; 
+	margin: 0px;
+	
+}
+
+em{
+    color:#ff0000;
+}
+
+.table{
+    margin-bottom: 57px!important;
+}
+
+/* for file upload 
+.uppy-Dashboard-innerWrap {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    border-radius: 5px;
+    opacity: 0;
+  }
+  .uppy-Dashboard--isInnerWrapVisible .uppy-Dashboard-innerWrap {
+    opacity: 1;
+  }
+
+  .uppy-Dashboard--modal.uppy-Dashboard--animateOpenClose
+    > .uppy-Dashboard-overlay {
+    animation: uppy-Dashboard-fadeIn 0.3s cubic-bezier(0, 0, 0.2, 1);
+    -webkit-animation: uppy-Dashboard-fadeIn 0.3s cubic-bezier(0, 0, 0.2, 1);
+}
+
+.uppy-Dashboard--modal.uppy-Dashboard--animateOpenClose.uppy-Dashboard--isClosing
+> .uppy-Dashboard-overlay {
+animation: uppy-Dashboard-fadeOut 0.3s cubic-bezier(0, 0, 0.2, 1);
+}
+
+.uppy-Dashboard--modal .uppy-Dashboard-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1001;
+  }*/
+
+  .aiz-file-box .card-file .card-file-thumb {
+    position: absolute!important;
+    width: calc(100% - 16px)!important;
+    top: 8px!important;
+    left: 8px!important;
+    height: calc(100% - 55px)!important;
+}
+
+.aiz-uploader-select{
+    width: 230px;
+    height: 230px;
+}
+
+.aiz-file-box-wrap{
+    height:230px;
+}
+
+.bg-disable{
+    background:#e9ecef;
+}
+
+.dropdown-menu li a span.text{ 
+    color:#000!important;
+}
+
+.dropdown-menu .inner{
+   
+}
+.input-group-text {
+	border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}	
+
+.form-select.is-valid:not([multiple]):not([size]), 
+.form-select.is-valid:not([multiple])[size="1"], 
+.was-validated .form-select:valid:not([multiple]):not([size]), 
+.was-validated .form-select:valid:not([multiple])[size="1"],
+.form-control.is-valid, .was-validated .form-control:valid {
+	background: none;
+	border-color: #ced4da;
+}	
+
+.bootstrap-select.is-valid .dropdown-toggle, .was-validated .bootstrap-select select:valid + .dropdown-toggle,
+.form-check-input.is-valid, .was-validated .form-check-input:valid {
+	border-color: #ced4da;
+}
+
+.form-check-input.is-valid~.form-check-label, .was-validated .form-check-input:valid~.form-check-label {
+	color: inherit;
+}
+
+form label.error {
+	margin-top: 0.25rem;
+    font-size: .875em;
+    color: #fa896b;
+}
+table.dataTable thead>tr>th.sorting_disabled {
+	padding-right: 0px!important;
+}
+table.dataTable thead>tr>th.sorting_disabled:before,
+table.dataTable thead>tr>th.sorting_disabled:after {
+	content: "";
+	display: none!important;
+}
