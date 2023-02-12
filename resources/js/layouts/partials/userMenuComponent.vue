@@ -13,11 +13,11 @@
        
                 <div class="user-pic">
                     <Loading v-if="loading" class="position-absolute" />
-                    <span v-if="google_avatar">
-                        <img :src="google_avatar" height="100" width="100" />
+                    <span v-if="google_avatar" :style="{ backgroundImage: 'url(' + google_avatar + ')' }">
+                        <!--<img :src="google_avatar"  />-->
                     </span>
-                    <span v-if="profile_pic">
-                        <img :src="profile_pic" height="100" width="100" />
+                    <span v-if="profile_pic" :style="{ backgroundImage: 'url(' + profile_pic + ')' }">
+                        <img :src="profile_pic"  />
                     </span>
                     
                 </div>

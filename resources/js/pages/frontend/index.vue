@@ -92,8 +92,9 @@
 												<!-- Category Item starts -->
 												<div v-for="item in top_categories" :key="item.id" class="categories-item swiper-slide p-relative w-img mb-30">
 													<div class="categories-img">
-						<router-link :to="{name:'ProductCategory', params: {slug: item.slug}}">
-															<img :src="base_url+item.file_name" :alt="item.file_original_name" />
+														<router-link :to="{name:'ProductCategory', params: {slug: item.slug}}">
+															<img v-if="item.file_name" :src="item.file_name" :alt="item.file_original_name" />
+															<img v-else src="@/asset/images/default.png" alt="default" />
 														</router-link>
 													</div>
 													<div class="categories-content">
@@ -766,13 +767,12 @@ export default {
 
 	},
 	methods: {
-
 		get_top_categories(){
 			this.loading=true;
 		try{
 			axios.get('/api/get_top_categories').then(({ data }) => {
 			this.top_categories = data.data;
-			console.log(data.data);
+			//console.log(data.data);
 		});
 		}catch(error){
 
