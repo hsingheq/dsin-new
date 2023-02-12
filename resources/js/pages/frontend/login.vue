@@ -80,16 +80,10 @@
 <script >
 import { ref, reactive,onMounted } from 'vue';
 import axios from 'axios';
-
 import jwtDecode from 'jwt-decode';
 import { useRouter } from 'vue-router';
 import { UserStore } from '@/store/UserStore';
-
-import { googleAuthCodeLogin } from "vue3-google-login";
-import { googleTokenLogin } from "vue3-google-login";
-import { googleSdkLoaded } from "vue3-google-login";
-import { decodeCredential } from 'vue3-google-login';
-
+import { googleAuthCodeLogin, googleTokenLogin, googleSdkLoaded, decodeCredential } from "vue3-google-login";
 export default{
 	
 	/* 	mounted(){
@@ -202,43 +196,6 @@ export default{
 			}
 	}
 }
-
-
-/* const callback = (response) => {
-  if(response.credential) {
-const	userData = decodeCredential(response.credential)
-    console.log("Call the endpoint which validates authorization code",userData)
-  } else {
-	const userData = decodeCredential(response.credential)
-    console.log("Call the endpoint which validates authorization code",userData)
-  }
-} */
-
-/* const callback = (response) => {
-  // decodeCredential will retrive the JWT payload from the credential
-  const userData = decodeCredential(response.credential)
-  console.log("Handle the userData", userData)
-}  */
-
-/* const login = (response) => {
-  googleAuthCodeLogin().then((response) => {
-	const userData = decodeCredential(response.credential)
-  console.log("Handle the userData", userData)
-  })
-} */
-/* const googleBtnClick=()=> {
-
-        document.getElementById("googlehidden").click();
-    } */
-/* const login = () => {
-  googleAuthCodeLogin().then((response) => {
-    console.log("Handle the response", response)
-  })
-}
-
- */
-
-
 </script>
 <style>
 .login-box .site-btn{
