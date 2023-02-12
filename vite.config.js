@@ -4,10 +4,10 @@ import vue from '@vitejs/plugin-vue';
 import mkcert from 'vite-plugin-mkcert'
 
 export default defineConfig({
-    // server: {
-    //     host: '127.0.0.1:8000',
-	// 	https: false
-    //   },
+    server: {
+        host: 'dsin-new.cw',
+		https: true
+      },
     plugins: [
         vue(),
        
@@ -15,7 +15,7 @@ export default defineConfig({
             input: ['resources/css/app.css', 'resources/js/app.js'],
             refresh: true,
         }),
-		// mkcert()
+		 mkcert()
     ],
     // build: {
     //     commonjsOptions: {
