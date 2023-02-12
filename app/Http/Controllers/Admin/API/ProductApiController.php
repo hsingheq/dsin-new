@@ -14,18 +14,22 @@ class ProductApiController extends Controller
 {
     public function our_products()
     {
-        $data = DB::table('products')
-            ->join('uploads', 'uploads.id' ,'products.thumbnail_img' )
+        echo $query = DB::table('products')
+            ->leftJoin('uploads', 'uploads.id' ,'products.thumbnail_img' )
+            ->select('product_title','product_category','file_name','unit_price','products.slug','products.id')
+            ->toSql();
+		$data = DB::table('products')
+            ->leftJoin('uploads', 'uploads.id' ,'products.thumbnail_img' )
             ->select('product_title','product_category','file_name','unit_price','products.slug','products.id')
             ->get();
-      
+		print_r($data);
          
-         $res =  [
+         $res =  array (
             'success'   => true,
             'data'      => $data,
             'currency'  => get_setting('currency'),
            'message'    => 'getting categories..'
-         ]; 
+         ); 
 
          $vals =  response()->json($res); 
         
