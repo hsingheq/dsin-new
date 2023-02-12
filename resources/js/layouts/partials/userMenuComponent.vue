@@ -113,10 +113,10 @@ data(){
             axios.post('/api/user_info',{
                 id:userresponse.data.id
             }).then(res=>{
-                if(res.data.google_avatar.user_value){
+                if(res?.data?.google_avatar?.user_value){
                    this.google_avatar = res.data.google_avatar.user_value;
                 }else{
-                    this.profile_pic=res.data.profile_pic.user_value;
+                    this.profile_pic=res?.data?.profile_pic?.user_value;
                 }
               /*   if(res.data.google_avatar){
                     console.log("googlePic:"+res.data);
