@@ -51,7 +51,8 @@ import './asset/js/imagesloaded-pkgd.js';
  import './asset/js/theme-scripts.js';
 import { createPinia } from 'pinia';
 import vue3GoogleLogin from 'vue3-google-login';
-
+import VueNextSelect from 'vue-next-select'
+import 'vue-next-select/dist/index.min.css'
 
 /**
  * AXIOS CALLING FOR IMPORTANT SETTINGS
@@ -70,12 +71,12 @@ import vue3GoogleLogin from 'vue3-google-login';
 
 
 
-createApp(App)
+const app = createApp(App)
  .use(vue3GoogleLogin, {
   clientId: google_client_id
-}) 
-.use(router)
-
-.use(createPinia())
+})
+app.use(router)
+app.use(createPinia())
 // .use(store)
-.mount("#app")
+app.component('vue-select', VueNextSelect)
+app.mount("#app")

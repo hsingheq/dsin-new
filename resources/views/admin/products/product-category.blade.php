@@ -42,6 +42,7 @@ Product Categories
                                             <input class="form-check-input" type="checkbox" id="checkAll" value="option">
                                         </div>
                                     </th>
+									<th class="no-sort" data-sort="email">Image</th>
 									<th class="sort" data-sort="email">Name</th>
                                     <th class="sort" data-sort="phone">Slug</th>
                                     <th class="no-sort" data-sort="action">Action</th>
@@ -56,6 +57,14 @@ Product Categories
                                             <input class="form-check-input select-row" type="checkbox" name="chk_child" value="{{$category->id}}">
                                         </div>
                                     </td>                                    
+                                    <td>
+									{{get_uploaded_image_url('/')}}
+										@if($category->category_image)
+                                        <img src="{{ get_uploaded_image_url($category->category_image) }}" class="img-fluid d-block" alt="Image" width="40" />
+										@else
+											--
+										@endif
+									</td>
                                     <td  scope="row" class="customer_name">{{$category->category}}</td>
                                     <td class="email">{{$category->slug}}</td>
                                     {{-- <td class="status">
@@ -68,8 +77,7 @@ Product Categories
                                     <td>
                                         <div class="d-flex gap-2">
                                             <div class="edit">
-                                                <a class="btn btn-sm btn-success" 
-                                                href="{{url('admin/products/edit-product-category/')."/".$category->id}}">Edit</a>
+                                                <a class="btn btn-sm btn-success" href="{{url('admin/products/edit-product-category/')."/".$category->id}}">Edit</a>
                                             </div>
                                             <div class="remove">
                                                 <button class="btn btn-sm btn-danger remove-item-btn remove-category-btn" data-id="{{$category->id}}">Remove</button>

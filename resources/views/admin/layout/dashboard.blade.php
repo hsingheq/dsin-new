@@ -14,7 +14,7 @@
     @if (is_null(get_setting('favicon')) OR get_setting('favicon')=='')   
     <link rel="shortcut icon" href="{{ asset('images/favicon.png') }}">
     @else  
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ uploaded_asset(get_setting('favicon')) }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ get_uploaded_image_url(get_setting('favicon')) }}">
     @endif
 
     <link rel="stylesheet" href="{{ asset('css/vendors.css') }}"> 
@@ -513,7 +513,7 @@
 
                        <img src="{{ asset('assets/images/logo-white.png') }}" alt="" height="50">
                        @else
-                       <img src="{{ uploaded_asset(get_setting('admin_logo')) }}" alt="" height="50">
+                       <img src="{{ get_uploaded_image_url(get_setting('admin_logo')) }}" alt="" height="50">
                        @endif 
                     </span>
                 </a>

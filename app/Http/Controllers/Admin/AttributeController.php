@@ -14,7 +14,12 @@ class AttributeController extends Controller
 
     public function attribute()
     {
-        $data['attributes'] = DB::table('attributes')->get();
+        $data['attributes'] = DB::table('attributes')
+        ->leftJoin('attribute_options', 'attribute_options.attribute_id', 'attributes.id')
+        ->select('attributes.*', DB::raw('group_concat(attribute_options.value) as `options`'))
+        ->groupBy('attributes.id')
+        ->get();
+        //$data['attributes'] = DB::table('attributes')->get();
         return view('admin.attribute.attribute', $data);
     }
 
@@ -28,7 +33,7 @@ class AttributeController extends Controller
         $result          = $attribute->save();
         /*  return  flashback('attribute_save'); */
         flash("Attribute has added successfully!")->success();
-        return back();
+        return redirect(route('admin.attribute'));
     }
 
 
@@ -55,7 +60,7 @@ class AttributeController extends Controller
         $result                  = $attribute->save();
         /*  return flashback('attribute_option_save'); */
         flash("Attribute option has added successfully!")->success();
-        return back();
+        return redirect(route('admin.attribute'));
     }
 
 
@@ -65,7 +70,7 @@ class AttributeController extends Controller
         $attribute->delete($id);
         /*  return flashback('attribute_deleted'); */
         flash("Attribute  has deleted successfully!")->success();
-        return back();
+        return redirect(route('admin.attribute'));
     }
 
 
@@ -75,7 +80,8 @@ class AttributeController extends Controller
         $attribute->delete($id);
         /*   return flashback('attribute_option_deleted'); */
         flash("Attribute option has deleted successfully!")->success();
-        return back();
+        return redirect(route('admin.attribute'));
+        //return back();
     }
 
     public function edit_attribute_options($id)
@@ -92,7 +98,7 @@ class AttributeController extends Controller
         $attribute->save();
         /*  return flashback('attribute_option_updated'); */
         flash("Attribute option has updated successfully!")->success();
-        return back();
+        return redirect(route('admin.attribute'));
     }
 
     public function edit_attribute($id)
@@ -109,7 +115,7 @@ class AttributeController extends Controller
         $attribute->name = $request->name;
         $attribute->save();
         /*  return flashback('attribute_option_updated'); */
-        flash("Attribute  has updated successfully!")->success();
-        return back();
+        flash("Attribute has been updated successfully!")->success();
+        return redirect(route('admin.attribute'));
     }
 }

@@ -48,7 +48,7 @@ Edit Product
                                         @foreach($photos as $slide)
                                         <div class="swiper-slide swiper-slide-active" role="group" aria-label="1 / 4" style="width: 352px; margin-right: 24px;">
 
-                                            <img src="{{ uploaded_asset($slide) }}" alt="" class="img-fluid d-block">
+                                            <img src="{{ get_uploaded_image_url($slide) }}" alt="" class="img-fluid d-block">
                                         </div>
                                         @endforeach
                                        
@@ -67,7 +67,7 @@ Edit Product
                                     @foreach($photos as $slide)
                                         <div class="swiper-slide swiper-slide-visible swiper-slide-active swiper-slide-thumb-active" role="group" aria-label="1 / 4" style="width: 84.5px; margin-right: 10px;">
                                             <div class="nav-slide-item ">
-                                                <img src="{{ uploaded_asset($slide) }}" alt="" class="img-fluid d-block">
+                                                <img src="{{ get_uploaded_image_url($slide) }}" alt="" class="img-fluid d-block">
                                             </div>
                                         </div>
                                        @endforeach 

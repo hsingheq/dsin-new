@@ -3357,6 +3357,7 @@ input {
 }
 .product-content .cart-option {
   display: flex;
+  align-items: center;
 }
 .product-content-d {
   padding-bottom: 0;

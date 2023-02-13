@@ -142,10 +142,7 @@ const routes =  [
        
         name: 'Product',
         path: '/product/:slug',
-        component:() => import("./pages/frontend/ecommerce/product.vue"),
-        /* meta:{
-                requiredAuth:false
-        }  */
+        component:() => import("./pages/frontend/ecommerce/SingleProduct.vue"),
     },
 
     /*BRANDS ROUTINGS*/
@@ -237,6 +234,14 @@ const routes =  [
                  requiredAuth:true
          }  */
      },
+     {
+        path: '/wishlist',
+        name: 'Wishlist',
+        component: () => import("./pages/frontend/wishlist.vue"),
+        meta:{
+            requiredAuth:true
+        }
+    }, 
 
     {
         path: '/:pathMatch(.*)*',

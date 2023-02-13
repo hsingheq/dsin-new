@@ -11,7 +11,7 @@
     @if (is_null(get_setting('favicon')) OR get_setting('favicon')=='')   
     <link rel="shortcut icon" href="{{ asset('images/favicon.png') }}">
     @else  
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ uploaded_asset(get_setting('favicon')) }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ get_uploaded_image_url(get_setting('favicon')) }}">
     @endif
    {{--  <script src="" async defer></script> --}}
 	

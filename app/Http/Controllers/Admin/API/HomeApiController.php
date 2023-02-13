@@ -33,7 +33,7 @@ class HomeApiController extends Controller
             'copy_right'        => get_setting('copy_right'),
             'custom_css'        => get_setting('custom_css'),
             'custom_js'         => get_setting('custom_js'),
-            'site_logo'         => uploaded_asset(get_setting('site_logo')),
+            'site_logo'         => get_uploaded_image_url(get_setting('site_logo')),
         ], 
         'message'=>'setting values...'];
         return response()->json($res);

@@ -115,7 +115,8 @@ export default{
 					if (res.data.access_token) {
 
 						store.setToken('Bearer ' + res.data.access_token);
-
+						//alert(window.history.length);	
+						//window.history.length > 1 ? router.go(-1) : router.push({ name: "MyAccount" })	
 						router.push({ name: "MyAccount" });
 
 					} else {
@@ -125,7 +126,7 @@ export default{
 
 				}).catch(err => {
 					error.value = "Email or Password is incorrect!";
-					error.value = res.error;
+					//error.value = res.error;
 				});
 
 				store.login(form.value.email, form.value.password);
@@ -170,6 +171,7 @@ export default{
 						// console.log(res.data)
 						// console.log("new data " + newres.data)
 						store.login(res.data.email, res.data.password);
+						
 						router.push({ name: "MyAccount" });
 
 					} else {

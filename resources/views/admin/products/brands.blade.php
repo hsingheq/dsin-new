@@ -73,7 +73,7 @@ Product Brands
                                     <td class="email">
                                        <div class="">  
 										@if($brand->brandimage)
-                                        <img src="{{ uploaded_asset($brand->brandimage) }}" class=" img-fluid d-block" width="100" />
+                                        <img src="{{ get_uploaded_image_url($brand->brandimage) }}" class=" img-fluid d-block" width="100" />
 										@else
 											--
 										@endif
