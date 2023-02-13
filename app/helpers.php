@@ -84,8 +84,8 @@ function product_path($id, $image)
 }
 
 //return file uploaded via uploader
-if (!function_exists('uploaded_asset')) {
-    function uploaded_asset($id)
+if (!function_exists('get_uploaded_image_url')) {
+    function get_uploaded_image_url($id)
     {
         if (($asset = \App\Models\Upload::find($id)) != null) {
             return my_asset($asset->file_name);

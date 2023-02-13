@@ -57,8 +57,7 @@ Attribute options
                                         </div>
                                     </th>
                                     <th>#</th>
-                                    <th>name</th>
-                                    
+                                    <th>Name</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>

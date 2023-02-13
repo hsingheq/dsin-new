@@ -82,7 +82,7 @@ All Product
                                         <span><div class="d-flex align-items-center">
                                             <div class="flex-shrink-0 me-3">
                                                 <div class="avatar-sm bg-light rounded p-1">
-                                                    <img src="{{ uploaded_asset($product->thumbnail_img)}}" alt="" class="img-fluid d-block">
+                                                    <img src="{{ get_uploaded_image_url($product->thumbnail_img)}}" alt="" class="img-fluid d-block">
                                                 </div>
                                             </div><div class="flex-grow-1">
                                                 <h5 class="fs-14 mb-1">

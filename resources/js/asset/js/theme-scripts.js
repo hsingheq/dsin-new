@@ -2,7 +2,7 @@ $(function(){
     
 	
 
-//    $('select').niceSelect();
+    $('select').niceSelect();
 
 	$('.cat-toggle-btn-2').on('click', function () {
 		$('.side-menu').slideToggle(500);

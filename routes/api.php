@@ -104,8 +104,8 @@ Route::controller(CategoryApiController::class)->group(function(){
 Route::controller(ProductApiController::class)->group(function(){
     Route::get('our_products','our_products');
     Route::get('best_selling_products','best_selling_products');
-    Route::post('get_product','get_product');
-    Route::post('get_brand','get_brand');
+    Route::get('get_product/{slug}','get_product');
+    Route::get('get_brand','get_brand');
     Route::post('addToCart','addToCart');
     Route::post('getCartItemsCount','getCartItemsCount');
     Route::post('getCartItems','getCartItems');

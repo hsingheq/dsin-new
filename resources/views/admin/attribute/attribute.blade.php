@@ -45,6 +45,7 @@ Attribute
                                         </div>
                                     </th>
                                     <th>Name</th>
+                                    <th>Options</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -56,7 +57,20 @@ Attribute
                                             <input class=" sub_chk" type="checkbox" name="id[]"   value="{{$attribute->id}}" data-id="{{$attribute->id}}">
                                         </div>
                                     </th>
-                                    <td class="customer_name">{{$attribute->name}}</td>
+                                    <td>{{$attribute->name}}</td>
+                                    <td>  
+                                        @if ($attribute->options)
+                                            @php
+                                                $options = explode(",", $attribute->options);
+                                            @endphp
+                                            @foreach ($options as $option)
+                                                <span
+                                                    class="badge rounded-pill text-bg-primary">{{ $option }}</span>
+                                            @endforeach
+                                        @else
+                                            {{ 'No option' }}
+                                        @endif
+                                    </td>
                                     <td>
                                         <div class="d-flex gap-2">
                                             <div class="add-option">

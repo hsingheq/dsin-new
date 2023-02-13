@@ -67,14 +67,15 @@
 											</button>
 										</div>
 										<div class="header-search-dropdown">
-											<select>
+											<vue-select :options="options" close-on-select :min="1"> </vue-select>
+											<!--<select>
 												<option>All Categories</option>
 												<option>Pantry & Breakroom</option>
 												<option>Technology & Hardware</option>
 												<option>Office Machine & Equipment</option>
 												<option>Office Stationary</option>
 												<option>Paper & Envelope</option>
-											</select>
+											</select>-->
 										</div>
 									</form>
 								</div>
@@ -531,10 +532,18 @@
 						<div class="col-lg-3 col-md-6 col-6 text-end">
 							<div class="menu-actions-link header-action text-sm-end">
 								<div class="block-wishlist action">
-									<a class="icon-link" href="">
+									<!--<a class="icon-link" href="">
 										<i class="bi bi-heart"></i>
 										<span class="text">Wishlist</span>
-									</a>
+									</a>-->
+									<router-link class="icon-link" v-if="!token" :to="{name: 'Login'}" :from="{name : 'Wishlist'}">
+										<i class="bi bi-heart"></i>
+										<span class="text">Wishlist</span>
+									</router-link>
+        							<router-link class="icon-link" v-else :to="{name : 'Wishlist'}" >
+										<i class="bi bi-heart"></i>
+										<span class="text">Wishlist</span>
+									</router-link>
 								</div>
 								<!-- Shopping Cart Starts-->
 								<div class="block-cart action">
@@ -636,7 +645,7 @@ import { mapState } from 'pinia';
 import logoutComponents from '../../mixins/logout';
 
 export default ({
-
+	//components: {VueNextSelect},
 	computed: {
 	//  ...mapState(UserStore, ['email', 'name','user'])
 		  ...mapState(UserStore, ['token','user','authUser']),
@@ -675,13 +684,19 @@ export default ({
 	
 
 	methods: {
-
-
+		
 	},
 	setup() {
 		//const router = useRouter();
 		const { logout } = logoutComponents();
 		const data = useShoppingStore();
+		const options = ref([
+				{ name: 'Vue.js', language: 'JavaScript' },
+				{ name: 'Rails', language: 'Ruby' },
+				{ name: 'Sinatra', language: 'Ruby' },
+				{ name: 'Laravel', language: 'PHP' },
+				{ name: 'Phoenix', language: 'Elixir' },
+				])
 		//router.push({ name: '/' });
 		/* function logout() {
 			alert(1);
@@ -690,9 +705,8 @@ export default ({
 		return {
 			router,
 			logout,
-			data
-
-
+			data,
+			options
 		}
 		/* const router = useRouter();
 		const logout = () => {
