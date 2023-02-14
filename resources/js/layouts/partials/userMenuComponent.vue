@@ -1,25 +1,12 @@
 <template>
-    <div>
        
         <div class="card d-flex justify-content-center my-account-user-box">
-            <div class="
-          p-4
-          image
-          d-flex
-          flex-column
-          justify-content-center
-          align-items-center
-        ">
-       
+            <div class="p-4 image d-flex flex-column justify-content-center align-items-center">
                 <div class="user-pic">
                     <Loading v-if="loading" class="position-absolute" />
-                    <span v-if="google_avatar" :style="{ backgroundImage: 'url(' + google_avatar + ')' }">
-                        <!--<img :src="google_avatar"  />-->
+                    <span v-if="profile_picture" :style="{ backgroundImage: 'url(' + profile_picture + ')' }">
+                        <img :src="profile_picture"  class="d-none" />
                     </span>
-                    <span v-if="profile_pic" :style="{ backgroundImage: 'url(' + profile_pic + ')' }">
-                        <img :src="profile_pic"  />
-                    </span>
-                    
                 </div>
                 <span class="name mt-3" v-if="authUser">{{ authUser.first_name }}</span>
                 <div class="d-flex mt-2">
@@ -63,8 +50,6 @@
                 </ul>
             </div>
         </div>
-       
-    </div>
 </template>
 
 <script>
@@ -74,21 +59,17 @@ import { UserStore } from "@/store/UserStore";
 import Loading from '../partials/loaderComponent.vue';
 import { mapState } from 'pinia';
 import logoutComponent from "../../mixins/logout";
-let google_avatar = ref('');
-let profile_pic = ref('');
+let profile_picture = ref('');
 
 export default {
-data(){
-    return{
-         
-        google_avatar,
-        profile_pic,
-        loading:false
+    data(){
+        return{
+            profile_picture,
+            loading:false
         }
-},
+    },
     created(){
-       
-    this.user_info()
+        this.user_info()
     },
 
     computed: {
@@ -99,31 +80,25 @@ data(){
    
 
     methods:{
-       
+        handleLogout(){
+            alert(1)
+        },
       async  user_info(){
         this.loading=true;
           //AXIOS GETTING AUTHENTICATED USER_ID
           try{
             await axios.get('/api/user',{
             headers: {
-                        Authorization: 'Bearer ' + sessionStorage.getItem('token'),
+                        Authorization: sessionStorage.getItem('token'),
                     },
          }).then(userresponse=>{
           
             axios.post('/api/user_info',{
                 id:userresponse.data.id
             }).then(res=>{
-                if(res?.data?.google_avatar?.user_value){
-                   this.google_avatar = res.data.google_avatar.user_value;
-                }else{
-                    this.profile_pic=res?.data?.profile_pic?.user_value;
+                if(res?.data?.profile_picture?.user_value){
+                   this.profile_picture = res.data.profile_picture.user_value;
                 }
-              /*   if(res.data.google_avatar){
-                    console.log("googlePic:"+res.data);
-                }else{
-                    console.log("userProfile : "+res.data);
-                } */
-                
             });
          });
           }catch(error){

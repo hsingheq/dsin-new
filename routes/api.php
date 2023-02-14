@@ -1,5 +1,4 @@
 <?php
-
 use App\Http\Controllers\Admin\API\AdminApiController;
 use App\Http\Controllers\Admin\API\HomeApiController;
 use App\Http\Controllers\Admin\API\AuthController;
@@ -71,7 +70,7 @@ Route::controller(HomeApiController::class)->group(function () {
 Route::controller(UserApiController::class)->group(function(){
     Route::post('create_user', 'create_user');
     Route::post('update_customer', 'update_customer');
-    Route::get('arjun', 'arjun');
+    //Route::get('arjun', 'arjun');
     Route::post('changePassword', 'changePassword');
     Route::post('get_user_data','get_user_data');
     Route::post('google_auth_login','google_auth_login');
@@ -82,7 +81,6 @@ Route::controller(UserApiController::class)->group(function(){
 Route::controller(AuthController::class)->group(function () {
    Route::post('register','register');
    Route::post('login','login');
-
 });
 
 Route::group(['middleware'=>'jwt.verify'],function(){

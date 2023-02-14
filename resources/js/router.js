@@ -235,6 +235,11 @@ const routes =  [
          }  */
      },
      {
+        path: '/checkout',
+        name: 'Checkout',
+        component: () => import("./pages/frontend/ecommerce/checkout.vue"),
+    }, 
+     {
         path: '/wishlist',
         name: 'Wishlist',
         component: () => import("./pages/frontend/wishlist.vue"),
@@ -242,7 +247,6 @@ const routes =  [
             requiredAuth:true
         }
     }, 
-
     {
         path: '/:pathMatch(.*)*',
         name: 'PageNotFound',

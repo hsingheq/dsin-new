@@ -1,4 +1,5 @@
 <template>
+    <Loading v-if="isLoading" />
     <div>
      <!--   <helloComponent>
 
@@ -28,6 +29,7 @@
 import headerComponent from "./partials/headerComponent.vue";
 import footerComponent from "./partials/footerComponent.vue";
 import helloComponent from "./partials/helloComponent.vue";
+import Loading from './partials/loaderComponent.vue';
 import Home from "../pages/frontend/index.vue";
 import asset_path from '@/mixins/asset_path';
 
@@ -42,9 +44,8 @@ export default {
         axios.get('/api/get_setting_data/')
             .then(
                 ({ data }) => {
-
                     this.result = data;
-                    console.log(this.result.data);
+                    //console.log(this.result.data);
                     this.results = this.result.data
                 }
             );
@@ -52,37 +53,15 @@ export default {
            	
     },
 
- /*    provide () {
-		const menu="";
-		if (sessionStorage.getItem('token') != null) {
-		 axios.get('/api/user', {
-                    headers: {
-                        Authorization: 'Bearer ' + sessionStorage.getItem('token'),
-                    },
-
-                }).then( ({data})=>{
-                   
-                 this.menu = "data"
-                
-                  
-                });
-	}
-	}, */
 
 
     
     data() {
         return {
             results: [],
-            isLogin: false,
-
         }
     },
-
     mounted() {
-
-        
-
     },
     components: {
         headerComponent,

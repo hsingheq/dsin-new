@@ -22,6 +22,8 @@ export default {
             const store = UserStore();
             store.removeEmail('email');
             store.removeEmail('name');
+            store.removeItem('access_token');
+            store.removeItem('token');
             // router.push({ name: '/' });
         }
         return {
