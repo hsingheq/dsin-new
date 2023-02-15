@@ -15,7 +15,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 class User extends Authenticatable implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable;
-    protected $fillable = ['first_name', 'last_name', 'email', 'password', 'username', 'roles', 'status'];
+    protected $fillable = ['first_name', 'last_name', 'email', 'password', 'roles', 'status'];
 
       /**
      * The attributes that should be hidden for serialization.

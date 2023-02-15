@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use JWTAuth;
 use App\Models\UserInfo;
@@ -192,27 +193,12 @@ class UserApiController extends Controller
     }
 
     public function google_auth_login(Request $request){
-        $response =   $request->all();
-        
-        $checkEmail = User::where('email', '=', $request->email)->first();
-        if($checkEmail){
-            //login here
-
-            $password           = str_shuffle('abcde56789_+$@$%0pqxyz');
-            //$password  = bcrypt($password);
-            User::where('email',$request->email)->update(['password'=> bcrypt($password)]);
-            $data = [
-
-                'success'=> true,
-                 'email' =>   $request->email,
-                'password' =>   $password,
-                   
-            ];
-            return response()->json($data);
-       
-        }else{
-
-         
+        $response =   $request->all();    
+        $user = User::where('email', '=', $request->email)->first();
+        if($user){
+            $token=JWTAuth::fromUser($user);
+            return $this->createNewToken($token, $user);
+        } else {         
             /**
              * @GOOGLE OAUTH REGISTERING 
              * @LOGGING 
@@ -222,37 +208,22 @@ class UserApiController extends Controller
             $user->first_name   = $request->first_name; 
             $user->last_name    = $request->last_name; 
             $user->email        = $request->email; 
-            $user->roles        =  json_encode(array('Customer' => 'Customer'));
+            $user->roles        =  json_encode(array('Customer'));
             $user->status       =  'Active';
             $password           = str_shuffle('abcde56789_+$@$%0pqxyz');
             $user->password  = bcrypt($password);
             //mailing welcome the password
-            //$password
-    
-           
+            //$password           
             $user->save();
              //info data
             $userinfo = new UserInfo();
             $userinfo->user_id      = $user->id;
-            $userinfo->user_key     = 'google_avatar';
-            $userinfo->user_value   = $request->google_avatar;
-            $userinfo->save();
-
-            
-            $data = [
-
-                'success'=> true,
-                 'email' =>   $request->email,
-                'password' =>   $password,
-                   
-            ];
-            return response()->json($data);
-        }
-       
-       
-
-       
-       
+            $userinfo->user_key     = 'profile_picture';
+            $userinfo->user_value   = $request->profile_picture;
+            $userinfo->save();            
+            $token=JWTAuth::fromUser($user);
+            return $this->createNewToken($token, $user);
+        }  
     }
 
   /*   public function google_avatar(){
@@ -271,37 +242,20 @@ $data=[
 
     public function user_info(Request $request){ 
         $id =  $request->id;  
-        $profile_pic  =  UserInfo::where([
-            ['user_id',$id],
-            ['user_key','google_avatar']
-                    ])->first();
-                    if($profile_pic){
-
-                        //if it has google profile
-                        $gpic  =  UserInfo::where([
-                            ['user_id',$id],
-                            ['user_key','google_avatar']
-                                    ])->first('user_value');
-                                     $data=[
-                            
-                                        'google_avatar'=> $gpic
-                                    ];
-                                    return response()->json($data);
-                    }else{
-                          //if it has google profile
-                          $profile_pic  =  UserInfo::where([
-                            ['user_id',$id],
-                            ['user_key','profile_pic']
-                                    ])->first('user_value');
-
-                                      $data=[
-                            
-                                        'profile_pic'=> $profile_pic
-                                    ];
-                                    return response()->json($data);
-                    } 
-                  //  return response()->json($data);
-                  
+        $profile_picture  =  UserInfo::where([['user_id', $id], ['user_key','profile_picture']])->first();
+        $data=[
+            'profile_picture'=> $profile_picture
+        ];
+        return response()->json($data);       
+    }
+    
+    protected function createNewToken($token, $user){
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => 60 * 60,
+            'user' => $user
+        ]);
     }
     
 }

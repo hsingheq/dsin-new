@@ -1,5 +1,6 @@
 <template>
 	<div>
+		<Loading v-if="isLoading" />
 		<div class="login-wrapper">
 			<!-- Main Content Starts -->
 			<section class="box-plr-75">
@@ -48,10 +49,10 @@
 									<!-- Checkbox -->
 									<div class="form-check mb-0">
 										<input class="form-check-input me-2" type="checkbox" value="" name="remember-me"
-											id="remember-me" />
+											id="remember-me" v-model="form.rememberme" />
 										<label class="form-check-label" for="remember-me"> Remember me </label>
 									</div>
-									<a href="forget-password.php" class="text-body">Forgot password?</a>
+									<a href="/forget-password"  class="text-body">Forgot password?</a>
 								</div>
 								<div class="text-center text-lg-start mt-4 pt-2">
 									<button type="submit" class="site-btn">Login</button>
@@ -63,7 +64,7 @@
 									<button type="button" class="btn mx-1">
 										<i class="bi bi-facebook"></i>
 									</button>
-									<GoogleLogin :callback="callback" :buttonConfig="{type: 'standard', size: 'medium', text: 'signin_with'}" v-if="google_enable=='on'" ></GoogleLogin>
+									<GoogleLogin :callback="handleGoogleLogin" :buttonConfig="{type: 'standard', size: 'medium', text: 'signin_with'}" v-if="google_enable=='on'" ></GoogleLogin>
 								</div>
 							</div>
 							<p class="small text-center mt-20 mb-0">Don't have an account? <router-link :to="{ name: 'Register' }" class="link-info">Sign up now</router-link></p>
@@ -77,125 +78,127 @@
 	</div>
 </template>
 
-<script >
-import { ref, reactive,onMounted } from 'vue';
+<script>
+import { ref, reactive, onMounted } from 'vue';
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 import { useRouter } from 'vue-router';
 import { UserStore } from '@/store/UserStore';
 import { googleAuthCodeLogin, googleTokenLogin, googleSdkLoaded, decodeCredential } from "vue3-google-login";
+
+//import { loginState, isLoggedIn, login } from '../../auth.js';
 export default{
-	
-	/* 	mounted(){
-			 
-
-		},
- */
-
 	setup(){
 		const router = useRouter();
-			const store = UserStore();
-			let google_enable = ref('');
-			let error = ref('');
-			const form = ref({
-
-				email: '',
-				password: ''
-
-			});
-
-
-
-			const handleLogin = async () => {
+		const store = UserStore();
+		let google_enable = ref('');
+		let error = ref('');
+		const form = ref({
+			email: '',
+			password: ''
+		});
+		const handleLogin = async () => {
+			error.value = "Please wait..."
+			try {
 				await axios.post('/api/login', {
-
 					email: form.value.email,
 					password: form.value.password,
-				}).then(res => {
-					if (res.data.access_token) {
-
-						store.setToken('Bearer ' + res.data.access_token);
-						//alert(window.history.length);	
-						//window.history.length > 1 ? router.go(-1) : router.push({ name: "MyAccount" })	
-						router.push({ name: "MyAccount" });
-
-					} else {
-						error.value = res.data.message;
-					}
-
-
-				}).catch(err => {
-					error.value = "Email or Password is incorrect!";
-					//error.value = res.error;
-				});
-
-				store.login(form.value.email, form.value.password);
-
+				}).then(response => {
+					store.setToken('Bearer ' + response.data.access_token);
+					router.go({ name: "MyAccount" });
+					this.isLoggedIn = true;
+				})
+			} catch(dataerror) {
+				if(dataerror.response) {
+					//console.warn(dataerror.response.data.error)
+					error.value = dataerror.response.data.error
+				}
+			} finally {
+				//this.isLoading = false
 			}
-
-			onMounted(()=>{
-				axios.get('/api/social_settings').then( response =>{
-					console.log(response.data.data.google_login_enable);
-                    google_enable.value = response.data.data.google_login_enable;
-                });
-			})
-
-
-
-			
-//google login setup 
-
-			const callback = (response) => {
-			// decodeCredential will retrive the JWT payload from the credential
-			const userData = decodeCredential(response.credential)
-			console.log("Handle the userData", userData)
-						console.log(response);
-			 axios.post('/api/google_auth_login', {
-
-			first_name: userData.given_name,
-			last_name: userData.family_name,
-			google_avatar: userData.picture,
-			email: userData.email,
-			
-			
+			/*await axios.post('/api/login', {
+				email: form.value.email,
+				password: form.value.password,
 			}).then(res => {
-				  
+				if (res.data.access_token) {
+					store.setToken('Bearer ' + res.data.access_token);
+					//alert(window.history.length);	
+					//window.history.length > 1 ? router.go(-1) : router.push({ name: "MyAccount" })	
+					router.push({ name: "MyAccount" });
+				} else {
+					error.value = res.data.message;
+				}
+			}).catch(err => {
+				error.value = "Email or Password is incorrect!";
+				//error.value = res.error;
+			});
+			store.login(form.value.email, form.value.password);*/
+		}
+		onMounted(()=>{
+			axios.get('/api/social_settings').then( response =>{
+				//console.log(response.data.data.google_login_enable);
+				google_enable.value = response.data.data.google_login_enable;
+			});
+		})
+			
+		//google login setup 
+		const handleGoogleLogin = (response) => {
+			const userData = decodeCredential(response.credential)
+			error.value = "Please wait..."
+			try {
+				axios.post('/api/google_auth_login', {
+					first_name: userData.given_name,
+					last_name: userData.family_name,
+					profile_picture: userData.picture,
+					email: userData.email,
+				}).then(response => {
+					error.value = "Success"
+					store.setToken('Bearer ' + response.data.access_token);
+					router.go({ name: "MyAccount" });
+				})
+			} catch(dataerror) {
+				if(dataerror.response) {
+					console.warn(dataerror.response)
+					error.value = dataerror.response.data.error
+				}
+			} finally {
+				//this.isLoading = false
+			}
+			
+			// decodeCredential will retrive the JWT payload from the credential
+			/*const userData = decodeCredential(response.credential)
+			axios.post('/api/google_auth_login', {
+					first_name: userData.given_name,
+					last_name: userData.family_name,
+					profile_pic: userData.picture,
+					email: userData.email,
+			}).then(res => {
 				 axios.post('/api/login', {
-
 					email: res.data.email,
 					password: res.data.password,
 				}).then( newres => {
 					if (newres.data.access_token) {
-
 						store.setToken('Bearer ' + newres.data.access_token);
 						// console.log(res.data)
 						// console.log("new data " + newres.data)
 						store.login(res.data.email, res.data.password);
-						
 						router.push({ name: "MyAccount" });
-
 					} else {
 						error.value = res.data.message;
 					}
-
-
 				})
-
-				
-			}); 
-			
-
-					} 
-			return {
-				router,
-				store,
-				error,
-				form,
-				handleLogin,
-				callback,
-				google_enable
-				
-			}
+			}); */	
+		} 
+		return {
+			router,
+			store,
+			error,
+			form,
+			handleLogin,
+			handleGoogleLogin,
+			google_enable,
+			//loginState, isLoggedIn, login
+		}
 	}
 }
 </script>

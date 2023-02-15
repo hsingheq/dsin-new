@@ -1,5 +1,9 @@
 <template>
 <!-- Breadcrumbs Starts -->
+<loading v-model:active="isLoading"
+                 :can-cancel="true"
+                 :on-cancel="onCancel"
+                 :is-full-page="fullPage"/>
 <section class="box-plr-75">
 	<div class="container">
 		<div class="row">
@@ -30,6 +34,7 @@
       <!-- Sidebar Ends -->
       <!-- Posts Starts -->
       <div class="col-xl-9 col-lg-8">
+          
           <div class="row g-4" v-if="posts && posts.length > 0">
             <!-- Blog Item Starts-->
             <div class="col-lg-4 col-md-6 mb-40" v-for="item in posts" :key="item.id">
@@ -69,7 +74,8 @@
   import axios from 'axios';
   import { useRoute, useRouter } from 'vue-router';
   import router from '@/router';
-  
+  import Loading from 'vue-loading-overlay';
+  import 'vue-loading-overlay/dist/css/index.css';
   export default {
   
     name: "Blog",
@@ -78,8 +84,16 @@
             posts:{
                 type:Object,
                 default:null
-            }
+            },
+            isLoading: true,
+            fullPage: true
         }
+    },
+    components: {
+        Loading
+    },
+    beforeMount() {
+      
     },
     mounted(){
         this.list()
@@ -88,8 +102,9 @@
         async list(page=1){
             await axios.get(`/api/post_list`).then(res=>{
                 this.posts = res.data.response
+                this.isLoading= false
                 //alert(res.data.response.length);
-                console.log(res.data.response)
+                //console.log(res.data.response)
             });
         }
     },
