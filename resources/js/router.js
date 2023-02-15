@@ -142,6 +142,16 @@ const routes = [
         }  */
     },
 
+    /*Shop ROUTINGS*/
+    {
+        name: "shop",
+        path: "/shop",
+        component: () => import("./pages/frontend/ecommerce/shop.vue"),
+        /*  meta:{
+                requiredAuth:false
+        }  */
+    },
+
     /*POST ROUTINGS*/
     {
         //post section
