@@ -17,7 +17,8 @@ class ProductApiController extends Controller
         $data = DB::table('products')
             ->leftJoin('uploads', 'uploads.id' ,'products.thumbnail_img' )
             ->select('product_title','product_category','file_name','unit_price','products.slug','products.id')
-            ->get();
+            ->orderBy('id', 'DESC')
+            ->paginate(10);
         $result =  array (
 					'success'   => true,
 					'data'      => $data,

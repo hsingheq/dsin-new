@@ -142,6 +142,16 @@ const routes = [
         }  */
     },
 
+    /*Shop ROUTINGS*/
+    {
+        name: "shop",
+        path: "/shop",
+        component: () => import("./pages/frontend/ecommerce/shop.vue"),
+        /*  meta:{
+                requiredAuth:false
+        }  */
+    },
+
     /*POST ROUTINGS*/
     {
         //post section
@@ -169,26 +179,33 @@ const routes = [
         component: () => import("./pages/frontend/cms/about.vue"),
     },
 
-    {
-        //contact section
-        name: "Contact",
-        path: "/contact",
-        component: () => import("./pages/frontend/cms/contact.vue"),
-    },
+     {
+        //contact section 
+         name: 'Contact',
+         path: '/contact',
+         component:() => import("./pages/frontend/cms/contact.vue"),
+        
+     },
 
-    {
-        //disclaimer section
-        name: "Disclaimer",
-        path: "/disclaimer",
-        component: () => import("./pages/frontend/cms/disclaimer.vue"),
-    },
 
-    {
-        //disclaimer section
-        name: "PrivacyPolicy",
-        path: "/privacy-policy",
-        component: () => import("./pages/frontend/cms/privacy-policy.vue"),
-    },
+     
+     {
+        //disclaimer section 
+         name: 'Disclaimer',
+         path: '/disclaimer',
+         component:() => import("./pages/frontend/cms/disclaimer.vue"),
+          
+     },
+
+
+      
+     {
+        //disclaimer section 
+         name: 'PrivacyPolicy',
+         path: '/privacy-policy',
+         component:() => import("./pages/frontend/cms/privacy-policy.vue"),
+         
+     },
 
     {
         //tmc section

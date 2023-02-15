@@ -1,6 +1,6 @@
 <template>
-
-	<div>
+	
+<div>
 		<section class="box-plr-75">
 			<div class="container">
 				<div class="row">
