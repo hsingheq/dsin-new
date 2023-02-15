@@ -1,7 +1,16 @@
 import './bootstrap';
 import {createApp} from 'vue';
 
+// window.Vue = require('vue');
+
+
+
+import { Bootstrap4Pagination } from 'laravel-vue-pagination';
+import { Bootstrap5Pagination } from 'laravel-vue-pagination';
+import { TailwindPagination } from 'laravel-vue-pagination';
+
   import axios from 'axios'; 
+  
 //  import VueAxios from 'vue-axios';
   // import VueRouter from 'vue-router';
 import router from './router';
@@ -54,6 +63,7 @@ import vue3GoogleLogin from 'vue3-google-login';
 import VueNextSelect from 'vue-next-select'
 import 'vue-next-select/dist/index.min.css'
 
+
 /**
  * AXIOS CALLING FOR IMPORTANT SETTINGS
  */
@@ -69,7 +79,7 @@ import 'vue-next-select/dist/index.min.css'
                 }
             );*/
 
-
+            
 
 const app = createApp(App)
  .use(vue3GoogleLogin, {
@@ -79,4 +89,6 @@ app.use(router)
 app.use(createPinia())
 // .use(store)
 app.component('vue-select', VueNextSelect)
+
+
 app.mount("#app")

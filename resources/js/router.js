@@ -206,6 +206,14 @@ const routes =  [
           
      },
 
+     {
+        //Shop section 
+         name: 'shop',
+         path: '/shop',
+         component:() => import("./pages/frontend/ecommerce/shop.vue"),
+          
+     },
+
 
       
      {

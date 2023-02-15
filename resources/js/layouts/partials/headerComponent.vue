@@ -447,7 +447,8 @@
 												<router-link :to="{name:'About'}">About Us</router-link>
 											</li>
 											<li class="has-mega">
-												<a href="products.php">Shop <i class="bi bi-chevron-down"></i></a>
+												<!-- <a href="products.php">Shop <i class="bi bi-chevron-down"></i></a> -->
+											<router-link :to="{name:'shop'}">Shop</router-link>
 												<div class="mega-menu">
 													<div class="container container-mega">
 														<ul>
