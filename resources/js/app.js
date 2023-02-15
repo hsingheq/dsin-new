@@ -1,6 +1,7 @@
 import './bootstrap';
 import {createApp} from 'vue';
 
+
 // window.Vue = require('vue');
 
 
@@ -11,24 +12,26 @@ import { TailwindPagination } from 'laravel-vue-pagination';
 
   import axios from 'axios'; 
   
+
+
 //  import VueAxios from 'vue-axios';
   // import VueRouter from 'vue-router';
 import router from './router';
 // import store from './store/index.js';
 import App from './layouts/App.vue';
 import './asset/js/jquery.js'; 
-import jQuery from "jquery";
-import $ from 'jquery';
+//import jQuery from "jquery";
+//import $ from 'jquery';
 
 import swal from 'sweetalert';
 const base_url = import.meta.env.VITE_MY_ENV_VARIABLE;
 const google_client_id = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
- axios.defaults.withCredentials = true;
+axios.defaults.withCredentials = true;
 axios.defaults.baseURL=base_url;
-const token = localStorage.getItem('token');
+const token = localStorage.getItem('token')
 if(token){
-    axios.defaults.headers.common['Authorization'] = token
+  axios.defaults.headers.common['Authorization'] = token
 } 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap";
@@ -79,7 +82,6 @@ import 'vue-next-select/dist/index.min.css'
                 }
             );*/
 
-            
 
 const app = createApp(App)
  .use(vue3GoogleLogin, {

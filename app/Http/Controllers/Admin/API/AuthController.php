@@ -4,13 +4,54 @@ namespace App\Http\Controllers\Admin\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 use App\Models\User;
-use JWTAuth;
+//use Validator;
 use Hash;
 
 class AuthController extends Controller
 {
-    public function login(Request $request){ 
+    public function __construct() {
+        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+    }
+
+    /**
+     * Get a JWT via given credentials.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function login(Request $request){
+    	$validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required|string|min:6',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error' => 'Email or Password is required.'], 401);
+        }
+        
+        $user = User::where('email', '=', $request->email)->first();
+        if ($user) {
+            if($user->status=='Active'){
+                if (Hash::check($request->password, $user->password)) {
+                    if (! $token = auth()->attempt($validator->validated())) {
+                        return response()->json(['error' => 'Unauthorized'], 401);
+                    }
+                    $token = auth('api')->attempt($validator->validated()); 
+                    return $this->createNewToken($token);
+
+                } else {
+                    return response()->json(['error' => 'Password is incorrect!'], 401);
+                }
+            } else {
+                return response()->json(['error' => 'Your account is not active.'], 401);
+            }
+        } else {
+            return response()->json(['error' => 'Email doesn`t exists.'], 401);
+        }
+        return $this->createNewToken($token);
+    }
+
+    /*public function login(Request $request){ 
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required',
@@ -56,20 +97,8 @@ class AuthController extends Controller
           
         }
 
-
-       /*  return response([
-            'message'=> $response,
-        ]); */
-      
-       
-
-        /* $jwttokens =  $this->createNewToken($token);
-        $cookie =  cookie('jwt',$jwttokens,1);
-        return response([
-            'message'=> $token,
-        ])->withCookie($cookie); */
     }
-
+    */    
 
     public function register(Request $request){
         $validator = Validator::make($request->all(), [
@@ -99,11 +128,10 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
+            'expires_in' => 60 * 60,
             'user' => auth()->user()
         ]);
     }
-
-
 
     public function getUser(Request $request)
     {

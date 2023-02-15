@@ -1,6 +1,4 @@
 <template>
-	<div>
-
 		<!-- header-start -->
 		<header class="header">
 			<div class="header-top">
@@ -632,19 +630,17 @@
 		<!-- offcanvas area end -->
 		<div class="body-overlay"></div>
 		<!-- offcanvas area end -->
-	</div>
 </template>
 
 <script >
-import { ref  } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { reactive, ref  } from 'vue';
 import router from "@/router";
 import { UserStore } from '../../store/UserStore';
 /* import { CartStore } from '../../store/CartStore'; */
 import { useShoppingStore } from '@/store/CartStore';
 import { mapState } from 'pinia';
 import logoutComponents from '../../mixins/logout';
-
+//import { loginState, isLoggedIn, login,logoutNew } from '../../auth';
 export default ({
 	//components: {VueNextSelect},
 	computed: {
@@ -654,10 +650,12 @@ export default ({
 	},
 
 	props: ['logo','femail', 'fphone'],
-
- 	async created(){
+	mounted() {
 		UserStore().fetchUser(),
 		useShoppingStore().CartItems()
+	},
+ 	async created(){
+		
 	/* 	
 		if (sessionStorage.getItem('token') != null) {
 		 axios.get('/api/user', {
