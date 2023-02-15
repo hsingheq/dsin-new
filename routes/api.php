@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\API\CategoryApiController;
 use App\Http\Controllers\Admin\API\ProductApiController;
 use App\Http\Controllers\Admin\API\UserApiController;
 use App\Http\Controllers\Admin\API\BlogApiController;
+use App\Http\Controllers\Admin\API\DealerRegistrationApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
