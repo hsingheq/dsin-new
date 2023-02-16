@@ -5,12 +5,14 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\UserVerify;
 use Session;
 use DB;
 use Hash;
 
 class AdminController extends Controller
 {
+   
    public function login()
    {
       return view("Auth/login");
@@ -36,6 +38,11 @@ class AdminController extends Controller
       $user->roles =  "Admin";
       $user->status =  "Active";
       $res = $user->save();
+
+
+
+    
+       
 
       if ($res) {
          return redirect()->back()->with('success', "admin created!");
@@ -82,4 +89,9 @@ class AdminController extends Controller
          return redirect()->back()->with('fail', 'Email does not exist!');
       }
    }
+
+
+   
+
+ 
 }
