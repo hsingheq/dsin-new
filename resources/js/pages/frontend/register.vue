@@ -1,6 +1,6 @@
 <template>
-	
-<div>
+
+	<div>
 		<section class="box-plr-75">
 			<div class="container">
 				<div class="row">
@@ -144,7 +144,6 @@
 
 <script >
 import { ref } from 'vue';
-
 import axios from 'axios';
 import { useRouter } from 'vue-router';
 import router from '../../router';

@@ -14,8 +14,11 @@ export default {
         const form = {
             registration_type: "individual",
             first_name: "",
+            last_name: "",
             address: "",
-            mobile: ""
+            mobile: "",
+            occupation: "",
+            acceptance: "",            
         }
         const schema = Yup.object().shape({
             first_name: Yup.string().required('First name is required.'),
@@ -317,7 +320,7 @@ export default {
                         <!-- Declaration Ends -->
                         <div class="text-lg-start mt-4 pt-2 row">
                             <div class="col-md-12">
-                                <button type="submit" class="site-btn">Update</button>
+                                <button type="submit" class="site-btn">Submit</button>
                             </div>
                         </div>
                     </Form>

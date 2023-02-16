@@ -5,11 +5,6 @@ import {createApp} from 'vue';
 // window.Vue = require('vue');
 
 
-
-import { Bootstrap4Pagination } from 'laravel-vue-pagination';
-import { Bootstrap5Pagination } from 'laravel-vue-pagination';
-import { TailwindPagination } from 'laravel-vue-pagination';
-
   import axios from 'axios'; 
   
 

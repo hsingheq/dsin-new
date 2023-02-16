@@ -1,3 +1,70 @@
+<template>
+	<div>
+		<Loading v-if="isLoading" />
+		<div class="login-wrapper">
+			<!-- Main Content Starts -->
+			<section class="box-plr-75">
+				<div class="container">
+					<div class="row">
+						<div class="col-xxl-12">
+							<div class="breadcrumb-wrapper">
+								<nav aria-label="breadcrumb">
+									<ol class="breadcrumb">
+										<li class="breadcrumb-item"><router-link to="/">Home</router-link></li>
+										<li class="breadcrumb-item active" aria-current="page">Forgot Password</li>
+									</ol>
+								</nav>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+			<section class="pb-50">
+				<div class="container-fluid h-custom">
+					<div class="row d-flex justify-content-center align-items-center">
+						<div class="col-md-8 col-lg-6 col-xl-4 login-box">
+							<h1>Reset Password</h1>
+							<p>Please enter your email address. You will receive a link to create a new password via
+								email.</p>
+							<form @submit.prevent="handleLogin">
+
+								<span class="alert-danger" v-if="error">
+									<div class="alert alert-danger" role="alert">
+										{{ error }}
+									</div>
+								</span>
+								<!-- {{ form }} -->
+								<!-- Email input -->
+								<div class="form-outline mb-4">
+									<label class="form-label" for="email">Email address</label>
+									<input type="email" id="email" v-model="form.email" name="email"
+										class="form-control form-control-lg"
+										placeholder="Enter a valid email address" />
+								</div>
+								<div class="d-flex justify-content-between align-items-center">
+									<!-- Checkbox -->
+									<div class="form-check mb-0">
+										<input class="form-check-input me-2" type="checkbox" value="" name="remember-me"
+											id="remember-me" v-model="form.rememberme" />
+										<label class="form-check-label" for="remember-me"> Remember me </label>
+									</div>
+									<a href="/forget-password" class="text-body">Forgot password?</a>
+								</div>
+								<div class="text-center text-lg-start mt-4 pt-2">
+									<button type="submit" class="site-btn">Reset Password</button>
+								</div>
+							</form>
+							<p class="small text-center mt-20 mb-0"><router-link :to="{ name: 'Login' }" class="link-info">Login</router-link></p>
+
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- Main Content Ends -->
+		</div>
+	</div>
+</template>
+
 <script>
 import { ref, reactive, onMounted } from 'vue';
 import axios from 'axios';
@@ -7,14 +74,15 @@ import { UserStore } from '@/store/UserStore';
 import { googleAuthCodeLogin, googleTokenLogin, googleSdkLoaded, decodeCredential } from "vue3-google-login";
 
 //import { loginState, isLoggedIn, login } from '../../auth.js';
-export default{
-	setup(){
+export default {
+	setup() {
 		const router = useRouter();
 		const store = UserStore();
 		let google_enable = ref('');
 		let error = ref('');
 		const form = ref({
-			email: ''
+			email: '',
+			password: ''
 		});
 		const handleLogin = async () => {
 			error.value = "Please wait..."
@@ -27,8 +95,8 @@ export default{
 					router.go({ name: "MyAccount" });
 					this.isLoggedIn = true;
 				})
-			} catch(dataerror) {
-				if(dataerror.response) {
+			} catch (dataerror) {
+				if (dataerror.response) {
 					//console.warn(dataerror.response.data.error)
 					error.value = dataerror.response.data.error
 				}
@@ -53,13 +121,13 @@ export default{
 			});
 			store.login(form.value.email, form.value.password);*/
 		}
-		onMounted(()=>{
-			axios.get('/api/social_settings').then( response =>{
+		onMounted(() => {
+			axios.get('/api/social_settings').then(response => {
 				//console.log(response.data.data.google_login_enable);
 				google_enable.value = response.data.data.google_login_enable;
 			});
 		})
-			
+
 		//google login setup 
 		const handleGoogleLogin = (response) => {
 			const userData = decodeCredential(response.credential)
@@ -75,15 +143,15 @@ export default{
 					store.setToken('Bearer ' + response.data.access_token);
 					router.go({ name: "MyAccount" });
 				})
-			} catch(dataerror) {
-				if(dataerror.response) {
+			} catch (dataerror) {
+				if (dataerror.response) {
 					console.warn(dataerror.response)
 					error.value = dataerror.response.data.error
 				}
 			} finally {
 				//this.isLoading = false
 			}
-			
+
 			// decodeCredential will retrive the JWT payload from the credential
 			/*const userData = decodeCredential(response.credential)
 			axios.post('/api/google_auth_login', {
@@ -106,8 +174,8 @@ export default{
 						error.value = res.data.message;
 					}
 				})
-			}); */	
-		} 
+			}); */
+		}
 		return {
 			router,
 			store,
@@ -121,96 +189,18 @@ export default{
 	}
 }
 </script>
-
-<template>
-	<div>
-		<Loading v-if="isLoading" />
-		<div class="login-wrapper">
-			<!-- Main Content Starts -->
-			<section class="box-plr-75">
-				<div class="container">
-					<div class="row">
-						<div class="col-xxl-12">
-							<div class="breadcrumb-wrapper">
-								<nav aria-label="breadcrumb">
-									<ol class="breadcrumb">
-										<li class="breadcrumb-item"><router-link to="/">Home</router-link></li>
-										<li class="breadcrumb-item active" aria-current="page">Login</li>
-									</ol>
-								</nav>
-							</div>
-						</div>
-					</div>
-				</div>
-			</section>
-			<section class="pb-50">
-				<div class="container-fluid h-custom">
-					<div class="row d-flex justify-content-center align-items-center">
-						<div class="col-md-8 col-lg-6 col-xl-4 login-box">
-							<h1>Login</h1>
-							<form @submit.prevent="handleLogin">
-								
-								<span class="alert-danger" v-if="error">
-									<div class="alert alert-danger" role="alert">
-										{{ error }}
-									</div>
-								</span>
-								<!-- {{ form }} -->
-								<!-- Email input -->
-								<div class="form-outline mb-4">
-									<label class="form-label" for="email">Email address</label>
-									<input type="email" id="email" v-model="form.email" name="email"
-										class="form-control form-control-lg"
-										placeholder="Enter a valid email address" />
-								</div>
-								<!-- Password input -->
-								<div class="form-outline mb-3">
-									<label class="form-label" for="password">Password</label>
-									<input type="password" v-model="form.password" id="password" name="password"
-										class="form-control form-control-lg" placeholder="Enter password" />
-								</div>
-								<div class="d-flex justify-content-between align-items-center">
-									<!-- Checkbox -->
-									<div class="form-check mb-0">
-										<input class="form-check-input me-2" type="checkbox" value="" name="remember-me"
-											id="remember-me" v-model="form.rememberme" />
-										<label class="form-check-label" for="remember-me"> Remember me </label>
-									</div>
-									<router-link :to="{ name: 'ForgotPassword' }"  class="text-body">Forgot password?</router-link>
-								</div>
-								<div class="text-center text-lg-start mt-4 pt-2">
-									<button type="submit" class="site-btn">Login</button>
-								</div>
-							</form>
-							<div class="align-items-center justify-content-center w-100 mt-20" v-if="google_enable=='on'">
-								<p class="lead fw-normal text-center">Or sign in with</p>
-								<div class="d-flex align-items-center justify-content-center  mt-20">
-									<button type="button" class="btn mx-1">
-										<i class="bi bi-facebook"></i>
-									</button>
-									<GoogleLogin :callback="handleGoogleLogin" :buttonConfig="{type: 'standard', size: 'medium', text: 'signin_with'}" v-if="google_enable=='on'" ></GoogleLogin>
-								</div>
-							</div>
-							<p class="small text-center mt-20 mb-0">Don't have an account? <router-link :to="{ name: 'Register' }" class="link-info">Sign up now</router-link></p>
-							
-						</div>
-					</div>
-				</div>
-			</section>
-			<!-- Main Content Ends -->
-		</div>
-	</div>
-</template>
 <style>
-.login-box .site-btn{
-	width:100%;
+.login-box .site-btn {
+	width: 100%;
 }
+
 .login-box h1 {
 	font-size: 24px;
-	position:relative;
+	position: relative;
 	padding-bottom: 10px;
 	margin-bottom: 30px;
 }
+
 .login-box h1:after {
 	content: "";
 	position: absolute;

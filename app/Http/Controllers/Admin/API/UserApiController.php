@@ -15,8 +15,6 @@ class UserApiController extends Controller
 {
     public function create_user(Request $request)
     {
-      
-
         $user = new User();
         $user->first_name   =  $request->first_name;
         $user->last_name    =  $request->last_name;
@@ -221,6 +219,9 @@ class UserApiController extends Controller
             $userinfo->user_key     = 'profile_picture';
             $userinfo->user_value   = $request->profile_picture;
             $userinfo->save();            
+
+            //Send Welcome Email to User with generated $password
+            
             $token=JWTAuth::fromUser($user);
             return $this->createNewToken($token, $user);
         }  
