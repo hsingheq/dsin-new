@@ -6,7 +6,7 @@ You are receiving this email because we received a password reset request for yo
 <?php
     $url = config('app.url');
 ?>
-@component('mail::button', ['url' => $url.'/password/reset/'.$token])
+@component('mail::button', ['url' => $url.'/password/reset/'.$token.'/'.$email])
 Reset Password
 @endcomponent
 

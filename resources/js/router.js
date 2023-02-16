@@ -247,7 +247,7 @@ const routes = [
         },
     },
     {
-        path: "/password/reset/:token",
+        path: "/password/reset/:token/:email",
         name: "ResetPassword",
         component: () => import("./pages/frontend/reset-password-form.vue"),
         meta: {

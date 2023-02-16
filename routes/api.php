@@ -124,4 +124,4 @@ Route::controller(BlogApiController::class)->group(function(){
     //Route::post('reset-password','update')->middleware('guest')->name('password.reset');
 //});
 Route::post('forgot-password', 'App\Http\Controllers\PasswordResetRequestController@sendEmail');
-Route::post('reset-password', 'ChangePasswordController@passwordResetProcess');
+Route::post('reset-password', 'App\Http\Controllers\ChangePasswordController@passwordResetProcess');
