@@ -15,12 +15,12 @@ class BlogApiController extends Controller
         return response()->json(['response'=> $blog]); 
     }
 
-    public function  post_list(){
+    public function blogs(Request $request){
        
         $blog = Blog::where([
             ['status','published'],
             ['visibility', 'public']
-    ])->orderBy("created_at","asc")->get();
+    ])->latest()->paginate(2);
         return response()->json(['response'=> $blog]); 
     }
 }

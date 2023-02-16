@@ -179,33 +179,26 @@ const routes = [
         component: () => import("./pages/frontend/cms/about.vue"),
     },
 
-     {
-        //contact section 
-         name: 'Contact',
-         path: '/contact',
-         component:() => import("./pages/frontend/cms/contact.vue"),
-        
-     },
+    {
+        //contact section
+        name: "Contact",
+        path: "/contact",
+        component: () => import("./pages/frontend/cms/contact.vue"),
+    },
 
+    {
+        //disclaimer section
+        name: "Disclaimer",
+        path: "/disclaimer",
+        component: () => import("./pages/frontend/cms/disclaimer.vue"),
+    },
 
-     
-     {
-        //disclaimer section 
-         name: 'Disclaimer',
-         path: '/disclaimer',
-         component:() => import("./pages/frontend/cms/disclaimer.vue"),
-          
-     },
-
-
-      
-     {
-        //disclaimer section 
-         name: 'PrivacyPolicy',
-         path: '/privacy-policy',
-         component:() => import("./pages/frontend/cms/privacy-policy.vue"),
-         
-     },
+    {
+        //disclaimer section
+        name: "PrivacyPolicy",
+        path: "/privacy-policy",
+        component: () => import("./pages/frontend/cms/privacy-policy.vue"),
+    },
 
     {
         //tmc section
@@ -243,6 +236,22 @@ const routes = [
             import("./pages/frontend/dealer/dealer-registration.vue"),
         meta: {
             requiredAuth: true,
+        },
+    },
+    {
+        path: "/forgot-password",
+        name: "ForgotPassword",
+        component: () => import("./pages/frontend/forgot-password-form.vue"),
+        meta: {
+            requiredAuth: false,
+        },
+    },
+    {
+        path: "/password/reset/:token",
+        name: "ResetPassword",
+        component: () => import("./pages/frontend/reset-password-form.vue"),
+        meta: {
+            requiredAuth: false,
         },
     },
     {

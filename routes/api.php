@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\API\ProductApiController;
 use App\Http\Controllers\Admin\API\UserApiController;
 use App\Http\Controllers\Admin\API\BlogApiController;
 use App\Http\Controllers\Admin\API\DealerRegistrationApiController;
+use App\Http\Controllers\Admin\API\PasswordResetApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -118,5 +119,14 @@ Route::controller(ProductApiController::class)->group(function(){
 
 Route::controller(BlogApiController::class)->group(function(){
     Route::post('get_post','get_post');
-    Route::get('post_list','post_list');
+    Route::get('blogs','blogs');
 });
+
+//Route::post('password/reset', [PasswordResetApiController::class, 'resetPasswordSendLink']);
+
+//Route::controller(PasswordResetApiController::class)->group(function(){
+  //  Route::post('password/reset-request','resetPasswordSendLink')->middleware('guest');
+    //Route::post('reset-password','update')->middleware('guest')->name('password.reset');
+//});
+Route::post('forgot-password', 'App\Http\Controllers\PasswordResetRequestController@sendEmail');
+Route::post('reset-password', 'ChangePasswordController@passwordResetProcess');

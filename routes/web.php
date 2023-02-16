@@ -340,6 +340,7 @@ Route::controller(App\Http\Controllers\Admin\CmsController::class)
     });
 
 });
+//Route::post('password/reset','resetPassword')->middleware('guest')->name('password.reset');
 //Route::get('');
 //Route::get('/dashboard/',[DashboardController::class,'index'])->middleware('isLoggedIn');
 //Route::get('/dashboard/{any}',[DashboardController::class,'index'])->where('any','.*')->middleware('isLoggedIn');

@@ -295,6 +295,9 @@ class UserApiController extends Controller
                 // dd($user);
                 
                 return response()->json(['success'=>true, 'msg'=>'Mail send Successfully']);
+            $userinfo->save();            
+
+            //Send Welcome Email to User with generated $password
             
             $token=JWTAuth::fromUser($user);
             return $this->createNewToken($token, $user);
