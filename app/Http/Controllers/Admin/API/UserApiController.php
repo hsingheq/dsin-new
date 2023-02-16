@@ -11,12 +11,17 @@ use JWTAuth;
 use App\Models\UserInfo;
 use Hash;
 use DB;
+use Mail;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\URL;
+use Carbon\Carbon;
+
 class UserApiController extends Controller
 {
     public function create_user(Request $request)
     {
       
-
+        // dd("hello");
         $user = new User();
         $user->first_name   =  $request->first_name;
         $user->last_name    =  $request->last_name;
@@ -33,6 +38,42 @@ class UserApiController extends Controller
         } else {
             $user->email        =  $request->email;
              $user->save();
+
+            //Verifiy Email
+
+            $user_data = User::where(['email' => $user->email])->get();
+            if(count($user_data) > 0){
+
+                $random = Str::random(40);
+                $domain = URL::to ('/');
+                $url = $domain.'/verify/'.$random;
+
+                // dd($url);
+
+                $data['url'] = $url;
+                $data['email'] =  $user->email;
+                $data['title'] = "Email Verification";
+                $data['body'] = "Please click here Below your Mail.";
+
+                Mail::send('/Email/verifyMail',['data'=>$data], function($message) use ($data){
+                    $message->to($data['email'])->subject($data['title']);
+                });
+
+                // dd($mail);
+
+                $user = User::find($user_data[0]['id']);
+                $user->remember_token = $random;
+                $user->save();
+
+                // dd($user);
+                
+                return response()->json(['success'=>true, 'msg'=>'Mail send Successfully']);
+
+
+            }else{
+                return response()->json(['success'=>false, 'msg'=>'User is not Found']);
+            }
+
 
         //  SAVING EXTRA INFO 
             $user_id = $user->id;
@@ -193,6 +234,7 @@ class UserApiController extends Controller
     }
 
     public function google_auth_login(Request $request){
+        
         $response =   $request->all();    
         $user = User::where('email', '=', $request->email)->first();
         if($user){
@@ -220,9 +262,44 @@ class UserApiController extends Controller
             $userinfo->user_id      = $user->id;
             $userinfo->user_key     = 'profile_picture';
             $userinfo->user_value   = $request->profile_picture;
-            $userinfo->save();            
+            $userinfo->save(); 
+            
+            //Send Password On His Mail
+
+            //Verifiy Email
+
+            $user_data = User::where(['email' => $user->email])->get();
+            if(count($user_data) > 0){
+
+                // $random = Str::random(40);
+                // $domain = URL::to ('/');
+                // $url = $domain.'/verify/'.$random;
+
+                // dd($url);
+
+                $data['password'] = $password;
+                $data['email'] =  $user->email;
+                $data['title'] = "Your DSIN Password";
+                $data['body'] = "Your DSIN Password";
+
+                Mail::send('/Email/WelcomeEmailWithPassword',['data'=>$data], function($message) use ($data){
+                    $message->to($data['email'])->subject($data['title']);
+                });
+
+                // dd($mail);
+
+                // $user = User::find($user_data[0]['id']);
+                // $user->remember_token = $random;
+                // $user->save();
+
+                // dd($user);
+                
+                return response()->json(['success'=>true, 'msg'=>'Mail send Successfully']);
+            
             $token=JWTAuth::fromUser($user);
             return $this->createNewToken($token, $user);
+            }
+
         }  
     }
 

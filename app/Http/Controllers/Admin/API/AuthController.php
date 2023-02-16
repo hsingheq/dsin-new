@@ -6,13 +6,18 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\UserVerify;
 //use Validator;
 use Hash;
+use Mail;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\URL;
+use Carbon\Carbon;
 
 class AuthController extends Controller
 {
     public function __construct() {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register' ,'verficationMail']]);
     }
 
     /**
@@ -101,6 +106,7 @@ class AuthController extends Controller
     */    
 
     public function register(Request $request){
+        
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|between:2,100',
             'email' => 'required|string|email|max:100|unique:users',
@@ -117,11 +123,16 @@ class AuthController extends Controller
                     $validator->validated(),
                     ['password' => bcrypt($request->password)]
                 ));
+        
+
+                
 
         if (! $token = JWTAuth::attempt($request->only('email','password'))) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
-        return $this->createNewToken($token);  
+        return $this->createNewToken($token); 
+        
+         
     }
 
     protected function createNewToken($token){
@@ -140,5 +151,68 @@ class AuthController extends Controller
 
     public function refresh() {
         return $this->createNewToken(auth()->refresh());
+    }
+
+
+    public function verifyAccount($email)
+    {
+
+
+        if(auth()->user()){
+            $user = User::where('email',$email)->get();
+          
+
+            if(count($user) > 0){
+
+                $random = Str::random(40);
+                $domain = URL::to ('/');
+                $url = $domain.'/verify/'.$random;
+
+                // dd($url);
+
+                $data['url'] = $url;
+                $data['email'] = $email;
+                $data['title'] = "Email Verification";
+                $data['body'] = "Please click here Below your Mail.";
+
+                Mail::send('verifyMail',['data'=>$data], function($message) use ($data){
+                    $message->to($data['email'])->subject($data['title']);
+                });
+
+                // dd($mail);
+
+                $user = User::find($user[0]['id']);
+                $user->remember_token = $random;
+                $user->save();
+
+                // dd($user);
+                
+                return response()->json(['success'=>true, 'msg'=>'Mail send Successfully']);
+
+
+            }else{
+                return response()->json(['success'=>false, 'msg'=>'User is not Found']);
+            }
+            
+        }else{
+            return response()->json(['success'=>false, 'msg'=>'User is not Authenticated']);
+        }
+  
+     
+    }
+
+    public function verficationMail($token){
+       $data = User::where(['remember_token' => $token])->get();
+        if(count($data) > 0){
+             $datetime = Carbon::now()->format('Y-m-d H:i:s');
+            $user = User::find($data[0]['id']);
+            $user->remember_token = '';
+            $user->is_verified = 1 ;
+            $user->is_email_verified = $datetime;
+            $user->save();
+             return view('EmailVerified'); 
+        }else{
+            return view('404');
+        }
     }
 }

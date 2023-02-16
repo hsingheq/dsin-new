@@ -25,6 +25,7 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 // use App\Http\livewire\Registeration;
 //use App\Http\livewire\Admin\Users\Users;
 //use App\Http\livewire\Admin\Users\AddUser;
+use App\Http\Controller\API\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,7 +41,7 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 /* Route::get('/', function () {
     return view('welcome');
 }); */
-
+Route::get('/verify-mail/{token}',[AuthController::class,'verificationMail']);
 
 //Route::get('/', [AdminController::class, 'login']);
 Route::get('/admin/login', [AdminController::class, 'login'])->middleware('alreadyLoggedIn');
@@ -51,6 +52,9 @@ Route::get('logout', [DashboardController::class, 'logout']);
 Route::post('/admin/loginuser', [AdminController::class, 'loginuser'])->middleware('alreadyLoggedIn');
 Route::post('/admin-register', [AdminController::class, 'admin_register']);
 Route::get('/admin', [DashboardController::class, 'index'])->middleware('isLoggedIn');
+
+
+
 
 
 //MIDDLEWARE FOR CHECKING LOGGEDIN OR NOT

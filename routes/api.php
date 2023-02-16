@@ -82,6 +82,9 @@ Route::controller(UserApiController::class)->group(function(){
 Route::controller(AuthController::class)->group(function () {
    Route::post('register','register');
    Route::post('login','login');
+      /* Verify Email Added Routes */
+      Route::get('/verify/{email}','verifyAccount'); 
+      Route::get('/verifyMail/{token}','verficationMail');
 });
 
 Route::group(['middleware'=>'jwt.verify'],function(){
@@ -91,6 +94,8 @@ Route::group(['middleware'=>'jwt.verify'],function(){
     
    // Route::resource('d','dController');
 });
+
+
 
 
 Route::controller(CategoryApiController::class)->group(function(){
