@@ -14,12 +14,12 @@ export default {
 	},
 	data() {
 		const form = {
-			first_name: 'Ajay',
-			last_name: 'Singh',
-			email: 'aa@aa.com',
-			mobile: '123',
-			password: '123456',
-			password_confirmation: '123456',
+			first_name: '',
+			last_name: '',
+			email: '',
+			mobile: '',
+			password: '',
+			password_confirmation: '',
 		}
 		const schema = Yup.object().shape({
 			first_name: Yup.string().required('First name is required.').max(10, 'First name should not be more than 10 characters.'),
@@ -27,8 +27,8 @@ export default {
 			email: Yup.string().email("Invalid email.").required('Email is required.'),
 			password: Yup.string().required('Password is required.').min(6, "Password must be at least 6 characters."),
 			password_confirmation: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match'),
-			mobile: Yup.string().required('Mobile is required.').matches(/^[0-9]+$/, "Must be only digits"),
-			//mobile: Yup.string().required('Mobile is required.').matches(/^[0-9]+$/, "Must be only digits").min(10, 'Mobile number must be at least 10 digits.').max(11, 'Mobile number must be max 11 digits.'),
+			//mobile: Yup.string().required('Mobile is required.').matches(/^[0-9]+$/, "Must be only digits"),
+			mobile: Yup.string().required('Mobile is required.').matches(/^[0-9]+$/, "Must be only digits").min(10, 'Mobile number must be at least 10 digits.').max(11, 'Mobile number must be max 11 digits.'),
 		});
 		return {
 			form,
@@ -47,7 +47,12 @@ export default {
 		});
 	},
 	methods: {
-		async registerHandle() {
+		changeEmail() {
+			this.serrors = {}
+		},
+		async registerHandle(values, actions) {
+			this.success = "";
+			this.serrors = {}
 			try {
 				await axios.post('/api/create_user', {
 					first_name: this.form.first_name,
@@ -59,9 +64,11 @@ export default {
 				}).then(response => {
 					this.success = response.data.success
 					this.serrors = {}
+					actions.resetForm()
 					//this.error = response.data.data;
 				})
 			} catch (res) {
+				this.success = "";
 				this.has_error = true
 				this.serrors = res.response.data.errors || {}
 				/*if (dataerror.response) {
@@ -113,7 +120,7 @@ export default {
 							</div>
 						</div>
 						<div class="alert alert-danger" v-if="has_error && !success">
-							<p>Please check error!</p>
+							Please check error!
 							<!--<span v-for="(serror, index) in serrors">
 								{{ serror }}
 							</span>-->
@@ -151,7 +158,7 @@ export default {
 									<Field type="email" v-model="form.email" id="email" name="email"
 										class="form-control" placeholder="Enter your email"
 										:class="{ 'is-invalid': errors.email }" :validateOnChange="false"
-										:validateOnInput="true" />
+										:validateOnInput="true" @input="changeEmail" />
 									<div class="invalid-feedback" v-if="errors">{{ errors.email }}</div>
 									<div class="help-block" v-if="!errors.email && has_error && serrors.email">
 										<span v-for="(serror, index) in serrors.email">
