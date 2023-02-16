@@ -18,10 +18,54 @@ use Carbon\Carbon;
 
 class UserApiController extends Controller
 {
-    public function create_user(Request $request)
+    public function create_user (Request $request) {
+        $validator = Validator::make($request->all(), [
+            'first_name' => 'required|string|between:1,100',
+            'email' => 'required|string|email|max:100|unique:users',
+            'password' => 'required|min:6|confirmed',
+        ]);
+        if($validator->fails()){
+            return response()->json([
+                'status' => 'error',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+        $user = new User();
+        $user->first_name   =  $request->first_name;
+        $user->last_name    =  $request->last_name;
+        $user->email        =  $request->email; 
+        $user->roles        =  json_encode(array('Customer' => 'Customer'));
+        $user->status       =  'Inactive';
+        $user->password     =  bcrypt($request->password);
+        $random = Str::random(60);
+        $user->remember_token = $random;
+
+        $user->save();
+        $user_id = $user->id;
+        $userinfo = new UserInfo();
+        $userinfo->user_id = $user_id;
+        $userinfo->user_key = 'mobile_number';
+        $userinfo->user_value = $request->mobile;
+        $userinfo->save();
+        
+        $domain = URL::to ('/');
+        $url = $domain.'/verify/'.$random;
+        $data['url'] = $url;
+        $data['email'] =  $user->email;
+        $data['title'] = "Email Verification";
+        $data['body'] = "Please click here Below your Mail.";
+
+        Mail::send('/Email/verifyMail',['data'=>$data], function($message) use ($data){
+            $message->to($data['email'])->subject($data['title']);
+        });
+
+        return response()->json([
+            'status' => 'success',
+            'success' => 'Your Account has been created successfully, and email has been sent to your email address containing an activation link. Please click on the link to activate your account.'
+        ], 200);
+    }
+    /*public function create_user(Request $request)
     {
-      
-        // dd("hello");
         $user = new User();
         $user->first_name   =  $request->first_name;
         $user->last_name    =  $request->last_name;
@@ -36,8 +80,8 @@ class UserApiController extends Controller
                 'message' => "Email already exist!"
             ];
         } else {
-            $user->email        =  $request->email;
-             $user->save();
+            $user->email = $request->email;
+            $user->save();
 
             //Verifiy Email
 
@@ -90,12 +134,9 @@ class UserApiController extends Controller
             ];
         }
 
-
-
-
         return response()->json($response);
     }
-
+    */
     public function arjun(){
        $vals =  DB::table('shopping_carts')
        ->join('users',function ($join){
@@ -254,7 +295,6 @@ class UserApiController extends Controller
             $user->status       =  'Active';
             $password           = str_shuffle('abcde56789_+$@$%0pqxyz');
             $user->password  = bcrypt($password);
-            //mailing welcome the password
             //$password           
             $user->save();
              //info data
@@ -262,47 +302,20 @@ class UserApiController extends Controller
             $userinfo->user_id      = $user->id;
             $userinfo->user_key     = 'profile_picture';
             $userinfo->user_value   = $request->profile_picture;
-            $userinfo->save(); 
-            
-            //Send Password On His Mail
-
-            //Verifiy Email
-
-            $user_data = User::where(['email' => $user->email])->get();
-            if(count($user_data) > 0){
-
-                // $random = Str::random(40);
-                // $domain = URL::to ('/');
-                // $url = $domain.'/verify/'.$random;
-
-                // dd($url);
-
-                $data['password'] = $password;
-                $data['email'] =  $user->email;
-                $data['title'] = "Your DSIN Password";
-                $data['body'] = "Your DSIN Password";
-
-                Mail::send('/Email/WelcomeEmailWithPassword',['data'=>$data], function($message) use ($data){
-                    $message->to($data['email'])->subject($data['title']);
-                });
-
-                // dd($mail);
-
-                // $user = User::find($user_data[0]['id']);
-                // $user->remember_token = $random;
-                // $user->save();
-
-                // dd($user);
-                
-                return response()->json(['success'=>true, 'msg'=>'Mail send Successfully']);
             $userinfo->save();            
-
+            
             //Send Welcome Email to User with generated $password
+            $data['password'] = $password;
+            $data['email'] =  $user->email;
+            $data['title'] = "Welcome to DSIN";
+            $data['body'] = "Your DSIN Password";
+
+            Mail::send('/Email/WelcomeEmailWithPassword',['data'=>$data], function($message) use ($data){
+                $message->to($data['email'])->subject($data['title']);
+            });
             
             $token=JWTAuth::fromUser($user);
             return $this->createNewToken($token, $user);
-            }
-
         }  
     }
 

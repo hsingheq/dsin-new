@@ -85,7 +85,7 @@ Route::controller(AuthController::class)->group(function () {
    Route::post('login','login');
       /* Verify Email Added Routes */
       Route::get('/verify/{email}','verifyAccount'); 
-      Route::get('/verifyMail/{token}','verficationMail');
+      Route::post('/verifyMail','verficationMail');
 });
 
 Route::group(['middleware'=>'jwt.verify'],function(){
@@ -129,4 +129,4 @@ Route::controller(BlogApiController::class)->group(function(){
     //Route::post('reset-password','update')->middleware('guest')->name('password.reset');
 //});
 Route::post('forgot-password', 'App\Http\Controllers\PasswordResetRequestController@sendEmail');
-Route::post('reset-password', 'ChangePasswordController@passwordResetProcess');
+Route::post('reset-password', 'App\Http\Controllers\ChangePasswordController@passwordResetProcess');
