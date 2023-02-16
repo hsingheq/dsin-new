@@ -201,18 +201,19 @@ class AuthController extends Controller
      
     }
 
-    public function verficationMail($token){
-       $data = User::where(['remember_token' => $token])->get();
-        if(count($data) > 0){
-             $datetime = Carbon::now()->format('Y-m-d H:i:s');
-            $user = User::find($data[0]['id']);
+    public function verficationMail(Request $request){
+        $token = $request->token;
+        $user = User::where(['remember_token' => $token])->first();
+        if($user){
+            $datetime = Carbon::now()->format('Y-m-d H:i:s');
             $user->remember_token = '';
-            $user->is_verified = 1 ;
+            $user->is_verified = 1;
+            $user->status  = 'Active';
             $user->is_email_verified = $datetime;
             $user->save();
-             return view('EmailVerified'); 
+            return response()->json(['message'=>'Email is verified. Now you can login to website.'], 200);
         }else{
-            return view('404');
+            return response()->json(['message'=>'Invalid token.'], 300);
         }
     }
 }

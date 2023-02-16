@@ -8,23 +8,18 @@ export default {
             error: "",
         }
     },
-    created() {
+    async created() {
         try {
             this.error = "Please wait..";
-            axios.post('/api/verify', {
+            await axios.post('/api/verifyMail', {
                 token: this.$route.params.token,
             }).then(response => {
-                console.log(response);
-                this.success = response.data.data;
-
+                this.error = "";
+                this.success = response.data.message;
             })
         } catch (dataerror) {
-            console.log(dataerror);
-            if (dataerror.response) {
-                this.error = dataerror.response.data.message
-            }
-        } finally {
-            //this.isLoading = false
+            this.success = "";
+            this.error = dataerror.response.data.message;
         }
     }
 }
@@ -76,8 +71,6 @@ export default {
                 <div class="container-fluid h-custom">
                     <div class="row d-flex justify-content-center align-items-center">
                         <div class="col-md-8 col-lg-6 col-xl-4 login-box">
-                            <h1>Email Verification</h1>
-
                             <span class="alert-danger" v-if="error">
                                 <div class="alert alert-danger" role="alert">
                                     {{ error }}

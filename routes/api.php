@@ -85,7 +85,7 @@ Route::controller(AuthController::class)->group(function () {
    Route::post('login','login');
       /* Verify Email Added Routes */
       Route::get('/verify/{email}','verifyAccount'); 
-      Route::get('/verifyMail/{token}','verficationMail');
+      Route::post('/verifyMail','verficationMail');
 });
 
 Route::group(['middleware'=>'jwt.verify'],function(){

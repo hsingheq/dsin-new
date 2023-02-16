@@ -295,7 +295,6 @@ class UserApiController extends Controller
             $user->status       =  'Active';
             $password           = str_shuffle('abcde56789_+$@$%0pqxyz');
             $user->password  = bcrypt($password);
-            //mailing welcome the password
             //$password           
             $user->save();
              //info data
@@ -303,47 +302,20 @@ class UserApiController extends Controller
             $userinfo->user_id      = $user->id;
             $userinfo->user_key     = 'profile_picture';
             $userinfo->user_value   = $request->profile_picture;
-            $userinfo->save(); 
-            
-            //Send Password On His Mail
-
-            //Verifiy Email
-
-            $user_data = User::where(['email' => $user->email])->get();
-            if(count($user_data) > 0){
-
-                // $random = Str::random(40);
-                // $domain = URL::to ('/');
-                // $url = $domain.'/verify/'.$random;
-
-                // dd($url);
-
-                $data['password'] = $password;
-                $data['email'] =  $user->email;
-                $data['title'] = "Your DSIN Password";
-                $data['body'] = "Your DSIN Password";
-
-                Mail::send('/Email/WelcomeEmailWithPassword',['data'=>$data], function($message) use ($data){
-                    $message->to($data['email'])->subject($data['title']);
-                });
-
-                // dd($mail);
-
-                // $user = User::find($user_data[0]['id']);
-                // $user->remember_token = $random;
-                // $user->save();
-
-                // dd($user);
-                
-                return response()->json(['success'=>true, 'msg'=>'Mail send Successfully']);
             $userinfo->save();            
-
+            
             //Send Welcome Email to User with generated $password
+            $data['password'] = $password;
+            $data['email'] =  $user->email;
+            $data['title'] = "Welcome to DSIN";
+            $data['body'] = "Your DSIN Password";
+
+            Mail::send('/Email/WelcomeEmailWithPassword',['data'=>$data], function($message) use ($data){
+                $message->to($data['email'])->subject($data['title']);
+            });
             
             $token=JWTAuth::fromUser($user);
             return $this->createNewToken($token, $user);
-            }
-
         }  
     }
 
