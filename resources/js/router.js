@@ -255,6 +255,14 @@ const routes = [
         },
     },
     {
+        path: "/verify/:token",
+        name: "ResetPassword",
+        component: () => import("./pages/frontend/email-verify.vue"),
+        meta: {
+            requiredAuth: false,
+        },
+    },
+    {
         path: "/:pathMatch(.*)*",
         name: "PageNotFound",
         component: () => import("./pages/frontend/404.vue"),
