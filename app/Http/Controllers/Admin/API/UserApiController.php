@@ -34,7 +34,7 @@ class UserApiController extends Controller
         $user->first_name   =  $request->first_name;
         $user->last_name    =  $request->last_name;
         $user->email        =  $request->email; 
-        $user->roles        =  json_encode(array('Customer' => 'Customer'));
+        $user->roles        =  json_encode(array('Customer'));
         $user->status       =  'Inactive';
         $user->password     =  bcrypt($request->password);
         $random = Str::random(60);
