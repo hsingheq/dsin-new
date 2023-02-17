@@ -746,10 +746,10 @@
                                             <a href="/admin/addAdmin" class="nav-link">Add Dealer</a>
                                         </li> --}}
                                         <li class="nav-item">
-                                            <a href="/admin/addAdmin" class="nav-link">Pending Requests</a>
+                                            <a href="{{route('admin.dealers.pending')}}" class="nav-link">Pending Requests</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="/admin/addAdmin" class="nav-link">Rejected Dealers</a>
+                                            <a href="{{route('admin.dealers.rejected')}}" class="nav-link">Rejected Dealers</a>
                                         </li>
                                     </ul>
                                 </div>

@@ -115,6 +115,10 @@ Route::get('/admin/dealer/delete-user/{id}', [DealerController::class, 'delete_u
 Route::get('/admin/dealer/delete-bulk-user/{ids}', [DealerController::class, 'delete_multiple_user']);
 Route::get('/admin/dealer/edit-user/{id}', [DealerController::class, 'edit_user']);
 Route::post('/admin/dealer/update-user/', [DealerController::class, 'update_user']);
+Route::get('/admin/dealer/pending/', [DealerController::class, 'pending_dealers_list'])->name('admin.dealers.pending');
+Route::get('/admin/dealer/rejected/', [DealerController::class, 'rejected_dealers_list'])->name('admin.dealers.rejected');
+Route::get('/admin/dealer/approve-dealer/{id}', [DealerController::class, 'approve_dealer']);
+Route::post('/admin/dealer/reject-dealer/', [DealerController::class, 'reject_dealer'])->name('admin.dealer.reject');
 
 
 // attribute 

@@ -4018,12 +4018,7 @@ input[type="number"] {
     background-color: transparent;
     border: 0;
 }
-.dropdown-item.active,
-.dropdown-item:hover,
-.dropdown-item:active {
-    color: #fff !important;
-    background-color: var(--primary);
-}
+
 /*card elements*/
 .card {
     -webkit-box-shadow: 0 0 13px 0 rgba(82, 63, 105, 0.05);

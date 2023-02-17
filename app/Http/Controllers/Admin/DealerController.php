@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use DB;
 use Hash;
 use App\Models\User;
+use App\Models\DealerProfiles;
+use App\Mail\EmailDealerApprovalMailable;
 
 class DealerController extends Controller
 {
@@ -163,5 +166,64 @@ class DealerController extends Controller
         $result = $user->save();
         flash("Password has updated successfully!")->success();
         return back();
+    }
+
+    public function pending_dealers_list() {
+        $data['dealers'] = DealerProfiles::join('users', 'users.id', '=', 'dealer_profiles.user_id')->where('dealer_profiles.status','=', 'submitted')->get(['dealer_profiles.*', 'users.email']);
+        return view('admin.dealers.pending-dealers', $data);
+    }
+
+    public function rejected_dealers_list() {
+        $data['dealers'] = DealerProfiles::join('users', 'users.id', '=', 'dealer_profiles.user_id')->where('dealer_profiles.status','=', 'rejected')->get(['dealer_profiles.*', 'users.email']);
+        return view('admin.dealers.rejected-dealers', $data);
+
+    }
+    public function approve_dealer (Request $request) {
+        $id = $request->id;
+        $dealer = DealerProfiles::join('users', 'users.id', '=', 'dealer_profiles.user_id')->where('dealer_profiles.user_id','=', $id)->get(['dealer_profiles.*', 'users.email'])->first();
+        if($dealer) {
+            $email = $dealer->email;
+            $dealer->status = "approved";
+            $dealer_user = User::find($dealer->user_id);
+            $roles = json_decode($dealer_user->roles);
+            $roles[]="Dealer";
+            $dealer_user->roles = json_encode(array_unique($roles));
+            $dealer_user->save();
+            $dealer->save();
+            $emailData = array(
+                'id' => $id,
+                'message'=> 'Your profile is approved and ready to use.'
+            );
+            $subject = "Dealer profile approved!";
+            Mail::to($email)->send(new EmailDealerApprovalMailable($subject, $emailData));
+            flash("Dealer is approved successfully!")->success();
+            return redirect(route('admin.dealer'));   
+        } else {
+            flash("Invalid Dealer")->error();
+            return redirect(route('admin.dealers.pending'));
+        }
+    }
+
+    public function reject_dealer(Request $request) {
+        $id = $request->id;
+        $notes = $request->notes;
+        $dealer = DealerProfiles::join('users', 'users.id', '=', 'dealer_profiles.user_id')->where('dealer_profiles.user_id','=', $id)->get(['dealer_profiles.*', 'users.email'])->first();
+        $email = $dealer->email;
+        $dealer->status = "rejected";
+        $dealer->comment = $notes;
+        $dealer_user = User::find($dealer->user_id);
+        $roles = json_decode($dealer_user->roles);
+        unset($roles['Dealer']);
+        $dealer_user->roles = json_encode(array_unique($roles));
+        $dealer_user->save();
+        $dealer->save();
+        $subject = "Dealer profile rejected!";
+        $emailData = array(
+            'id' => $id,
+            'message'=> 'Your profile is rejected.'
+        );
+        flash("Dealer is rejected!")->success();
+        Mail::to($email)->send(new EmailDealerApprovalMailable($subject, $emailData));
+        return redirect(route('admin.dealers.pending'));
     }
 }
