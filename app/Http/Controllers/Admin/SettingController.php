@@ -121,7 +121,7 @@ class SettingController extends MY_Controller
 
     public function system_email_update(Request $request)
     {
-        print_r($request->all());
+        //print_r($request->all());
         $id = $request->id;
         $social = Settings::find($id);
         $social->email_host            = $request->email_host;

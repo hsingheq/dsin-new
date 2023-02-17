@@ -413,7 +413,7 @@
 													<div class="features-thum">
 														<div class="features-product-image w-img">
 															<a href="">
-																<img src="assets/images/products/product-1.jpg" alt="product">
+																<img src="@/asset/images/products/product-1.jpg" alt="product">
 															</a>
 														</div>
 														<div class="product-offer">
@@ -493,7 +493,7 @@
 													<div class="features-thum">
 														<div class="features-product-image w-img">
 															<a href="">
-																<img src="assets/images/products/product-1.jpg" alt="product">
+																<img src="@/asset/images/products/product-1.jpg" alt="product">
 															</a>
 														</div>
 														<div class="product-offer">
@@ -573,7 +573,7 @@
 													<div class="features-thum">
 														<div class="features-product-image w-img">
 															<a href="">
-																<img src="assets/images/products/product-1.jpg" alt="product">
+																<img src="@/asset/images/products/product-1.jpg" alt="product">
 															</a>
 														</div>
 														<div class="product-offer">
@@ -653,7 +653,7 @@
 													<div class="features-thum">
 														<div class="features-product-image w-img">
 															<a href="">
-																<img src="assets/images/products/product-1.jpg" alt="product">
+																<img src="@/asset/images/products/product-1.jpg" alt="product">
 															</a>
 														</div>
 														<div class="product-offer">
@@ -733,7 +733,7 @@
 													<div class="features-thum">
 														<div class="features-product-image w-img">
 															<a href="">
-																<img src="assets/images/products/product-1.jpg" alt="product">
+																<img src="@/asset/images/products/product-1.jpg" alt="product">
 															</a>
 														</div>
 														<div class="product-offer">
@@ -813,7 +813,7 @@
 													<div class="features-thum">
 														<div class="features-product-image w-img">
 															<a href="">
-																<img src="assets/images/products/product-1.jpg" alt="product">
+																<img src="@/asset/images/products/product-1.jpg" alt="product">
 															</a>
 														</div>
 														<div class="product-offer">
