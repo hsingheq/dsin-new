@@ -1,6 +1,6 @@
 <template>
 	<div>
-		
+
 		<div class="wrapper">
 			<!-- Main Content Starts -->
 			<!-- Slider Starts -->
@@ -68,7 +68,7 @@
 						<div class="col-lg-9 order-md-2">
 							<!-- Section Top Categories Starts -->
 							<section>
-								
+
 								<div class="row">
 									<div class="col-lg-12">
 										<div class="section-heading d-flex justify-content-between">
@@ -90,26 +90,33 @@
 										<div class="swiper-container categories-slider-active">
 											<div class="swiper-wrapper">
 												<!-- Category Item starts -->
-												<div v-for="item in top_categories" :key="item.id" class="categories-item swiper-slide p-relative w-img mb-30">
+												<div v-for="item in top_categories" :key="item.id"
+													class="categories-item swiper-slide p-relative w-img mb-30">
 													<div class="categories-img">
-														<router-link :to="{name:'ProductCategory', params: {slug: item.slug}}">
-															<img v-if="item.file_name" :src="item.file_name" :alt="item.file_original_name" />
-															<img v-else src="@/asset/images/default.png" alt="default" />
+														<router-link
+															:to="{ name: 'ProductCategory', params: { slug: item.slug } }">
+															<img v-if="item.file_name" :src="item.file_name"
+																:alt="item.file_original_name" />
+															<img v-else src="@/asset/images/default.png"
+																alt="default" />
 														</router-link>
 													</div>
 													<div class="categories-content">
-														<h6><router-link :to="{name:'ProductCategory', params: {slug: item.slug}}">{{ item.category }}</router-link></h6>
+														<h6><router-link
+																:to="{ name: 'ProductCategory', params: { slug: item.slug } }">{{
+																	item.category
+																}}</router-link></h6>
 													</div>
 												</div>
 												<!-- Category Item ends -->
-												
+
 											</div>
 										</div>
 									</div>
 								</div>
 								<!-- Categories Slider Ends -->
 							</section>
-						
+
 							<!-- Section Top Categories Ends -->
 							<section class="topsell__area-2 pt-15">
 								<div class="row">
@@ -152,16 +159,20 @@
 
 
 															<!-- Product Item Starts -->
-															<div v-for="item in our_products" :key="item.id" class="product-article swiper-slide">
+															<div v-for="item in our_products" :key="item.id"
+																class="product-article swiper-slide">
 																<div class="product-cat"><a href="#!">Ink & Toner</a>
 																</div>
-																<div class="product-title"><a href="#!">{{item.product_title}}</a></div>
+																<div class="product-title"><a
+																		href="#!">{{ item.product_title }}</a></div>
 																<div class="product-image">
-										<router-link :to="{name:'Product',params:{slug:item.slug}}" class="image">
+																	<router-link
+																		:to="{ name: 'Product', params: { slug: item.slug } }"
+																		class="image">
 																		<img class="pic-1"
-																			:src="base_url+item.file_name">
+																			:src="base_url + item.file_name">
 																		<img class="pic-2"
-																		:src="base_url+item.file_name">
+																			:src="base_url + item.file_name">
 																	</router-link>
 																	<div class="quick-view-action">
 																		<a href="#" class="icon-box"
@@ -174,7 +185,9 @@
 																<div class="product-content">
 																	<div
 																		class="product-info d-flex justify-content-between align-items-center">
-																		<div class="price">{{ currency }} {{ item.unit_price }} <!-- <del>350</del> -->
+																		<div class="price">{{ currency }} {{
+																			item.unit_price
+																		}} <!-- <del>350</del> -->
 																		</div>
 																		<div class="rating">
 																			<span><i class="bi bi-star"></i></span>
@@ -188,7 +201,8 @@
 																</div>
 																<div
 																	class="product-add-cart d-flex justify-content-between align-items-center">
-																	<a href="#!" @click="addToCart(item.id)" class="cart-btn">Add to cart</a>
+																	<a href="#!" @click="addToCart(item.id)"
+																		class="cart-btn">Add to cart</a>
 																	<a href="#!" class="wishlist-rounded"><i
 																			class="bi bi-heart"></i></a>
 																</div>
@@ -196,8 +210,8 @@
 
 
 															<!-- Product Item Ends -->
-															
-															
+
+
 														</div>
 														<span class="swiper-notification" aria-live="assertive"
 															aria-atomic="true"></span>
@@ -224,13 +238,16 @@
 													<div class="product-slider-2 swiper-container">
 														<div class="swiper-wrapper" id="swiper-wrapper-on-sale-box">
 															<!-- Product Item Starts -->
-															<div v-for="item in our_products" :key="item.id" class="product-grid swiper-slide" >
-																<div class="product-image" >
-																	<router-link :to="{name:'Product',params:{slug:item.slug}}" class="image">
+															<div v-for="item in our_products" :key="item.id"
+																class="product-grid swiper-slide">
+																<div class="product-image">
+																	<router-link
+																		:to="{ name: 'Product', params: { slug: item.slug } }"
+																		class="image">
 																		<img class="pic-1"
-																			:src="base_url+item.file_name">
+																			:src="base_url + item.file_name">
 																		<img class="pic-2"
-																		:src="base_url+item.file_name">
+																			:src="base_url + item.file_name">
 																	</router-link>
 																	<ul class="product-links">
 																		<li>
@@ -259,7 +276,10 @@
 																		<a href="#">Ink & Toner</a>
 																	</span>
 																	<h3 class="title">
-																		<router-link :to="{name:'Product',params:{slug:item.slug}}">{{ item.product_title }}</router-link>
+																		<router-link
+																			:to="{ name: 'Product', params: { slug: item.slug } }">{{
+																				item.product_title
+																			}}</router-link>
 																	</h3>
 																	<div
 																		class="rating mb-5 mt-10 justify-content-between">
@@ -277,11 +297,13 @@
 																		</ul>
 																		<span><a href="">01 review</a></span>
 																	</div>
-																	<div class="price">{{ currency }} {{ item.unit_price }}</div>
+																	<div class="price">{{ currency }} {{
+																		item.unit_price
+																	}}</div>
 																</div>
 															</div>
 															<!-- Product Item ends -->
-															
+
 														</div>
 														<!-- If we need navigation buttons -->
 														<span class="swiper-notification" aria-live="assertive"
@@ -307,13 +329,16 @@
 													<div class="product-slider-2 swiper-container">
 														<div class="swiper-wrapper" id="swiper-wrapper-best-rated-box">
 															<!-- Product Item Starts -->
-															<div v-for="item in our_products" :key="item.id" class="product-grid swiper-slide">
+															<div v-for="item in our_products" :key="item.id"
+																class="product-grid swiper-slide">
 																<div class="product-image">
-																	<router-link :to="{name:'Product',params:{slug:item.slug}}" class="image">
+																	<router-link
+																		:to="{ name: 'Product', params: { slug: item.slug } }"
+																		class="image">
 																		<img class="pic-1"
-																		:src="base_url+item.file_name">
+																			:src="base_url + item.file_name">
 																		<img class="pic-2"
-																		:src="base_url+item.file_name">
+																			:src="base_url + item.file_name">
 																	</router-link>
 																	<ul class="product-links">
 																		<li>
@@ -340,7 +365,10 @@
 																		<a href="#">Ink & Toner</a>
 																	</span>
 																	<h3 class="title">
-																		<router-link :to="{name:'Product',params:{slug:item.slug}}">{{ item.product_title }}</router-link>
+																		<router-link
+																			:to="{ name: 'Product', params: { slug: item.slug } }">{{
+																				item.product_title
+																			}}</router-link>
 																	</h3>
 																	<div
 																		class="rating mb-5 mt-10 justify-content-between">
@@ -358,12 +386,14 @@
 																		</ul>
 																		<span><a href="">01 review</a></span>
 																	</div>
-																	<div class="price">{{ currency }} {{ item.unit_price }}</div>
+																	<div class="price">{{ currency }} {{
+																		item.unit_price
+																	}}</div>
 																</div>
 															</div>
 															<!-- Product Item ends -->
-															
-															
+
+
 														</div>
 														<span class="swiper-notification" aria-live="assertive"
 															aria-atomic="true"></span>
@@ -430,13 +460,16 @@
 														<div class="swiper-wrapper"
 															id="swiper-wrapper-all-prodcuts-box">
 															<!-- Product Item Starts -->
-															<div v-for="item in best_selling_products" :key="item.id"  class="product-grid swiper-slide">
+															<div v-for="item in best_selling_products" :key="item.id"
+																class="product-grid swiper-slide">
 																<div class="product-image">
-																	<router-link :to="{name:'Product',params:{slug:item.slug}}" class="image">
+																	<router-link
+																		:to="{ name: 'Product', params: { slug: item.slug } }"
+																		class="image">
 																		<img class="pic-1"
-																		:src="base_url+item.file_name">
+																			:src="base_url + item.file_name">
 																		<img class="pic-2"
-																		:src="base_url+item.file_name">
+																			:src="base_url + item.file_name">
 																	</router-link>
 																	<ul class="product-links">
 																		<li>
@@ -463,7 +496,10 @@
 																		<a href="#">Ink & Toner</a>
 																	</span>
 																	<h3 class="title">
-																		<router-link :to="{name:'Product',params:{slug:item.slug}}">{{ item.product_title }}</router-link>
+																		<router-link
+																			:to="{ name: 'Product', params: { slug: item.slug } }">{{
+																				item.product_title
+																			}}</router-link>
 																	</h3>
 																	<div
 																		class="rating mb-5 mt-10 justify-content-between">
@@ -481,12 +517,14 @@
 																		</ul>
 																		<span><a href="">01 review</a></span>
 																	</div>
-																	<div class="price">{{ currency }} {{ item.unit_price }} <del>{{ currency }} 50.00</del>
+																	<div class="price">{{ currency }} {{
+																		item.unit_price
+																	}} <del>{{ currency }} 50.00</del>
 																	</div>
 																</div>
 															</div>
 															<!-- Product Item ends -->
-															
+
 														</div>
 														<span class="swiper-notification" aria-live="assertive"
 															aria-atomic="true"></span>
@@ -513,13 +551,16 @@
 													<div class="product-slider-2 swiper-container">
 														<div class="swiper-wrapper" id="swiper-wrapper-on-sale-box">
 															<!-- Product Item Starts -->
-															<div  v-for="item in our_products" :key="item.id" class="product-grid swiper-slide">
+															<div v-for="item in our_products" :key="item.id"
+																class="product-grid swiper-slide">
 																<div class="product-image">
-																	<router-link :to="{name:'Product',params:{slug:item.slug}}" class="image">
+																	<router-link
+																		:to="{ name: 'Product', params: { slug: item.slug } }"
+																		class="image">
 																		<img class="pic-1"
-																		:src="base_url+item.file_name">
+																			:src="base_url + item.file_name">
 																		<img class="pic-2"
-																		:src="base_url+item.file_name">
+																			:src="base_url + item.file_name">
 																	</router-link>
 																	<ul class="product-links">
 																		<li>
@@ -546,7 +587,10 @@
 																		<a href="#">Ink & Toner</a>
 																	</span>
 																	<h3 class="title">
-																		<router-link :to="{name:'Product',params:{slug:item.slug}}">{{ item.product_title }}</router-link>
+																		<router-link
+																			:to="{ name: 'Product', params: { slug: item.slug } }">{{
+																				item.product_title
+																			}}</router-link>
 																	</h3>
 																	<div
 																		class="rating mb-5 mt-10 justify-content-between">
@@ -564,11 +608,13 @@
 																		</ul>
 																		<span><a href="">01 review</a></span>
 																	</div>
-																	<div class="price">{{ currency }} {{ item.unit_price }}</div>
+																	<div class="price">{{ currency }} {{
+																		item.unit_price
+																	}}</div>
 																</div>
 															</div>
 															<!-- Product Item ends -->
-															
+
 														</div>
 														<!-- If we need navigation buttons -->
 														<span class="swiper-notification" aria-live="assertive"
@@ -594,13 +640,16 @@
 													<div class="product-slider-2 swiper-container">
 														<div class="swiper-wrapper" id="swiper-wrapper-best-rated-box">
 															<!-- Product Item Starts -->
-															<div v-for="item in our_products" :key="item.id" class="product-grid swiper-slide">
+															<div v-for="item in our_products" :key="item.id"
+																class="product-grid swiper-slide">
 																<div class="product-image">
-														<router-link :to="{name:'Product',params:{slug:item.slug}}" class="image">
+																	<router-link
+																		:to="{ name: 'Product', params: { slug: item.slug } }"
+																		class="image">
 																		<img class="pic-1"
-																		:src="base_url+item.file_name">
+																			:src="base_url + item.file_name">
 																		<img class="pic-2"
-																		:src="base_url+item.file_name">
+																			:src="base_url + item.file_name">
 																	</router-link>
 																	<ul class="product-links">
 																		<li>
@@ -627,7 +676,10 @@
 																		<a href="#">Ink & Toner</a>
 																	</span>
 																	<h3 class="title">
-																		<router-link :to="{name:'Product',params:{slug:item.slug}}">{{ item.product_title }}</router-link>
+																		<router-link
+																			:to="{ name: 'Product', params: { slug: item.slug } }">{{
+																				item.product_title
+																			}}</router-link>
 																	</h3>
 																	<div
 																		class="rating mb-5 mt-10 justify-content-between">
@@ -645,11 +697,13 @@
 																		</ul>
 																		<span><a href="">01 review</a></span>
 																	</div>
-																	<div class="price">{{ currency }} {{ item.unit_price }}</div>
+																	<div class="price">{{ currency }} {{
+																		item.unit_price
+																	}}</div>
 																</div>
 															</div>
 															<!-- Product Item ends -->
-															
+
 															<!-- Product Item ends -->
 														</div>
 														<span class="swiper-notification" aria-live="assertive"
@@ -690,12 +744,12 @@
 			<!-- Main Content Ends -->
 		</div>
 
-		
+
 	</div>
 </template>
 
 <script>
-import {ref} from 'vue';
+import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import router from '@/router';
 import { UserStore } from '@/store/UserStore';
@@ -708,26 +762,26 @@ import '../../asset/css/swiper.css';
 const base_url = import.meta.env.VITE_MY_ENV_VARIABLE;
 export default {
 	name: 'login',
-	
-	computed:{
-		 ...mapState(UserStore, ['authUser'])
-/* ...mapState('UserStore',['authUser']) */
+
+	computed: {
+		...mapState(UserStore, ['authUser'])
+		/* ...mapState('UserStore',['authUser']) */
 	},
 	data() {
 		return {
 			base_url,
-			top_categories:[],
-			our_products:[],
-			best_selling_products:[],
-			currency:'',
-			user_id:'',
-			loading:false
-			
-			
+			top_categories: [],
+			our_products: [],
+			best_selling_products: [],
+			currency: '',
+			user_id: '',
+			loading: false
+
+
 		}
 	},
 	created() {
-	
+
 		this.main_slider_home();
 		this.categorySlider();
 		this.productSlider();
@@ -739,46 +793,46 @@ export default {
 	},
 
 	mounted() {
-		
-		
+
+
 
 		// GETTING PRODUCTS
 		axios.get('/api/our_products').then(({ data }) => {
-			this.our_products = data.data;
+			this.our_products = data.data.data;
 			this.currency = data.currency;
-			console.log(data.data);
+			console.log(data.data.data);
 		});
 
 
 		axios.get('/api/best_selling_products').then(({ data }) => {
-			this.best_selling_products = data.data;
+			this.best_selling_products = data.data.data;
 			this.currency = data.currency;
-			console.log(data.data);
+			//console.log(data.data);
 		});
 
 		//valid user
 
-		
-			
-		
+
+
+
 
 
 
 
 	},
 	methods: {
-		get_top_categories(){
-			this.loading=true;
-		try{
-			axios.get('/api/get_top_categories').then(({ data }) => {
-			this.top_categories = data.data;
-			//console.log(data.data);
-		});
-		}catch(error){
+		get_top_categories() {
+			this.loading = true;
+			try {
+				axios.get('/api/get_top_categories').then(({ data }) => {
+					this.top_categories = data.data;
+					//console.log(data.data);
+				});
+			} catch (error) {
 
-		}finally{
-			this.loading=false
-		}
+			} finally {
+				this.loading = false
+			}
 		},
 
 		categorySlider() {
@@ -1068,46 +1122,46 @@ export default {
 			});
 		}
 		/* Methods Close*/
-		
-	
-	},
-	setup(){
-let product_id = ref('');
-let quanitity = ref('');
-let user_id  = ref('');
-const CartData = useShoppingStore();
-				axios.get('/api/user',{
-				headers: {
-                        Authorization: 'Bearer ' + sessionStorage.getItem('token'),
-                    },
-			}).then(res=>{
-				console.log("working");
-				 user_id.value = res.data.id; 
-			});	
-		
-		const addToCart = async (product_id)=>{
-			CartData.addToCart(product_id,quanitity,user_id.value);
 
-				/*  await axios.post('/api/addToCart',{
-					product_id:product_id,
-					quantity:1,
-					uid:user_id.value
-				}).then(res=>{
-					console.log("Product has added to cart!!!");
-				})  */
+
+	},
+	setup() {
+		let product_id = ref('');
+		let quanitity = ref('');
+		let user_id = ref('');
+		const CartData = useShoppingStore();
+		axios.get('/api/user', {
+			headers: {
+				Authorization: 'Bearer ' + sessionStorage.getItem('token'),
+			},
+		}).then(res => {
+			console.log("working");
+			user_id.value = res.data.id;
+		});
+
+		const addToCart = async (product_id) => {
+			CartData.addToCart(product_id, quanitity, user_id.value);
+
+			/*  await axios.post('/api/addToCart',{
+				product_id:product_id,
+				quantity:1,
+				uid:user_id.value
+			}).then(res=>{
+				console.log("Product has added to cart!!!");
+			})  */
 		}
 		/* const callback = (response) => {
   // This callback will be triggered when the user selects or login to
   // his Google account from the popup
   console.log("Handle the response", response)
 }*/
-	return {
-		addToCart,
-		product_id,
-		quanitity,
-		 user_id
-		
-	} 
+		return {
+			addToCart,
+			product_id,
+			quanitity,
+			user_id
+
+		}
 	}
 }
 </script>
