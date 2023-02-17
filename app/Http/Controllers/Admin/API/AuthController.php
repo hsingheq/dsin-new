@@ -152,55 +152,7 @@ class AuthController extends Controller
     public function refresh() {
         return $this->createNewToken(auth()->refresh());
     }
-
-
-    public function verifyAccount($email)
-    {
-
-
-        if(auth()->user()){
-            $user = User::where('email',$email)->get();
-          
-
-            if(count($user) > 0){
-
-                $random = Str::random(40);
-                $domain = URL::to ('/');
-                $url = $domain.'/verify/'.$random;
-
-                // dd($url);
-
-                $data['url'] = $url;
-                $data['email'] = $email;
-                $data['title'] = "Email Verification";
-                $data['body'] = "Please click here Below your Mail.";
-
-                Mail::send('verifyMail',['data'=>$data], function($message) use ($data){
-                    $message->to($data['email'])->subject($data['title']);
-                });
-
-                // dd($mail);
-
-                $user = User::find($user[0]['id']);
-                $user->remember_token = $random;
-                $user->save();
-
-                // dd($user);
-                
-                return response()->json(['success'=>true, 'msg'=>'Mail send Successfully']);
-
-
-            }else{
-                return response()->json(['success'=>false, 'msg'=>'User is not Found']);
-            }
-            
-        }else{
-            return response()->json(['success'=>false, 'msg'=>'User is not Authenticated']);
-        }
-  
-     
-    }
-
+    
     public function verficationMail(Request $request){
         $token = $request->token;
         $user = User::where(['remember_token' => $token])->first();

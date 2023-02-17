@@ -12,18 +12,22 @@ export default {
     },
     data() {
         const form = {
+            showForm: true,
             registration_type: "individual",
             first_name: "",
             last_name: "",
+            company_name: "",
+            company_registration_no: "",
             address: "",
             mobile: "",
             occupation: "",
-            acceptance: "",            
+            acceptance: "",
         }
         const schema = Yup.object().shape({
-            first_name: Yup.string().required('First name is required.'),
-            registration_type: Yup.string().required('Please select regsitration type.'),
-            nric_no: Yup.string().required('NRIC No. is required.'),
+            //first_name: Yup.string().required('First name is required.'),
+            //nric_no: Yup.string().required('NRIC No. is required.'),
+            //company_name: Yup.string().required('Company name is required.'),
+            //company_registration_no: Yup.string().required('Company registration is required.'),
             address: Yup.string().required('Address is required.'),
             mobile: Yup.string().required('Mobile is required.'),
             occupation: Yup.string().required('Occupation is required.'),
@@ -42,11 +46,14 @@ export default {
         });
     },
     methods: {
-        handleDealerRegistration(values) {
+        handleDealerRegistration(values, actions) {
             // display form values on success
+            // values
+            this.form.showForm = false;
             alert('SUCCESS!! :-)\n\n' + JSON.stringify(values, null, 4));
+            //actions.resetForm()
         }
-    },
+    }
 }
 </script>
 <style scoped>
@@ -82,7 +89,8 @@ export default {
                         <h4>Dealer Registration Form</h4>
                     </div>
                     <!-- Change password form starts -->
-                    <Form @submit.prevent="handleDealerRegistration" :validation-schema="schema" v-slot="{ errors }">
+                    <Form @submit="handleDealerRegistration" :validation-schema="schema" v-slot="{ errors }"
+                        v-if="form.showForm">
                         <!-- Email input -->
                         <!--<div class="form-outline my-4 row mb-3">
                             <div class="col-md-12">
@@ -97,23 +105,21 @@ export default {
                                 <label class="form-label row control-label" for="">Registration Type</label>
                                 <div class="form-check form-check-inline">
                                     <Field class="form-check-input" :class="{ 'is-invalid': errors.registration_type }"
-                                        type="radio" v-model="form.registration_type" @change="change"
-                                        id="registration_type_individual" name="registration_type" value="individual"
-                                        checked />
+                                        type="radio" v-model="form.registration_type" id="registration_type_individual"
+                                        name="registration_type" value="individual" checked />
                                     <label class="form-check-label"
                                         for="registration_type_individual">Individual</label>
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <Field class="form-check-input" type="radio" v-model="form.registration_type"
-                                        @change="change" id="registration_type_company" name="registration_type"
-                                        value="company" />
+                                        id="registration_type_company" name="registration_type" value="company" />
                                     <label class="form-check-label" for="registration_type_company">Company</label>
                                 </div>
                                 <div class="invalid-feedback">{{ errors.registration_type }}</div>
                             </div>
                         </div>
                         <!-- Personal Information Starts-->
-                        <div id="personal-information-box" v-if="form.registration_type === 'individual'">
+                        <div id="personal-information-box" v-if="form.registration_type == 'individual'">
                             <div class="form-outline row my-4 mb-0">
                                 <div class="col-md-12">
                                     <h5>Personal Information</h5>
@@ -175,7 +181,7 @@ export default {
                         </div>
                         <!-- Personal Information Ends-->
                         <!-- Company Information Starts-->
-                        <div id="company-information-box" v-else>
+                        <div id="company-information-box" v-if="form.registration_type == 'company'">
                             <div class="form-outline row my-4 mb-0">
                                 <div class="col-md-12">
                                     <h5>Company Information</h5>
@@ -187,18 +193,19 @@ export default {
                                 <div class="col-md-12 form-group required">
                                     <label class="form-label control-label" for="company_name">Company Name</label>
                                     <input type="text" v-model="form.company_name" id="company_name" name="company_name"
-                                        class="form-control" />
+                                        class="form-control" :class="{ 'is-invalid': errors.company_name }" />
+                                    <div class="invalid-feedback">{{ errors.company_name }}</div>
                                 </div>
                             </div>
                             <!-- Company Registration No -->
                             <div class="form-outline row mb-3">
                                 <div class="col-md-12 form-group required">
                                     <label class="form-label control-label" for="company_registration_no">Company
-                                        Registration
-                                        No</label>
+                                        Registration No</label>
                                     <input type="text" v-model="form.company_registration_no"
-                                        id="company_registration_no" name="company_registration_no"
-                                        class="form-control" />
+                                        id="company_registration_no" name="company_registration_no" class="form-control"
+                                        :class="{ 'is-invalid': errors.company_registration_no }" />
+                                    <div class="invalid-feedback">{{ errors.company_registration_no }}</div>
                                 </div>
                             </div>
                             <!-- Company SSM Certificate of Incorporation -->
@@ -216,20 +223,22 @@ export default {
                         <div class="form-outline row mb-3">
                             <div class="col-md-12 form-group required">
                                 <label class="form-label control-label" for="address"
-                                    v-if="form.registration_type === 'individual'">Mailing Address</label>
-                                <label class="form-label control-label" for="address" v-else>Company Correspondence
-                                    Address</label>
+                                    v-if="form.registration_type == 'individual'">Mailing Address</label>
+                                <label class="form-label control-label" for="address"
+                                    v-if="form.registration_type == 'company'">Company Correspondence Address</label>
                                 <Field as="textarea" v-model="form.address" id="address" name="address"
-                                    class="form-control" :class="{ 'is-invalid': errors.address }"></Field>
+                                    class="form-control" :class="{ 'is-invalid': errors.address }" />
                                 <div class="invalid-feedback">{{ errors.address }}</div>
                             </div>
                         </div>
                         <!-- Mobile -->
                         <div class="form-outline row mb-3">
                             <div class="col-md-12 form-group required">
-                                <label class="form-label control-label" for="mobile"
-                                    v-if="form.registration_type === 'individual'">Mobile</label>
-                                <label class="form-label control-label" for="mobile" v-else>Company Telephone</label>
+                                <label class="form-label control-label" for="smobile"
+                                    v-if="form.registration_type == 'individual'">Mobile</label>
+                                <label class="form-label control-label" for="smobile"
+                                    v-if="form.registration_type == 'company'">Company Telephone</label>
+                                <label class="form-label" for="mobile"></label>
                                 <Field type="text" v-model="form.mobile" id="mobile" name="mobile" class="form-control"
                                     :class="{ 'is-invalid': errors.mobile }" />
                                 <div class="invalid-feedback">{{ errors.mobile }}</div>
