@@ -168,4 +168,5 @@ class AuthController extends Controller
             return response()->json(['message'=>'Invalid token.'], 300);
         }
     }
+
 }

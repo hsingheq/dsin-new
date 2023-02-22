@@ -350,5 +350,17 @@ $data=[
             'user' => $user
         ]);
     }
-    
+
+    public function checkEmail(Request $request) {
+        $email = $request->email;
+        $user = User::where('email', '=', $email)->first();
+        if($user) {
+            return false;
+            //return response()->json(['valid'=> false, 'message'=> "Email is already taken."]);
+        }else {
+            return true;
+            //return response()->json(['valid'=> true, 'message'=> "Email is available."]);
+        }
+        
+    }    
 }

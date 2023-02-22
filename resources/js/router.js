@@ -235,7 +235,7 @@ const routes = [
         component: () =>
             import("./pages/frontend/dealer/dealer-registration.vue"),
         meta: {
-            requiredAuth: true,
+            requiredAuth: false,
         },
     },
     {
