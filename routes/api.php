@@ -78,6 +78,8 @@ Route::controller(UserApiController::class)->group(function(){
     Route::post('google_auth_login','google_auth_login');
     Route::get('google_avatar','google_avatar');
     Route::post('user_info','user_info');
+    /*Check If Email exists or not*/
+    Route::get('/checkEmail/{email}','checkEmail'); 
 });
 
 Route::controller(AuthController::class)->group(function () {

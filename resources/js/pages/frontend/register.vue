@@ -2,43 +2,64 @@
 <script >
 import { ref } from 'vue';
 import axios from 'axios';
-import { Form, Field, ErrorMessage } from 'vee-validate';
-import * as Yup from 'yup';
+import useVuelidate from "@vuelidate/core";
+import { required, minLength, maxLength, helpers, numeric, sameAs, email } from "@vuelidate/validators";
 import "intl-tel-input/build/css/intlTelInput.css";
 import intlTelInput from "intl-tel-input";
-
+const isEmailTaken = (value) => fetch(`/api/checkEmail/${value}`).then(r => r.json())
+const { withAsync } = helpers
 export default {
-	components: {
+	name: "User Registration",
+	/*components: {
 		Form,
 		Field,
-	},
+	},*/
 	data() {
-		const form = {
-			first_name: '',
-			last_name: '',
-			email: '',
-			mobile: '',
-			password: '',
-			password_confirmation: '',
-		}
-		const schema = Yup.object().shape({
-			first_name: Yup.string().required('First name is required.').max(10, 'First name should not be more than 10 characters.'),
-			last_name: Yup.string().max(10, 'Last name should not be more than 10 characters.'),
-			email: Yup.string().email("Invalid email.").required('Email is required.'),
-			password: Yup.string().required('Password is required.').min(6, "Password must be at least 6 characters."),
-			password_confirmation: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match'),
-			//mobile: Yup.string().required('Mobile is required.').matches(/^[0-9]+$/, "Must be only digits"),
-			mobile: Yup.string().required('Mobile is required.').matches(/^[0-9]+$/, "Must be only digits").min(10, 'Mobile number must be at least 10 digits.').max(11, 'Mobile number must be max 11 digits.'),
-		});
 		return {
-			form,
-			schema,
-			has_error: false,
-			error: '',
-			serrors: {},
-			success: false
+			showForm: true,
+			first_name: "",
+			last_name: "",
+			email: "",
+			mobile: "",
+			password: "",
+			password_confirmation: "",
+			submitStatus: null,
+			message: null
 		}
 	},
+	validations() {
+		const localRules = {
+			first_name: {
+				required: helpers.withMessage("First Name is required.", required),
+				minLength: helpers.withMessage("First Name must be atleast 2 charactors.", minLength(2)),
+				maxLength: helpers.withMessage("First Name should not be greater than 10 charactors.", maxLength(10)),
+			},
+			last_name: {
+				maxLength: helpers.withMessage("Last Name should not be greater than 10 charactors.", maxLength(10)),
+			},
+			email: {
+				required: helpers.withMessage("Email is required.", required),
+				email: helpers.withMessage("Email is invalid.", email),
+				isUnique: helpers.withAsync(isEmailTaken)
+			},
+			password: {
+				required: helpers.withMessage("Password is required.", required),
+				maxLength: helpers.withMessage("Last Name should not be greater than 10 charactors.", maxLength(10)),
+			},
+			password_confirmation: {
+				//required: helpers.withMessage("Confirm Password is required.", required),
+				sameAs: helpers.withMessage("Passwords must match.", sameAs(this.password)),
+			},
+			mobile: {
+				required: helpers.withMessage("Mobile is required.", required),
+				numeric: helpers.withMessage("Mobile must contain only numbers.", numeric),
+				minLength: helpers.withMessage("Mobile must be atleast 10 digits.", minLength(10)),
+				maxLength: helpers.withMessage("Mobile should not be greater than 11 charactors.", maxLength(11)),
+			},
+		}
+		return localRules
+	},
+	setup: () => ({ v$: useVuelidate() }),
 	mounted() {
 		const input = document.querySelector("#mobile");
 		intlTelInput(input, {
@@ -47,37 +68,66 @@ export default {
 		});
 	},
 	methods: {
-		changeEmail() {
-			this.serrors = {}
-		},
 		async registerHandle(values, actions) {
-			this.success = "";
-			this.serrors = {}
-			try {
-				await axios.post('/api/create_user', {
-					first_name: this.form.first_name,
-					last_name: this.form.last_name,
-					email: this.form.email,
-					mobile: this.form.mobile,
-					password: this.form.password,
-					password_confirmation: this.form.password_confirmation,
-				}).then(response => {
-					this.success = response.data.success
-					this.serrors = {}
-					actions.resetForm()
-					//this.error = response.data.data;
-				})
-			} catch (res) {
-				this.success = "";
-				this.has_error = true
-				this.serrors = res.response.data.errors || {}
-				/*if (dataerror.response) {
-					this.error = dataerror.response.data.message
-				}*/
+			console.log('submit!')
+			this.submitStatus = 'Submit'
+			this.v$.$touch()
+			if (this.v$.$invalid) {
+				this.submitStatus = 'Error'
+				this.message = 'Please check errors.'
+			} else {
+				// do your submit logic here
+				this.submitStatus = 'Pending'
+				this.message = 'Please wait...'
+				try {
+					await axios.post('/api/create_user', {
+						first_name: this.first_name,
+						last_name: this.last_name,
+						email: this.email,
+						mobile: this.mobile,
+						password: this.password,
+						password_confirmation: this.password_confirmation,
+					}).then(response => {
+						console.log(response)
+						//this.success = response.data.success
+						//this.serrors = {}
+						this.submitStatus = 'Success'
+						//this.v$.$reset()
+						//actions.resetForm()
+						//alert(response.data.success)
+						this.showForm = false
+						this.message = response.data.success
+					})
+				} catch (res) {
+					console.log(res)
+					this.success = "";
+					this.submitStatus = 'Error'
+					if (res.response) {
+						this.message = res.response.data.errors || {}
+					}
+					/*if (dataerror.response) {
+						this.error = dataerror.response.data.message
+						
+					}*/
+					
+					//this.has_error = true
+					//this.serrors = res.response.data.errors || {}
+				}
+				/*setTimeout(() => {
+					this.showForm = false;
+					this.submitStatus = 'Success'
+				}, 500)*/
 			}
+
 		}
 	}
 }
+/*Validator.extend('unique', {
+	validate: isUnique,
+	getMessage: (field, params, data) => {
+		return data.message;
+	}
+});*/
 </script>
 <style scoped>
 .help-block {
@@ -115,92 +165,101 @@ export default {
 				<div class="row">
 					<div class="col-md-8 offset-md-2">
 						<div class="row">
-							<div class="col-md-12 mb-3">
+							<div class="col-lg-12 mb-3">
 								<h5 class="page-heading">Register</h5>
 							</div>
+							<div class="col-lg-12" v-if="submitStatus=='Success'">
+								<span class="alert alert-success d-block">
+									{{ message }}		
+								</span>
+							</div>
+							<div class="col-lg-12" v-if="submitStatus=='Error'">
+								<span class="alert alert-danger d-block">
+									{{ message }}		
+								</span>
+							</div>
+							<div class="col-lg-12" v-if="submitStatus=='Pending'">
+								<span class="alert alert-info d-block">
+									{{ message }}		
+								</span>
+							</div>
 						</div>
-						<div class="alert alert-danger" v-if="has_error && !success">
-							Please check error!
-							<!--<span v-for="(serror, index) in serrors">
-								{{ serror }}
-							</span>-->
-						</div>
-						<div class="alert alert-success" v-if="!has_error && success">
-							{{ success }}
-						</div>
-						<Form @submit="registerHandle" :validation-schema="schema" v-slot="{ errors }"
-							autocomplete="off">
+						<Form @submit.prevent="registerHandle" autocomplete="off" v-if="showForm">
 							<!-- Name input -->
 							<div class="row">
 								<div class="col-md-6 form-group mb-3">
 									<label class="form-label" for="first_name">First Name</label>
-									<Field type="text" v-model="form.first_name" name="first_name" id="first_name"
-										class="form-control" placeholder="First name" aria-label="First name"
-										:class="{ 'is-invalid': errors.first_name }" :validateOnChange="true"
-										:validateOnInput="true" />
-									<div class="invalid-feedback">{{ errors.first_name }}</div>
+									<input type="text" name="first_name" id="first_name" class="form-control"
+										placeholder="First name" v-model="v$.first_name.$model"
+										:class="{ valid: !v$.first_name.$error && v$.first_name.$dirty, 'is-invalid': v$.first_name.$error }" />
+									<div class="invalid-feedback" v-for="(error, index) in v$.first_name.$errors"
+										:key="index">
+										{{ error.$message }}
+									</div>
 								</div>
 								<div class="col-md-6 form-group mb-3">
 									<label class="form-label" for="last_name">Last Name</label>
-									<Field type="text" v-model="form.last_name" name="last_name" id="last_name"
-										class="form-control" placeholder="Last name" aria-label="Last name"
-										:class="{ 'is-invalid': errors.last_name }" :validateOnChange="false"
-										:validateOnInput="true" />
-									<div class="invalid-feedback">{{ errors.last_name }}</div>
-
+									<input type="text" name="last_name" id="last_name" class="form-control"
+										placeholder="Last name" v-model="v$.last_name.$model"
+										:class="{ valid: !v$.last_name.$error && v$.last_name.$dirty, 'is-invalid': v$.last_name.$error }" />
+									<div class="invalid-feedback" v-for="(error, index) in v$.last_name.$errors"
+										:key="index">
+										{{ error.$message }}
+									</div>
 								</div>
 							</div>
 							<!-- Email input -->
 							<div class="row">
-								<div class="col-md-12 form-group mb-3"
-									v-bind:class="{ 'has-error': has_error && serrors.email }">
+								<div class="col-md-12 form-group mb-3">
 									<label class="form-label" for="email">Email</label>
-									<Field type="email" v-model="form.email" id="email" name="email"
-										class="form-control" placeholder="Enter your email"
-										:class="{ 'is-invalid': errors.email }" :validateOnChange="false"
-										:validateOnInput="true" @input="changeEmail" />
-									<div class="invalid-feedback" v-if="errors">{{ errors.email }}</div>
-									<div class="help-block" v-if="!errors.email && has_error && serrors.email">
-										<span v-for="(serror, index) in serrors.email">
-											{{ serror }}
-										</span>
+									<input type="email" id="email" name="email" class="form-control"
+										placeholder="Enter your email" v-model="v$.email.$model"
+										:class="{ valid: !v$.email.$error && v$.email.$dirty, 'is-invalid': v$.email.$error }" />
+									<div class="invalid-feedback" v-for="(error, index) in v$.email.$errors" :key="index">
+										{{ error.$message }}
+									</div>
+									<div v-if="v$.email.isUnique.$invalid"
+										:class="{ 'invalid-feedback d-block': v$.email.isUnique.$invalid }">
+										This email already has an account.
 									</div>
 								</div>
 							</div>
-
-
 							<!-- Phone input -->
 							<div class="row">
 								<div class="col-md-12 form-group mb-3">
 									<label class="form-label" for="mobile">Mobile</label>
-									<Field type="number" v-model="form.mobile" id="mobile" name="mobile"
-										class="form-control" placeholder="Enter your mobile number"
-										:class="{ 'is-invalid': errors.mobile }" :validateOnChange="false"
-										:validateOnInput="true" />
-									<div class="invalid-feedback">{{ errors.mobile }}</div>
-
+									<input type="text" id="mobile" name="mobile" class="form-control"
+										v-model="v$.mobile.$model"
+										:class="{ valid: !v$.mobile.$error && v$.mobile.$dirty, 'is-invalid': v$.mobile.$error }" />
+									<div class="invalid-feedback" v-if="v$.mobile.$dirty && v$.mobile.$error"
+										:class="{ 'd-block': v$.mobile.$dirty && v$.mobile.$error }"
+										v-for="(error, index) in v$.mobile.$errors" :key="index">
+										{{ error.$message }}
+									</div>
 								</div>
 							</div>
 							<!-- Password input -->
 							<div class="row">
 								<div class="col-md-6 form-group mb-3">
 									<label class="form-label" for="password">Password</label>
-									<Field type="password" v-model="form.password" id="password" name="password"
-										class="form-control" placeholder="Enter password"
-										:class="{ 'is-invalid': errors.password }" :validateOnChange="true"
-										:validateOnInput="true" />
-									<div class="invalid-feedback">{{ errors.password }}</div>
-
+									<input type="password" id="password" name="password" class="form-control"
+										placeholder="Enter password" v-model="v$.password.$model"
+										:class="{ valid: !v$.password.$error && v$.password.$dirty, 'is-invalid': v$.password.$error }" />
+									<div class="invalid-feedback" v-for="(error, index) in v$.password.$errors"
+										:key="index">
+										{{ error.$message }}
+									</div>
 								</div>
 								<div class="col-md-6 form-group mb-3">
 									<label class="form-label" for="password_confirmation">Confirm Password</label>
-									<Field type="password" v-model="form.password_confirmation"
-										id="password_confirmation" name="password_confirmation" class="form-control"
-										placeholder="Enter confirm password"
-										:class="{ 'is-invalid': errors.password_confirmation }" :validateOnChange="true"
-										:validateOnInput="true" />
-									<div class="invalid-feedback">{{ errors.password_confirmation }}</div>
-
+									<input type="password" id="password_confirmation" name="password_confirmation"
+										class="form-control" placeholder="Enter password"
+										v-model="v$.password_confirmation.$model"
+										:class="{ valid: !v$.password_confirmation.$error && v$.password_confirmation.$dirty, 'is-invalid': v$.password_confirmation.$error }" />
+									<div class="invalid-feedback" v-for="(error, index) in v$.password_confirmation.$errors"
+										:key="index">
+										{{ error.$message }}
+									</div>
 								</div>
 							</div>
 							<div class="row">
