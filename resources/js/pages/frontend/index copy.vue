@@ -3,19 +3,120 @@
 
 		<div class="wrapper">
 			<!-- Main Content Starts -->
-
 			<!-- Slider Starts -->
-			<MainSlider />
+			<section class="slider-area">
+				<div class="swiper-container slider__active">
+					<div class="swiper-wrapper">
+						<div class="single-slider swiper-slide slider-height d-flex align-items-center"
+							style="background-image: url(https://dimsemenov.com/plugins/royal-slider/img/home.jpg);">
+							<div class="container">
+								<div class="row">
+									<div class="col-xl-5">
+										<div class="slider-content">
+											<div class="slider-top-heading" data-animation="fadeInLeft"
+												data-delay="1.5s">
+												Trending in the store
+											</div>
+											<h2 data-animation="fadeInLeft" data-delay="1.7s"
+												class="pt-15 slider-title pb-5"><span>What's</span> Trending Slide 1
+											</h2>
+											<p class="pr-20 slider_text" data-animation="fadeInLeft" data-delay="1.9s">
+												Discount 30% On Products & Free Shipping</p>
+											<div class="slider-bottom-btn mt-75">
+												<a data-animation="fadeInUp" data-delay="1.15s" href="#"
+													class="btn-b b-radius">Shop now</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div><!-- /single-slider -->
+						<div class="single-slider swiper-slide slider-height d-flex align-items-center"
+							style="background-image: url(/@/asset/images/slider/slide-1.jpg);">
+							<div class="container">
+								<div class="row">
+									<div class="col-xl-5">
+										<div class="slider-content">
+											<div class="slider-top-heading" data-animation="fadeInLeft" data-delay="1s">
+												Trending in the store
+											</div>
+											<h2 data-animation="fadeInLeft" data-delay="1.5s"
+												class="pt-15 slider-title pb-5">SALE 20% OFF<br> SAMSUNG GALAXY BUDS
+												Slide 2</h2>
+											<p class="pr-20 slider_text" data-animation="fadeInLeft" data-delay="1.7s">
+												Discount 30% On Products & Free Shipping</p>
+											<div class="slider-bottom-btn mt-75">
+												<a data-animation="fadeInUp" data-delay="1.9s" href="#"
+													class="btn-b b-radius">Discover now</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div><!-- /single-slider -->
+						<div class="main-slider-paginations"></div>
+					</div>
+				</div>
+			</section>
 			<!-- Slider Ends -->
 
 
 			<section class="pt-70 pb-20">
-				<div class="container-fluid px-5">
+				<div class="container">
 					<div class="row g-0">
 						<!-- Right Content Sidebar-->
 						<div class="col-lg-9 order-md-2">
 							<!-- Section Top Categories Starts -->
-							<TopCategories />
+							<section>
+
+								<div class="row">
+									<div class="col-lg-12">
+										<div class="section-heading d-flex justify-content-between">
+											<h5>Top Categories</h5>
+											<div class="button-wrap">
+												<!-- If we need navigation buttons -->
+												<div class="bs-button bs-button-prev"><i class="bi bi-arrow-left"></i>
+												</div>
+												<div class="bs-button bs-button-next"><i class="bi bi-arrow-right"></i>
+												</div>
+											</div>
+
+										</div>
+									</div>
+								</div>
+								<!-- Categories Slider Starts -->
+								<div class="row mt-40">
+									<div class="categories-slider">
+										<div class="swiper-container categories-slider-active">
+											<div class="swiper-wrapper">
+												<!-- Category Item starts -->
+												<div v-for="item in top_categories" :key="item.id"
+													class="categories-item swiper-slide p-relative w-img mb-30">
+													<div class="categories-img">
+														<router-link
+															:to="{ name: 'ProductCategory', params: { slug: item.slug } }">
+															<img v-if="item.file_name" :src="item.file_name"
+																:alt="item.file_original_name" />
+															<img v-else src="@/asset/images/default.png"
+																alt="default" />
+														</router-link>
+													</div>
+													<div class="categories-content">
+														<h6><router-link
+																:to="{ name: 'ProductCategory', params: { slug: item.slug } }">{{
+																	item.category
+																}}</router-link></h6>
+													</div>
+												</div>
+												<!-- Category Item ends -->
+
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- Categories Slider Ends -->
+							</section>
+
 							<!-- Section Top Categories Ends -->
 							<section class="topsell__area-2 pt-15">
 								<div class="row">
@@ -36,9 +137,9 @@
 															aria-selected="true">On Sale</button>
 													</li>
 													<li class="nav-item" role="presentation">
-														<button class="nav-link" id="best-rated-tab" data-bs-toggle="tab"
-															data-bs-target="#best-rated-box" type="button" role="tab"
-															aria-selected="false">Best
+														<button class="nav-link" id="best-rated-tab"
+															data-bs-toggle="tab" data-bs-target="#best-rated-box"
+															type="button" role="tab" aria-selected="false">Best
 															rated</button>
 													</li>
 												</ul>
@@ -53,7 +154,8 @@
 												aria-labelledby="new-arrivals-tab">
 												<div class="product-bs-slider-2">
 													<div class="product-slider-2 swiper-container">
-														<div class="swiper-wrapper" id="swiper-wrapper-new-arrivals-box">
+														<div class="swiper-wrapper"
+															id="swiper-wrapper-new-arrivals-box">
 
 
 															<!-- Product Item Starts -->
@@ -61,17 +163,20 @@
 																class="product-article swiper-slide">
 																<div class="product-cat"><a href="#!">Ink & Toner</a>
 																</div>
-																<div class="product-title"><a href="#!">{{
-																	item.product_title }}</a></div>
+																<div class="product-title"><a
+																		href="#!">{{ item.product_title }}</a></div>
 																<div class="product-image">
 																	<router-link
 																		:to="{ name: 'Product', params: { slug: item.slug } }"
 																		class="image">
-																		<img class="pic-1" :src="base_url + item.file_name">
-																		<img class="pic-2" :src="base_url + item.file_name">
+																		<img class="pic-1"
+																			:src="base_url + item.file_name">
+																		<img class="pic-2"
+																			:src="base_url + item.file_name">
 																	</router-link>
 																	<div class="quick-view-action">
-																		<a href="#" class="icon-box" data-bs-toggle="modal"
+																		<a href="#" class="icon-box"
+																			data-bs-toggle="modal"
 																			data-bs-target="#productModalId">
 																			Quick View
 																		</a>
@@ -139,8 +244,10 @@
 																	<router-link
 																		:to="{ name: 'Product', params: { slug: item.slug } }"
 																		class="image">
-																		<img class="pic-1" :src="base_url + item.file_name">
-																		<img class="pic-2" :src="base_url + item.file_name">
+																		<img class="pic-1"
+																			:src="base_url + item.file_name">
+																		<img class="pic-2"
+																			:src="base_url + item.file_name">
 																	</router-link>
 																	<ul class="product-links">
 																		<li>
@@ -174,18 +281,19 @@
 																				item.product_title
 																			}}</router-link>
 																	</h3>
-																	<div class="rating mb-5 mt-10 justify-content-between">
+																	<div
+																		class="rating mb-5 mt-10 justify-content-between">
 																		<ul>
-																			<li><a href="#"><i class="bi bi-star"></i></a>
-																			</li>
-																			<li><a href="#"><i class="bi bi-star"></i></a>
-																			</li>
-																			<li><a href="#"><i class="bi bi-star"></i></a>
-																			</li>
-																			<li><a href="#"><i class="bi bi-star"></i></a>
-																			</li>
-																			<li><a href="#"><i class="bi bi-star"></i></a>
-																			</li>
+																			<li><a href="#"><i
+																						class="bi bi-star"></i></a></li>
+																			<li><a href="#"><i
+																						class="bi bi-star"></i></a></li>
+																			<li><a href="#"><i
+																						class="bi bi-star"></i></a></li>
+																			<li><a href="#"><i
+																						class="bi bi-star"></i></a></li>
+																			<li><a href="#"><i
+																						class="bi bi-star"></i></a></li>
 																		</ul>
 																		<span><a href="">01 review</a></span>
 																	</div>
@@ -209,7 +317,8 @@
 														<i class="bi bi-chevron-left"></i>
 													</div>
 													<div class="bs-button bs2-button-next" tabindex="0" role="button"
-														aria-label="Next slide" aria-controls="swiper-wrapper-on-sale-box">
+														aria-label="Next slide"
+														aria-controls="swiper-wrapper-on-sale-box">
 														<i class="bi bi-chevron-right"></i>
 													</div>
 												</div>
@@ -226,8 +335,10 @@
 																	<router-link
 																		:to="{ name: 'Product', params: { slug: item.slug } }"
 																		class="image">
-																		<img class="pic-1" :src="base_url + item.file_name">
-																		<img class="pic-2" :src="base_url + item.file_name">
+																		<img class="pic-1"
+																			:src="base_url + item.file_name">
+																		<img class="pic-2"
+																			:src="base_url + item.file_name">
 																	</router-link>
 																	<ul class="product-links">
 																		<li>
@@ -259,18 +370,19 @@
 																				item.product_title
 																			}}</router-link>
 																	</h3>
-																	<div class="rating mb-5 mt-10 justify-content-between">
+																	<div
+																		class="rating mb-5 mt-10 justify-content-between">
 																		<ul>
-																			<li><a href="#"><i class="bi bi-star"></i></a>
-																			</li>
-																			<li><a href="#"><i class="bi bi-star"></i></a>
-																			</li>
-																			<li><a href="#"><i class="bi bi-star"></i></a>
-																			</li>
-																			<li><a href="#"><i class="bi bi-star"></i></a>
-																			</li>
-																			<li><a href="#"><i class="bi bi-star"></i></a>
-																			</li>
+																			<li><a href="#"><i
+																						class="bi bi-star"></i></a></li>
+																			<li><a href="#"><i
+																						class="bi bi-star"></i></a></li>
+																			<li><a href="#"><i
+																						class="bi bi-star"></i></a></li>
+																			<li><a href="#"><i
+																						class="bi bi-star"></i></a></li>
+																			<li><a href="#"><i
+																						class="bi bi-star"></i></a></li>
 																		</ul>
 																		<span><a href="">01 review</a></span>
 																	</div>
@@ -328,9 +440,9 @@
 															aria-selected="true">On Sale</button>
 													</li>
 													<li class="nav-item" role="presentation">
-														<button class="nav-link" id="best-rated-tab" data-bs-toggle="tab"
-															data-bs-target="#best-rated-box" type="button" role="tab"
-															aria-selected="false">Best
+														<button class="nav-link" id="best-rated-tab"
+															data-bs-toggle="tab" data-bs-target="#best-rated-box"
+															type="button" role="tab" aria-selected="false">Best
 															rated</button>
 													</li>
 												</ul>
@@ -345,7 +457,8 @@
 												aria-labelledby="all-products-tab">
 												<div class="product-bs-slider-2">
 													<div class="product-slider-3 swiper-container">
-														<div class="swiper-wrapper" id="swiper-wrapper-all-prodcuts-box">
+														<div class="swiper-wrapper"
+															id="swiper-wrapper-all-prodcuts-box">
 															<!-- Product Item Starts -->
 															<div v-for="item in best_selling_products" :key="item.id"
 																class="product-grid swiper-slide">
@@ -353,8 +466,10 @@
 																	<router-link
 																		:to="{ name: 'Product', params: { slug: item.slug } }"
 																		class="image">
-																		<img class="pic-1" :src="base_url + item.file_name">
-																		<img class="pic-2" :src="base_url + item.file_name">
+																		<img class="pic-1"
+																			:src="base_url + item.file_name">
+																		<img class="pic-2"
+																			:src="base_url + item.file_name">
 																	</router-link>
 																	<ul class="product-links">
 																		<li>
@@ -386,18 +501,19 @@
 																				item.product_title
 																			}}</router-link>
 																	</h3>
-																	<div class="rating mb-5 mt-10 justify-content-between">
+																	<div
+																		class="rating mb-5 mt-10 justify-content-between">
 																		<ul>
-																			<li><a href="#"><i class="bi bi-star"></i></a>
-																			</li>
-																			<li><a href="#"><i class="bi bi-star"></i></a>
-																			</li>
-																			<li><a href="#"><i class="bi bi-star"></i></a>
-																			</li>
-																			<li><a href="#"><i class="bi bi-star"></i></a>
-																			</li>
-																			<li><a href="#"><i class="bi bi-star"></i></a>
-																			</li>
+																			<li><a href="#"><i
+																						class="bi bi-star"></i></a></li>
+																			<li><a href="#"><i
+																						class="bi bi-star"></i></a></li>
+																			<li><a href="#"><i
+																						class="bi bi-star"></i></a></li>
+																			<li><a href="#"><i
+																						class="bi bi-star"></i></a></li>
+																			<li><a href="#"><i
+																						class="bi bi-star"></i></a></li>
 																		</ul>
 																		<span><a href="">01 review</a></span>
 																	</div>
@@ -441,8 +557,10 @@
 																	<router-link
 																		:to="{ name: 'Product', params: { slug: item.slug } }"
 																		class="image">
-																		<img class="pic-1" :src="base_url + item.file_name">
-																		<img class="pic-2" :src="base_url + item.file_name">
+																		<img class="pic-1"
+																			:src="base_url + item.file_name">
+																		<img class="pic-2"
+																			:src="base_url + item.file_name">
 																	</router-link>
 																	<ul class="product-links">
 																		<li>
@@ -474,18 +592,19 @@
 																				item.product_title
 																			}}</router-link>
 																	</h3>
-																	<div class="rating mb-5 mt-10 justify-content-between">
+																	<div
+																		class="rating mb-5 mt-10 justify-content-between">
 																		<ul>
-																			<li><a href="#"><i class="bi bi-star"></i></a>
-																			</li>
-																			<li><a href="#"><i class="bi bi-star"></i></a>
-																			</li>
-																			<li><a href="#"><i class="bi bi-star"></i></a>
-																			</li>
-																			<li><a href="#"><i class="bi bi-star"></i></a>
-																			</li>
-																			<li><a href="#"><i class="bi bi-star"></i></a>
-																			</li>
+																			<li><a href="#"><i
+																						class="bi bi-star"></i></a></li>
+																			<li><a href="#"><i
+																						class="bi bi-star"></i></a></li>
+																			<li><a href="#"><i
+																						class="bi bi-star"></i></a></li>
+																			<li><a href="#"><i
+																						class="bi bi-star"></i></a></li>
+																			<li><a href="#"><i
+																						class="bi bi-star"></i></a></li>
 																		</ul>
 																		<span><a href="">01 review</a></span>
 																	</div>
@@ -509,7 +628,8 @@
 														<i class="bi bi-chevron-left"></i>
 													</div>
 													<div class="bs-button bs2-button-next" tabindex="0" role="button"
-														aria-label="Next slide" aria-controls="swiper-wrapper-on-sale-box">
+														aria-label="Next slide"
+														aria-controls="swiper-wrapper-on-sale-box">
 														<i class="bi bi-chevron-right"></i>
 													</div>
 												</div>
@@ -526,8 +646,10 @@
 																	<router-link
 																		:to="{ name: 'Product', params: { slug: item.slug } }"
 																		class="image">
-																		<img class="pic-1" :src="base_url + item.file_name">
-																		<img class="pic-2" :src="base_url + item.file_name">
+																		<img class="pic-1"
+																			:src="base_url + item.file_name">
+																		<img class="pic-2"
+																			:src="base_url + item.file_name">
 																	</router-link>
 																	<ul class="product-links">
 																		<li>
@@ -559,18 +681,19 @@
 																				item.product_title
 																			}}</router-link>
 																	</h3>
-																	<div class="rating mb-5 mt-10 justify-content-between">
+																	<div
+																		class="rating mb-5 mt-10 justify-content-between">
 																		<ul>
-																			<li><a href="#"><i class="bi bi-star"></i></a>
-																			</li>
-																			<li><a href="#"><i class="bi bi-star"></i></a>
-																			</li>
-																			<li><a href="#"><i class="bi bi-star"></i></a>
-																			</li>
-																			<li><a href="#"><i class="bi bi-star"></i></a>
-																			</li>
-																			<li><a href="#"><i class="bi bi-star"></i></a>
-																			</li>
+																			<li><a href="#"><i
+																						class="bi bi-star"></i></a></li>
+																			<li><a href="#"><i
+																						class="bi bi-star"></i></a></li>
+																			<li><a href="#"><i
+																						class="bi bi-star"></i></a></li>
+																			<li><a href="#"><i
+																						class="bi bi-star"></i></a></li>
+																			<li><a href="#"><i
+																						class="bi bi-star"></i></a></li>
 																		</ul>
 																		<span><a href="">01 review</a></span>
 																	</div>
@@ -610,11 +733,7 @@
 						<!-- Right Content Sidebar Ends-->
 						<!-- Left Content Sidebar-->
 						<div class="col-lg-3 order-md-1">
-							<DealsoftheWeek />
-							<LeftOffer1 />
-							<infoBoxes />
-							<LatestBlog />
-							<LeftOffer2 />
+							C
 						</div>
 						<!-- Left Content Sidebar Ends-->
 					</div>
@@ -637,30 +756,13 @@ import { UserStore } from '@/store/UserStore';
 import { useShoppingStore } from '@/store/CartStore';
 import { mapState } from 'pinia';
 import Loading from '@/layouts/partials/loaderComponent.vue';
-import MainSlider from '@/layouts/partials/home/mainSlider.vue';
-import TopCategories from '@/layouts/partials/home/top-categories.vue';
-import DealsoftheWeek from '@/layouts/partials/home/deals-of-the-week.vue';
-import LeftOffer1 from '@/layouts/partials/home/left-side-offer-1.vue';
-import infoBoxes from '@/layouts/partials/home/info-boxes.vue';
-import LatestBlog from '@/layouts/partials/home/latest-blogs.vue';
-import LeftOffer2 from '@/layouts/partials/home/left-side-offer-2.vue';
-
-
 import '../../asset/js/swiper.js';
 import '../../asset/css/swiper.css';
 
 const base_url = import.meta.env.VITE_MY_ENV_VARIABLE;
 export default {
 	name: 'login',
-	components: {
-		MainSlider,
-		TopCategories,
-		DealsoftheWeek,
-		LeftOffer1,
-		infoBoxes,
-		LatestBlog,
-		LeftOffer2
-	},
+
 	computed: {
 		...mapState(UserStore, ['authUser'])
 		/* ...mapState('UserStore',['authUser']) */
@@ -668,7 +770,7 @@ export default {
 	data() {
 		return {
 			base_url,
-			//top_categories: [],
+			top_categories: [],
 			our_products: [],
 			best_selling_products: [],
 			currency: '',
@@ -679,13 +781,20 @@ export default {
 		}
 	},
 	created() {
+
+		this.main_slider_home();
+		this.categorySlider();
 		this.productSlider();
 		this.productSlider2();
 		this.productSlider3();
 		this.productSlider4();
+		// GETTING TOP CATEGORIES
+		this.get_top_categories();
 	},
 
 	mounted() {
+
+
 
 		// GETTING PRODUCTS
 		axios.get('/api/our_products').then(({ data }) => {
@@ -704,8 +813,71 @@ export default {
 		//valid user
 
 
+
+
+
+
+
+
 	},
 	methods: {
+		get_top_categories() {
+			this.loading = true;
+			try {
+				axios.get('/api/get_top_categories').then(({ data }) => {
+					this.top_categories = data.data;
+					//console.log(data.data);
+				});
+			} catch (error) {
+
+			} finally {
+				this.loading = false
+			}
+		},
+
+		categorySlider() {
+			jQuery(function () {
+				if (jQuery(".categories-slider-active").length > 0) {
+					let categories_slider = new Swiper('.categories-slider-active', {
+						slidesPerView: 1,
+						spaceBetween: 20,
+						// direction: 'vertical',
+						loop: true,
+						observer: true,
+						observeParents: true,
+						autoplay: {
+							delay: 6000,
+						},
+						// If we need pagination
+						pagination: {
+							el: '.swiper-pagination',
+							clickable: true,
+						},
+						// Navigation arrows
+						navigation: {
+							nextEl: '.bs-button-next',
+							prevEl: '.bs-button-prev',
+						},
+						// And if we need scrollbar
+						scrollbar: {
+							el: '.swiper-scrollbar',
+						},
+						breakpoints: {
+							550: {
+								slidesPerView: 2,
+							},
+							768: {
+								slidesPerView: 3,
+							},
+							1200: {
+								slidesPerView: 4,
+							}
+						}
+					});
+				}
+			});
+		},
+
 		productSlider() {
 			jQuery(function () {
 				if (jQuery(".product-slider").length > 0) {
@@ -882,6 +1054,73 @@ export default {
 			});
 		},
 
+		main_slider_home() {
+			jQuery(function () {
+				if (jQuery(".slider__active").length > 0) {
+					let sliderActive1 = ".slider__active";
+					let sliderInit1 = new Swiper(sliderActive1, {
+						// Optional parameters
+						slidesPerView: 1,
+						slidesPerColumn: 1,
+						paginationClickable: true,
+						loop: false,
+						effect: 'fade',
+
+						autoplay: {
+							delay: 5000,
+						},
+
+						// If we need pagination
+						pagination: {
+							el: ".main-slider-paginations",
+							// dynamicBullets: true,
+							clickable: true,
+						},
+
+						// Navigation arrows
+						navigation: {
+							nextEl: ".swiper-button-next",
+							prevEl: ".swiper-button-prev",
+						},
+
+						a11y: false,
+					});
+
+					function animated_swiper(selector, init) {
+						let animated = function animated() {
+							$(selector + " [data-animation]").each(function () {
+								let anim = $(this).data("animation");
+								let delay = $(this).data("delay");
+								let duration = $(this).data("duration");
+
+								$(this)
+									.removeClass("anim" + anim)
+									.addClass(anim + " animated")
+									.css({
+										webkitAnimationDelay: delay,
+										animationDelay: delay,
+										webkitAnimationDuration: duration,
+										animationDuration: duration,
+									})
+									.one(
+										"webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend",
+										function () {
+											$(this).removeClass(anim + " animated");
+										}
+									);
+							});
+						};
+						animated();
+						// Make animated when slide change
+						init.on("slideChange", function () {
+							$(sliderActive1 + " [data-animation]").removeClass("animated");
+						});
+						init.on("slideChange", animated);
+					}
+					animated_swiper(sliderActive1, sliderInit1);
+				}
+			});
+		}
 		/* Methods Close*/
 
 
