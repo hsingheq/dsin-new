@@ -43,6 +43,18 @@ body {
   line-height: 26px;
 }
 
+.container-fluid {
+  padding-left: 3rem!important;
+  padding-right: 3rem!important;
+}
+
+@media (max-width: 767px) {
+  .container-fluid {
+    padding-left: .75rem!important;
+    padding-right: .75rem!important;
+  }
+}
+
 a {
   text-decoration: none;
 }
@@ -1239,21 +1251,39 @@ input {
 .header-search .search-input-2:focus {
 	border-color: #16bcdc;
 }
-.header-search .button {
-	position: absolute;
-	top: 0;
-	right: 0;
-	border: none;
+
+.header-search .nice-select {
+  position: absolute;
+  top: 5px;
+  left: 15px;
+  border: none;
+}
+.header-search .nice-select.open .list {
+  border-radius: 0;
+}
+.header-search button{
+  margin-left: -5px; 
+}
+
+.form-control:focus, .btn-check:active+.btn-primary:focus, .btn-check:checked+.btn-primary:focus, .btn-primary.active:focus, .btn-primary:active:focus, .show>.btn-primary.dropdown-toggle:focus {
+  box-shadow: none;
+}
+.header-search button {
 	height: 50px;
 	color: var(--color-white);
 	display: block;
-	line-height: 50px;
-	padding: 0 15px;
-	font-size: 20px;
-	font-weight: 400;
 	background: var(--color-primary);
-	border-radius: 0 4px 4px 0;
-	text-transform: capitalize;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 0 15px;
+}
+.header-search button:hover,
+.header-search button:active,.header-search button:focus {
+	color: var(--color-white);
+	background: var(--color-primary);
+  border-color: var(--color-primary);
 }
 .header-search .button-2 {
   top: 5px;
@@ -1676,7 +1706,7 @@ input {
 .main-menu ul li:hover .mega-menu {
   visibility: visible;
   opacity: 1;
-  top: 232px;
+  top: 95px;
 }
 .main-menu ul li a {
   display: block;
@@ -2423,6 +2453,13 @@ input {
 	text-align: left;
 }
 
+
+.slider-content {
+  position: absolute;
+  top:30%;
+}
+
+
 .main-slider-paginations {
   position: absolute;
   bottom: 10px;
@@ -2516,7 +2553,7 @@ input {
 	padding: 20px 20px;
 }
 .categories-slider-active .categories-item .categories-img img {
-	min-height: 140px;
+	max-height: 140px;
 	transition: all 0.3s ease-out 0s;
 }
 
@@ -2524,9 +2561,9 @@ input {
 	transform: scale(1.1);
 }
 .categories-slider-active .categories-item .categories-content {
-    width: 100%;
-    text-align: center;
-	padding: 0px 20px 20px;
+  width: 100%;
+  text-align: center;
+  padding: 0px 20px 0px;
 }
 .categories-slider-active .categories-item .categories-content h6 {
 	font-size: 16px;
@@ -2799,10 +2836,11 @@ input {
 	font-size: 12px;
 	color: var(--color-default);
 	display: inline-block;
-	background: var(--light-bg);
+	background: var(--bg-color-4);
 	position: relative;
 	text-transform: uppercase;
 	padding: 10px 10px 5px;
+  border-radius: 2px;
 }
 .upto-deals-box {
 	margin-top:5px;

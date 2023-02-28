@@ -34,6 +34,11 @@
     margin-bottom: 0;
     display: inline-block;
 }
+.cart-table tbody tr td a.remove-cart-porduct {
+	font-size: 20px;
+    font-weight: bold;
+    margin-right: 10px;
+}
 .cart-section tbody tr td a img {
     height: 80px;
 }
@@ -108,13 +113,15 @@
 									<th scope="col">product name</th>
 									<th scope="col">price</th>
 									<th scope="col">quantity</th>
-									<th scope="col">action</th>
 									<th scope="col">total</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr>
 									<td>
+										<a href="javascript:void(0)" class="remove-cart-porduct">
+											<i class="bi bi-x"></i>
+										</a>
 										<a href="javascript:void(0)">
 											<img src="https://vue.pixelstrap.com/voxo/_nuxt/img/3.4faefb8.jpg" alt="">
 										</a>
@@ -133,13 +140,7 @@
 											<div class="col">
 												<h2> $337.60 </h2>
 											</div>
-											<div class="col">
-												<h2 class="td-color">
-													<a href="javascript:void(0)">
-														<i class="bi bi-x"></i>
-													</a>
-												</h2>
-											</div>
+											
 										</div>
 									</td>
 									<td>
@@ -152,11 +153,6 @@
 													value="8" class="form-control input-number">
 											</div>
 										</div>
-									</td>
-									<td>
-										<a href="javascript:void(0)">
-											<i class="bi bi-x"></i>
-										</a>
 									</td>
 									<td>
 										<h2 class="td-color"> $337.60 </h2>
