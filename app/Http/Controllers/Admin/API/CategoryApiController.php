@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Models\Products;
 //use App\Models\Upload;
 use DB;
 class CategoryApiController extends Controller
@@ -15,6 +16,11 @@ class CategoryApiController extends Controller
 					->leftJoin('uploads', 'uploads.id', '=', 'categories.category_image')
 					->select('categories.*', 'uploads.file_name')
 					->get();
+				
+		foreach ($data as $key => $value) {
+			$value->totalProduct = Products::where('product_category', 'like',  '%' . $value->id .'%')->count();
+		}
+					
 		if($data) {			
 			$result =  array (
 				'success'=> true,

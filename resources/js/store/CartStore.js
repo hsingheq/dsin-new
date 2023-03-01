@@ -9,6 +9,15 @@ export const useShoppingStore = defineStore('shopping', {
         user_id:null
     }) ,
     getters: {
+        countCartItems(){
+            if(localStorage.getItem('products')){
+				var stor = localStorage.getItem('products');
+				if(stor){
+					var dd = JSON.parse(stor);
+                    return dd.length;
+				}
+			}
+        }
         // countCartItems(){
         //    /*  return this.cartItems.length; */
         //      return this.cartItems;
@@ -21,45 +30,41 @@ export const useShoppingStore = defineStore('shopping', {
     },
     actions: {
 
-        async CartItems(){
-            if(sessionStorage.getItem('token')){
-                const res = await  axios.get('/api/user', {
-                    headers: {
-                        Authorization: 'Bearer ' + sessionStorage.getItem('token'),
-                    },
-    
-                }).then( ({data})=>{
-                    
-                    
-                 this.user_id=data.id
-                   
-                      
-                }); 
-            }
-            try{
-                await axios.post('/api/getCartItemsCount',{
-                    user_id:this.user_id
-                }).then(res=>{
-                    this.countCartItems = res.data.response.length
-                
-                });
-            }catch(error){
-                console.log(error);
-            }
+        CartItems(){
+            if(localStorage.getItem('products')){
+				var stor = localStorage.getItem('products');
+				if(stor){
+					return JSON.parse(stor);
+				}
+			}
             
+            return [];
     },
 
 
 
-      async addToCart(product_id,quantity,uid) {
-            await axios.post('/api/addToCart',{
-                product_id:product_id,
-                quantity:1,
-                uid:uid
-            }).then(res=>{
-                console.log("Product has added to cart!!!");
-                this.CartItems();
-            }) 
+      addToCart(product) {
+            if(localStorage.getItem('products')){
+                var stor = localStorage.getItem('products');
+                if(stor){
+                    var product_array = JSON.parse(stor);
+                    product_array.push(product);
+                    localStorage.setItem('products', JSON.stringify(product_array));
+                }else{
+                    localStorage.setItem('products', JSON.stringify([product]));
+                }
+            }else{
+                localStorage.setItem('products', JSON.stringify([product]));
+            }
+            this.countCartItems();
+            // await axios.post('/api/addToCart',{
+            //     product_id:product_id,
+            //     quantity:1,
+            //     uid:uid
+            // }).then(res=>{
+            //     console.log("Product has added to cart!!!");
+            //     this.CartItems();
+            // }) 
           
            /*  let index = this.cartItems.findIndex(product => product.id === item.id);
             if(index !== -1) {
@@ -125,10 +130,5 @@ export const useShoppingStore = defineStore('shopping', {
             //   timer: 1500
             // });
         }
-
-    
-
-
-        
     })
 // })

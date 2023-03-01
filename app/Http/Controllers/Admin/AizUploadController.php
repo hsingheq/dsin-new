@@ -118,7 +118,7 @@ class AizUploadController extends Controller
                     }
                 }
 
-                $path = $request->file('aiz_file')->store('uploads/all', 'local');
+                $path = $request->file('aiz_file')->store('public/files');
                 $size = $request->file('aiz_file')->getSize();
 
                 if ($type[$extension] == 'image' && get_setting('disable_image_optimization') != 1) {
@@ -147,7 +147,7 @@ class AizUploadController extends Controller
                     Storage::disk('s3')->put($path, file_get_contents(base_path('public/') . $path));
                     unlink(base_path('public/') . $path);
                 }
-
+                $path = $request->file('aiz_file')->store('storage/files');
                 $upload->extension = $extension;
                 $upload->file_name = $path;
                 $upload->user_id = 1;
