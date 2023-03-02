@@ -117,17 +117,18 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
+								<tr v-for="product in cartItems">
 									<td>
 										<a href="javascript:void(0)" class="remove-cart-porduct">
 											<i class="bi bi-x"></i>
 										</a>
 										<a href="javascript:void(0)">
-											<img src="https://vue.pixelstrap.com/voxo/_nuxt/img/3.4faefb8.jpg" alt="">
+											<img :src="product.file_name" alt="" v-if="product.file_name">
+											<img src="https://vue.pixelstrap.com/voxo/_nuxt/img/3.4faefb8.jpg" alt="" v-if="!product.file_name">
 										</a>
 									</td>
 									<td>
-										<a href="/voxo/product/product_left_sidebar/23" class="">Eggplant</a>
+										<a href="/voxo/product/product_left_sidebar/23" class="">{{ product.product_title }}</a>
 										<div class="mobile-cart-content row">
 											<div class="col">
 												<div class="qty-box">
@@ -138,13 +139,13 @@
 												</div>
 											</div>
 											<div class="col">
-												<h2> $337.60 </h2>
+												<h2> {{ product.unit_price }} </h2>
 											</div>
 											
 										</div>
 									</td>
 									<td>
-										<h2>$42.20</h2>
+										<h2>{{ product.unit_price }} </h2>
 									</td>
 									<td>
 										<div class="qty-box">
@@ -155,7 +156,7 @@
 										</div>
 									</td>
 									<td>
-										<h2 class="td-color"> $337.60 </h2>
+										<h2 class="td-color"> {{ product.unit_price * 1 }} </h2>
 									</td>
 								</tr>
 							</tbody>
@@ -245,11 +246,11 @@ import breadcrumb from "@/layouts/partials/breadCrumbComponent.vue";
 const base_url = import.meta.env.VITE_MY_ENV_VARIABLE;
 export default {
 	created() {
-		this.getCartItems();
+		
 	},
 
 	computed: {
-		...mapState(useShoppingStore, ["countCartItems"]),
+
 	},
 	data() {
 		return {
@@ -259,31 +260,22 @@ export default {
 		};
 	},
 	methods: {
-		async getCartItems() {
-			this.loading = true;
-			try {
-				await axios
-					.post("/api/getCartItems", {
-						user_id: 2,
-					})
-					.then((res) => {
-						this.cartItems = res.data.response;
-					});
-			} catch (error) {
-				console.log(error);
-			} finally {
-				this.loading = false;
+		getProducts(){
+            if(localStorage.getItem('products')){
+				var stor = localStorage.getItem('products');
+				if(stor){
+					this.cartItems =  JSON.parse(stor);
+				}
 			}
-		},
+		}
 	},
-
+	mounted() {
+		this.getProducts();
+	},
 	setup() {
 		const page_name = ref("Cart");
-		const Cartdata = useShoppingStore();
-
 		return {
 			page_name,
-			Cartdata,
 		};
 	},
 	components: {

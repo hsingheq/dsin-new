@@ -8,25 +8,68 @@ use DB;
 use App\Models\Products;
 use App\Models\Brands;
 use App\Models\ShoppingCart;
+use App\Models\Attribute;
+use App\Models\AttributeOptions;
 
 
 class ProductApiController extends Controller
 {
-    public function our_products()
+    public function our_products(Request $requestss)
     {
         $data = DB::table('products')
             ->leftJoin('uploads', 'uploads.id' ,'products.thumbnail_img' )
             ->select('products.id','product_title','product_category','file_name','unit_price','products.slug','products.id')
-            ->orderBy('id', 'DESC')
-            ->paginate(10);
+            ->orderBy('id', 'DESC');
+
+        if($requestss->categories){
+            $category = $requestss->categories;
+            $data = $data->Where(function ($query) use($category) {
+                for ($i = 0; $i < count($category); $i++){
+                $query->orwhere('product_category', 'like',  '%' . $category[$i] .'%');
+                }      
+            });
+        }
+
+        if($requestss->checkedColors){
+            $color = $requestss->checkedColors;
+            $data->orwhere('choice_options', 'like',  '%' . $color .'%');
+        }
+
+        if($requestss->checkedSize){
+            $size = $requestss->checkedSize;
+            $data = $data->Where(function ($query) use($size) {
+                for ($i = 0; $i < count($size); $i++){
+                $query->orwhere('choice_options', 'like',  '%' . $size[$i] .'%');
+                }      
+            });
+        }
+        
+        
+        if($requestss->checkedBrand){
+            $brand = $requestss->checkedBrand;
+            $data = $data->Where(function ($query) use($brand) {
+                for ($i = 0; $i < count($brand); $i++){
+                $query->orwhere('product_brand', $brand[$i]);
+                }      
+            });
+        }
+
+        if($requestss->sorting == 'latest'){
+            
+        }else if($requestss->sorting == 'new'){
+
+        }else{
+
+        }
+
+        $data = $data->paginate($requestss->perPage);
         $result =  array (
 					'success'   => true,
 					'data'      => $data,
 					'currency'  => get_setting('currency'),
 					'message'    => 'getting categories..'
 				); 
-        $vals =  response()->json($result); 
-        return $vals;
+        return response()->json($result); 
     }
 
 
@@ -100,5 +143,29 @@ class ProductApiController extends Controller
        
         
           return response()->json(['response'=> $data]);
+    }
+
+    public function getAtribute(Request $request)
+    {
+        $colors = AttributeOptions::where('attribute_id',1)->get();
+        foreach($colors as $key => $value) {
+            $value->totalProduct = Products::where('choice_options', 'like',  '%' . $value->value .'%')->count();
+        }
+        $size = AttributeOptions::where('attribute_id',2)->get();
+        foreach($size as $key => $value) {
+            $value->totalProduct = Products::where('choice_options', 'like',  '%' . $value->value .'%')->count();
+        }
+        $brands = Brands::get();
+        foreach($brands as $key => $value) {
+            $value->totalProduct = Products::where('product_brand', $value->id)->count();
+        }
+
+        $data = array(
+            'colors' => $colors,
+            'size' => $size,
+            'brands' => $brands,
+        );
+
+        return response()->json(['response'=> $data]);
     }
 }
