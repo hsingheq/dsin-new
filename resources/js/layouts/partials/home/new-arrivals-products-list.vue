@@ -280,7 +280,7 @@ export default {
             this.loading = true;
 
             try {
-                axios.get('/api/our_products').then(({ data }) => {
+                axios.get('/api/new_arriaval_products').then(({ data }) => {
                     this.newarrivalsproducts = data.data.data;
                     this.currency = data.currency;
                     //console.log(data.data);

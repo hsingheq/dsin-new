@@ -76,7 +76,7 @@ All Product
                                     </th>
 
                                     
-                                    <td class="id" ><a href="javascript:void(0);" class="fw-medium link-primary">{{$i++}}</a></td>
+                                    <td class="id" ><a href="/admin/products/edit-product/{{$product->id}}" class="fw-medium link-primary">{{$i++}}</a></td>
 
                                     <td class="email">
                                         <span><div class="d-flex align-items-center">
@@ -86,7 +86,7 @@ All Product
                                                 </div>
                                             </div><div class="flex-grow-1">
                                                 <h5 class="fs-14 mb-1">
-                                                    <a href="#!" class="text-dark">{{$product->product_title}}</a></h5>
+                                                    <a href="/admin/products/edit-product/{{$product->id}}" class="text-dark">{{$product->product_title}}</a></h5>
                                                    
                                                 </div></div></span>
 
