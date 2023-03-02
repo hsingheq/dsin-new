@@ -281,7 +281,7 @@ class ProductController extends MY_Controller
 
     public function all_products()
     {
-        $data['products']   =  DB::table('products')->get();
+        $data['products']   =  DB::table('products')->orderBy('id', 'DESC')->get();
 
         /* $data['products'] = DB::table('products')
             ->join('product_images', 'products.id', '=', 'product_images.product_id')
@@ -453,19 +453,11 @@ class ProductController extends MY_Controller
             $product_stock->save();
         }
 
-
-
         $product->save();
 
-
-
-
         //  $result = $product->save();
-
-
-
-        flash("product updated successfully!")->success();
-        return back();
+        flash("Product updated successfully!")->success();
+        return redirect(route('admin.all_products'));
     }
 
 

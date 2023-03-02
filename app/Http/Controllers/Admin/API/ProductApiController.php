@@ -72,6 +72,24 @@ class ProductApiController extends Controller
         return response()->json($result); 
     }
 
+    public function new_arriaval_products()
+    {
+        $data = DB::table('products')
+            ->leftJoin('uploads', 'uploads.id' ,'products.thumbnail_img' )
+            ->select('products.id','product_title','product_category','file_name','unit_price','products.slug','products.id')
+            ->orderBy('id', 'DESC')
+            ->paginate(10);
+      
+         
+        $result =  array (
+					'success'   => true,
+					'data'      => $data,
+					'currency'  => get_setting('currency'),
+					'message'    => 'getting categories..'
+				); 
+        $vals =  response()->json($result); 
+        return $vals;
+    }
 
     public function best_selling_products()
     {

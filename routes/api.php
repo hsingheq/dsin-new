@@ -115,6 +115,8 @@ Route::controller(ProductApiController::class)->group(function(){
     Route::post('getCartItemsCount','getCartItemsCount');
     Route::post('getCartItems','getCartItems');
     Route::get('getAtribute','getAtribute');
+    Route::get('new_arriaval_products','new_arriaval_products');
+    
 });
 
 
