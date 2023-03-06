@@ -498,7 +498,7 @@ class ProductController extends MY_Controller
             ->where('product_id', $id)
             ->get(); 
  */
-        $data['product_variations']        =  DB::table('products')
+        $data['product_variations'] =  DB::table('products')
             /*  $data       =  DB::table('products') */
             ->join('product_stocks', 'products.id', '=', 'product_stocks.product_id')
             ->select('variant', 'product_id', 'qty')
@@ -509,6 +509,8 @@ class ProductController extends MY_Controller
         // print_r($bit->qty);
         // array_sum($bit->qty);
         //  die;
+        //$product = DB::table('products')->join('categories','categories.id',DB::Raw("CAST(products.product_category->'$.id' AS UNSIGNED)"))->get()->first();
+        //print_r(DB::table('products')->join('categories','categories.id',DB::Raw("JSON_CONTAINS(products.product_category, 'categories.id')"))->get()->first());
         $data['product'] = DB::table('products')->where('id', $id)->get()->first();
         return view('admin.products.view-product', $data);
     }

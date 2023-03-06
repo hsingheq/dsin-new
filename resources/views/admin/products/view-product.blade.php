@@ -2,7 +2,7 @@
 @section('headerinject')
 @endsection
 @section('page_name')
-Edit Product  
+View Product  
 @endsection
   
 
@@ -28,33 +28,31 @@ Edit Product
             <div class="card">
                 <div class="card-body">
                     @php 
-                    $photos = $product->photos;
-                  
-                    $photos = explode(",",$photos);
-                    foreach($photos  as $photo){
-                       // print_r($photo);
+                   // print_r($product);
+                    $images = array();
+                    $thumbnail = $product->thumbnail_img;
+                    if($thumbnail) {
+                        $images[] =  $thumbnail;
                     }
-                   
-                   // $slides =(array) json_decode($product->product_gallery,true);
-                    /* foreach($photos as $slide){
-                           // print_r($slide)."<br>";
-                    } */
+                    $photos = $product->photos;
+                    if($photos) {
+                        $photos = explode(",",$photos);
+                        foreach($photos as $photo) {
+                            $images[] =  $photo;
+                        }
+                    }
                     @endphp
                     <div class="row gx-lg-5">
                         <div class="col-xl-4 col-md-8 mx-auto">
                             <div class="product-img-slider sticky-side-div">
                                 <div class="swiper product-thumbnail-slider p-2 rounded bg-light swiper-initialized swiper-horizontal swiper-pointer-events swiper-backface-hidden">
                                     <div class="swiper-wrapper" id="swiper-wrapper-e1520a65a51f2112" aria-live="polite" style="transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;">
-                                        @foreach($photos as $slide)
+                                        @foreach($images as $slide)
                                         <div class="swiper-slide swiper-slide-active" role="group" aria-label="1 / 4" style="width: 352px; margin-right: 24px;">
 
                                             <img src="{{ get_uploaded_image_url($slide) }}" alt="" class="img-fluid d-block">
                                         </div>
                                         @endforeach
-                                       
-                              
-
-
                                     </div>
                                     <div class="swiper-button-next" tabindex="0" role="button" aria-label="Next slide" aria-controls="swiper-wrapper-e1520a65a51f2112" aria-disabled="false"></div>
                                     <div class="swiper-button-prev swiper-button-disabled" tabindex="-1" role="button" aria-label="Previous slide" aria-controls="swiper-wrapper-e1520a65a51f2112" aria-disabled="true"></div>
@@ -64,7 +62,7 @@ Edit Product
                                     <div class="swiper-wrapper" id="swiper-wrapper-c554718e8cff8e0d" aria-live="polite" style="transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;">
 
 
-                                    @foreach($photos as $slide)
+                                    @foreach($images as $slide)
                                         <div class="swiper-slide swiper-slide-visible swiper-slide-active swiper-slide-thumb-active" role="group" aria-label="1 / 4" style="width: 84.5px; margin-right: 10px;">
                                             <div class="nav-slide-item ">
                                                 <img src="{{ get_uploaded_image_url($slide) }}" alt="" class="img-fluid d-block">
@@ -236,18 +234,16 @@ Edit Product
                                 <div class="row">
                                     <div class="col-xl-6">
                                         <div class=" mt-4">
-                                            <h5 class="fs-15">Variations :</h5>
+                                            <h5 class="fs-15">Variations:</h5>
                                             <div class="d-flex flex-wrap gap-2">
-                                                @foreach ($product_variations as $variation )
-                                              
-                                                   
-                                                    <span class="badge rounded-pill text-bg-success">{{ $variation->variant }}</span>
-                                                   
-                                              
-                                                @endforeach
-                                              
-
-                                              
+                                                @if($product_variations)
+                                                    @foreach ($product_variations as $variation )
+                                                        <span class="badge rounded-pill text-bg-success">{{ $variation->variant }}</span>                                              
+                                                    @endforeach   
+                                                @else
+                                                    {{ "N/A"}}
+                                                @endif    
+                                                
                                             </div>
                                         </div>
                                     </div>
@@ -330,13 +326,40 @@ Edit Product
                                                 <table class="table mb-0">
                                                     <tbody>
                                                         <tr>
-                                                            <th scope="row" style="width: 200px;">
-                                                                Category</th>
-                                                            <td>{{$product->product_category}}</td>
+                                                            <th scope="row" style="width: 200px;">Category</th>
+                                                            <td>
+                                                            @php
+                                                                $categories = $product->product_category;
+                                                                $categories = json_decode($categories);
+                                                                $cats= array();
+                                                            @endphp
+                                                                @if($categories) 
+                                                                    @foreach($categories as $category) 
+                                                                        @php
+                                                                            $c = get_product_category_by_id($category);
+                                                                            $cats[] = $c->category;
+                                                                        @endphp
+                                                                    @endforeach
+                                                                    @php
+                                                                        echo join(", ", $cats);
+                                                                    @endphp
+                                                                @else
+                                                                    {{ "N/A" }}    
+                                                                @endif    
+                                                            </td>
                                                         </tr>
                                                         <tr>
                                                             <th scope="row">Brand</th>
-                                                            <td>{{$product->product_brand}}</td>
+                                                            <td>
+                                                                @php
+                                                                    $brand = get_product_brand_by_id($product->product_brand);
+                                                                @endphp
+                                                                @if($brand)    
+                                                                    {{ $brand->brand }}
+                                                                @else 
+                                                                    {{ "N/A" }}    
+                                                                @endif
+                                                            </td>
                                                         </tr>
                                                        <!-- <tr>
                                                             <th scope="row">Color</th>

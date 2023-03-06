@@ -205,3 +205,7 @@ table.dataTable thead>tr>th.sorting_disabled:after {
 	content: "";
 	display: none!important;
 }
+
+.custom-verti-nav-pills .nav-link::before {
+	display:none;
+}

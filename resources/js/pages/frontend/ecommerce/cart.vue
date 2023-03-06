@@ -25,74 +25,96 @@
 	text-align: center;
 	min-width: 175px;
 }
+
 .cart-table tbody tr td a {
-    color: #7e7e7e;
+	color: #7e7e7e;
 	white-space: nowrap;
-    font-weight: 400;
-    font-size: 14px;
-    text-transform: capitalize;
-    margin-bottom: 0;
-    display: inline-block;
+	font-weight: 400;
+	font-size: 14px;
+	text-transform: capitalize;
+	margin-bottom: 0;
+	display: inline-block;
 }
+
 .cart-table tbody tr td a.remove-cart-porduct {
 	font-size: 20px;
-    font-weight: bold;
-    margin-right: 10px;
+	font-weight: bold;
+	margin-right: 10px;
 }
+
 .cart-section tbody tr td a img {
-    height: 80px;
+	height: 80px;
 }
+
 .cart-section tbody tr td .mobile-cart-content {
-    display: none;
-    justify-content: center;
-    margin-top: 10px;
+	display: none;
+	justify-content: center;
+	margin-top: 10px;
 }
+
 .cart-section tbody tr td h2 {
-    font-size: 20px;
-    color: var(--color-primary);
-    font-weight: 400;
+	font-size: 20px;
+	color: var(--color-primary);
+	font-weight: 400;
 }
+
 .cart-section tbody tr td .qty-box .input-group {
-    display: block;
+	display: block;
 }
+
 .cart-section tbody tr td .qty-box .input-group .form-control {
-    width: 75px;
-    margin: 0 auto;
-    text-align: center;
-    padding: 5px;
-    height: 50px;
+	width: 75px;
+	margin: 0 auto;
+	text-align: center;
+	padding: 5px;
+	height: 50px;
 }
+
 .cart-section .left-side-button {
-    display: flex;
-    align-items: center;
+	display: flex;
+	align-items: center;
 }
+
 .cart-section .cart-checkout-section {
-    margin-top: 30px;
+	margin-top: 30px;
 }
+
 .cart-section .cart-checkout-section .checkout-button {
-    text-align: right;
+	text-align: right;
 }
+
 .cart-section .cart-checkout-section .cart-checkout-box {
-    background-color: #eff2f7;
-    border-radius: 10px;
-    overflow: hidden;
-    padding: 0;
+	background-color: #eff2f7;
+	border-radius: 10px;
+	overflow: hidden;
+	padding: 0;
 }
+
 .cart-section .cart-checkout-section .cart-checkout-box .cart-box-details .total-details .top-details {
-    border-bottom: 1px solid #c7c7c5;
-    padding: 22px;
-    margin-bottom: 0;
+	border-bottom: 1px solid #c7c7c5;
+	padding: 22px;
+	margin-bottom: 0;
 }
+
+.cart-section .cart-checkout-section .cart-checkout-box .cart-box-details .total-details .top-details h6 {
+	line-height: 1.9;
+	color: #212529;
+}
+
+.cart-section .cart-checkout-section .cart-checkout-box .cart-box-details .total-details span {
+	float: right;
+}
+
 .cart-section .cart-checkout-section .cart-checkout-box .cart-box-details .total-details .bottom-details a {
-    background-color: #0163d2;
-    background-color: var(--color-primary);
-    width: 100%;
-    display: block;
-    padding: 12px 0;
-    text-align: center;
-    color: #fff;
-    font-weight: 500;
-    letter-spacing: 1.2px;
+	background-color: #0163d2;
+	background-color: var(--color-primary);
+	width: 100%;
+	display: block;
+	padding: 12px 0;
+	text-align: center;
+	color: #fff;
+	font-weight: 500;
+	letter-spacing: 1.2px;
 }
 </style>
 <template>
@@ -106,7 +128,10 @@
 				<!-- Cart Item Row Starts-->
 				<div class="col-sm-12">
 					<div class="table-responsive mt-4">
-						<table class="table cart-table">
+						<div class="" v-if="data.countCartItems == 0">
+							There is no products added in the cart.
+						</div>
+						<table class="table cart-table" v-if="data.countCartItems > 0">
 							<thead>
 								<tr class="table-head">
 									<th scope="col">image</th>
@@ -117,46 +142,59 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr v-for="product in cartItems">
-									<td>
-										<a href="javascript:void(0)" class="remove-cart-porduct">
-											<i class="bi bi-x"></i>
-										</a>
-										<a href="javascript:void(0)">
-											<img :src="product.file_name" alt="" v-if="product.file_name">
-											<img src="https://vue.pixelstrap.com/voxo/_nuxt/img/3.4faefb8.jpg" alt="" v-if="!product.file_name">
+								<tr v-for="cartItem in data.cartItems">
+								<td>
+									<a href="javascript:void(0)" @click="data.removeFromCart(cartItem)"
+										class="remove-cart-porduct">
+										<i class="bi bi-x"></i>
+									</a>
+									<a href="javascript:void(0)">
+										<img :src="cartItem.file_name" alt="" v-if="cartItem.file_name">
+											<img src="https://vue.pixelstrap.com/voxo/_nuxt/img/3.4faefb8.jpg" alt=""
+												v-if="!cartItem.file_name">
 										</a>
 									</td>
 									<td>
-										<a href="/voxo/product/product_left_sidebar/23" class="">{{ product.product_title }}</a>
+										<a href="/voxo/product/product_left_sidebar/23" class="">
+											{{ cartItem.product_title }}
+										</a>
 										<div class="mobile-cart-content row">
 											<div class="col">
 												<div class="qty-box">
 													<div class="input-group">
-														<input type="number" name="quantity" min="1" max="23" value="8"
-															class="form-control input-number">
+														<input type="number" name="quantity" min="1"
+															:value="cartItem.quantity" class="form-control input-number">
 													</div>
 												</div>
 											</div>
 											<div class="col">
-												<h2> {{ product.unit_price }} </h2>
+												<h2>
+													<currencyformat :value="cartItem.unit_price" />
+												</h2>
 											</div>
-											
+
 										</div>
 									</td>
 									<td>
-										<h2>{{ product.unit_price }} </h2>
+										<h2>
+											<currencyformat :value="cartItem.unit_price" />
+										</h2>
 									</td>
 									<td>
-										<div class="qty-box">
-											<div class="input-group">
-												<input type="number" name="quantity" min="1" max="23"
-													value="8" class="form-control input-number">
-											</div>
-										</div>
+
+										<numbercontrol :value="cartItem.quantity" :min="1" :product="cartItem" />
+										<!--<div class="qty-box">
+														<div class="input-group">
+															<input type="number" name="quantity" min="1" :value="cartItem.quantity"
+																class="form-control input-number">
+
+														</div>
+													</div>-->
 									</td>
 									<td>
-										<h2 class="td-color"> {{ product.unit_price * 1 }} </h2>
+										<h2 class="td-color">
+											<currencyformat :value="cartItem.unit_price * cartItem.quantity" />
+										</h2>
 									</td>
 								</tr>
 							</tbody>
@@ -167,22 +205,26 @@
 				<!-- Continue Button Row Starts-->
 				<div class="col-12 mt-md-5 mt-4">
 					<div class="row">
-						<div class="col-sm-7 col-5 order-1">
+						<div class="col-sm-7 col-5 order-1" v-if="data.countCartItems > 0">
 							<div class="left-side-button text-end d-flex d-block justify-content-end">
-								<a href="javascript:void(0)" class="text-decoration-underline theme-color d-block text-capitalize">clear all items</a>
+								<a href="javascript:void(0)"
+									class="text-decoration-underline theme-color d-block text-capitalize"
+									@click="data.removeCart()">clear all
+									items</a>
 							</div>
 						</div>
 						<div class="col-sm-5 col-7">
 							<div class="left-side-button float-start">
-								<a href="/voxo/home/fashion_demo" class="btn btn-solid-default btn fw-bold mb-0 ms-0">
-									<i class="fas fa-arrow-left"></i> Continue Shopping </a>
+								<router-link :to="{ name: 'shop' }" class="btn btn-solid-default btn fw-bold mb-0 ms-0">
+									Continue Shopping
+								</router-link>
 							</div>
 						</div>
 					</div>
 				</div>
 				<!-- Continue Button Row Ends-->
 				<!--Checkout Section Starts-->
-				<div class="cart-checkout-section">
+				<div class="cart-checkout-section" v-if="data.countCartItems > 0">
 					<div class="row g-4">
 						<div class="col-lg-4 col-sm-6">
 							<div class="promo-section">
@@ -197,10 +239,7 @@
 							</div>
 						</div>
 						<div class="col-lg-4 col-sm-6">
-							<div class="checkout-button">
-								<a href="javascript:void(0)" class="btn btn-solid-default btn fw-bold"> Check Out <i class="fas fa-arrow-right ms-1"></i>
-								</a>
-							</div>
+							
 						</div>
 						<div class="col-lg-4">
 							<div class="cart-checkout-box">
@@ -208,17 +247,25 @@
 									<div class="total-details">
 										<div class="top-details">
 											<h3>Cart Totals</h3>
-											<h6> Total MRP <span>$338</span>
-											</h6>
-											<h6> Coupon Discount <span>-$25.00</span>
-											</h6>
-											<h6> Convenience Fee <span>
-													<del>$25.00</del>
+											<h6> Subtotal <span>
+													<currencyformat :value="data.getCartTotal()" />
 												</span>
 											</h6>
+											<h6> Total <span>
+													<currencyformat :value="data.getCartTotal()" />
+												</span>
+											</h6>
+											<!--<h6> Coupon Discount <span>-$25.00</span>
+													</h6>
+													<h6> Convenience Fee <span>
+															<del>
+																<currencyformat :value="0" />
+															</del>
+														</span>
+													</h6>-->
 										</div>
 										<div class="bottom-details">
-											<a href="/voxo/page/checkout" class="">Process Checkout</a>
+											<a href="/checkout" class="">Process Checkout</a>
 										</div>
 									</div>
 								</div>
@@ -239,48 +286,43 @@ import { ref, reactive } from "vue";
 import axios from "axios";
 import { useRoute, useRouter } from "vue-router";
 import { UserStore } from "@/store/UserStore";
-import { useShoppingStore } from "@/store/CartStore";
+import { useShoppingStore } from '@/store/cart';
 import { mapState } from "pinia";
 import Loading from "@/layouts/partials/loaderComponent.vue";
 import breadcrumb from "@/layouts/partials/breadCrumbComponent.vue";
+import numbercontrol from "@/layouts/partials/components/number-control.vue";
+import currencyformat from "@/layouts/partials/components/currency-format.vue";
 const base_url = import.meta.env.VITE_MY_ENV_VARIABLE;
 export default {
 	created() {
-		
+
 	},
-
 	computed: {
-
 	},
 	data() {
 		return {
-			cartItems: [],
-			base_url,
 			loading: false,
+			subtotal: 0,
 		};
 	},
 	methods: {
-		getProducts(){
-            if(localStorage.getItem('products')){
-				var stor = localStorage.getItem('products');
-				if(stor){
-					this.cartItems =  JSON.parse(stor);
-				}
-			}
-		}
 	},
 	mounted() {
-		this.getProducts();
+
 	},
 	setup() {
 		const page_name = ref("Cart");
+		const data = useShoppingStore();
 		return {
 			page_name,
+			data,
 		};
 	},
 	components: {
 		breadcrumb,
 		Loading,
+		numbercontrol,
+		currencyformat
 	},
 };
 </script>
