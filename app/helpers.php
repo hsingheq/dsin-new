@@ -2,6 +2,8 @@
 
 use App\Models\ExtraSettings;
 use App\Models\FlashMessage;
+use App\Models\Category;
+//use App\Models\Brands;
 
 function _na($value)
 {
@@ -176,5 +178,27 @@ if (!function_exists('formatBytes')) {
         // $bytes /= (1 << (10 * $pow));
 
         return round($bytes, $precision) . ' ' . $units[$pow];
+    }
+}
+
+//return product category details
+if (!function_exists('get_product_category_by_id')) {
+    function get_product_category_by_id($id)
+    {
+        if (($category = \App\Models\Category::find($id)) != null) {
+            return $category;
+        }
+        return null;
+    }
+}
+
+//return product brand details
+if (!function_exists('get_product_brand_by_id')) {
+    function get_product_brand_by_id($id)
+    {
+        if (($brand = \App\Models\Brands::find($id)) != null) {
+            return $brand;
+        }
+        return null;
     }
 }

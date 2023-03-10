@@ -146,7 +146,7 @@
 									</ul>
 								</nav>
 							</div>
-							<!--Main Menu Ends-->	
+							<!--Main Menu Ends-->
 							<!--<div class="header-search-container">
 								<form action="#">
 									<div class="header-search">
@@ -195,7 +195,7 @@
 							<div class="cat-toggle">
 								<button type="button" class="cat-toggle-btn">
 									<i class="bi bi-list"></i> Browse Categories </button>
-									<!-- Browse Menu Starts-->
+								<!-- Browse Menu Starts-->
 								<div class="cat__menu">
 									<nav id="mobile-menu ">
 										<ul>
@@ -528,7 +528,9 @@
 							<!-- Search Form Starts-->
 							<div class="header-search">
 								<form class="d-flex">
-									<select><option>All Categories</option></select>
+									<select>
+										<option>All Categories</option>
+									</select>
 									<span id="line"></span>
 									<input class="form-control search-input" type="text" placeholder="What do you need?">
 									<button class="btn btn-primary" type="button">Search</button>
@@ -558,10 +560,11 @@
 							<div class="block-cart action">
 								<router-link :to="{ name: 'Cart' }" class="icon-link">
 									<i class="bi bi-cart"></i>
-									<span class="count">{{ countCartItems }}</span>
+									<!--<span class="count" v-if="countCartItems">{{ countCartItems }}</span>-->
+									<span class="count">{{ data.countCartItems }}</span>
 									<span class="text">Cart</span>
 								</router-link>
-								<div class="cart">
+								<div class="cart" v-if="data.countCartItems > 0">
 									<div class="cart-box">
 										<ul>
 											<li>
@@ -570,24 +573,28 @@
 												</div>
 											</li>
 											<li>
-												<div class="cart__item d-flex justify-content-between align-items-center">
+												<div class="cart__item d-flex justify-content-between align-items-center"
+													v-for="cartItem in data.cartItems">
 													<div class="cart__inner d-flex">
 														<div class="cart__thumb">
 															<a href="">
-																<img src="@/asset/images/products/product-1.jpg" alt="">
+																<img :src="cartItem.file_name" alt=""
+																	v-if="cartItem.file_name">
+																<img src="@/asset/images/products/product-1.jpg" alt=""
+																	v-else>
 															</a>
 														</div>
 														<div class="cart__details">
 															<h6>
-																<a href="">Brother LC-3617 Black Ink</a>
+																<a href="">{{ cartItem.product_title }}</a>
 															</h6>
 															<div class="cart__price">
-																<span>RM 58.00</span>
+																<currencyformat :value="cartItem.unit_price" />
 															</div>
 														</div>
 													</div>
 													<div class="cart__del">
-														<a href="#">
+														<a href="#" @click="data.removeFromCart(cartItem)">
 															<i class="bi bi-x"></i>
 														</a>
 													</div>
@@ -596,7 +603,9 @@
 											<li>
 												<div class="cart__sub d-flex justify-content-between align-items-center">
 													<h6>Subtotal</h6>
-													<span class="cart__sub-total">RM 58.00</span>
+													<span class="cart__sub-total">
+														<currencyformat :value="data.getCartTotal()" />
+													</span>
 												</div>
 											</li>
 											<li>
@@ -649,22 +658,25 @@ import { reactive, ref } from 'vue';
 import router from "@/router";
 import { UserStore } from '../../store/UserStore';
 /* import { CartStore } from '../../store/CartStore'; */
-import { useShoppingStore } from '@/store/CartStore';
+import { useShoppingStore } from '@/store/cart';
 import { mapState } from 'pinia';
 import logoutComponents from '../../mixins/logout';
+import currencyformat from "@/layouts/partials/components/currency-format.vue";
 //import { loginState, isLoggedIn, login,logoutNew } from '../../auth';
 export default ({
-	//components: {VueNextSelect},
+	components: {
+		currencyformat
+	},
 	computed: {
 		//  ...mapState(UserStore, ['email', 'name','user'])
 		...mapState(UserStore, ['token', 'user', 'authUser']),
-		...mapState(useShoppingStore, ['countCartItems'])
+		//...mapState(useShoppingStore, ['countCartItems'])
 	},
 
 	props: ['logo', 'femail', 'fphone'],
 	mounted() {
-		UserStore().fetchUser(),
-			useShoppingStore().CartItems()
+		UserStore().fetchUser()
+		//useShoppingStore().CartItems()
 	},
 	async created() {
 
@@ -738,4 +750,7 @@ export default ({
 #mobile-menu {
 	display: block;
 }
-</style>
+
+.cart__details {
+	text-align: left;
+}</style>
