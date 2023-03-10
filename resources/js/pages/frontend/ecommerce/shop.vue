@@ -26,7 +26,7 @@
 				<!-- Sidebar Starts -->
 				<div class="col-xl-3 col-lg-4">
 					<form action="#">
-						<div class="product-widget">
+						<!--<div class="product-widget">
 							<h5 class="pt-title"><span>Price</span></h5>
 
 							<div class="widget-content widget-category-list  mt-30">
@@ -39,7 +39,7 @@
 									<button class="track-btn track2" ref="track2"></button>
 								</div>
 							</div>
-						</div>
+						</div>-->
 
 						<div class="product-widget">
 							<h5 class="pt-title"><span>Product categories</span></h5>
