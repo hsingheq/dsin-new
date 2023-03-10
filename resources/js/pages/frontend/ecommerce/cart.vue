@@ -292,6 +292,7 @@ import Loading from "@/layouts/partials/loaderComponent.vue";
 import breadcrumb from "@/layouts/partials/breadCrumbComponent.vue";
 import numbercontrol from "@/layouts/partials/components/number-control.vue";
 import currencyformat from "@/layouts/partials/components/currency-format.vue";
+
 const base_url = import.meta.env.VITE_MY_ENV_VARIABLE;
 export default {
 	created() {

@@ -222,10 +222,9 @@
 										<div class="product-item product-item-d">
 											<div class="product-thumb fix">
 												<div class="product-image w-img">
-													<a href="">
+													<router-link :to="{ name: 'Product', params: { slug: product.slug } }" class="image">
 														<img :src="product.file_name" alt="product">
-													</a>
-
+													</router-link>
 												</div>
 											<!-- <div class="product-action">
 												   <a href="#" class="icon-box" data-bs-toggle="modal" data-bs-target="#productModalId">
@@ -238,7 +237,9 @@
 											</div>
 											<div class="product-content">
 												<h6>
-													<a href="">{{ product.product_title }}</a>
+													<router-link :to="{ name: 'Product', params: { slug: product.slug } }" class="image">
+														{{ product.product_title }}
+													</router-link>
 												</h6>
 												<div class="rating mb-5 mt-10 justify-content-between">
 													<ul>
@@ -251,7 +252,7 @@
 													<span>1 review</span>
 												</div>
 												<div class="price">
-													<span>{{ product.unit_price }}</span>
+													<currencyformat :value="product.unit_price" />
 												</div>
 											</div>
 											<div class="d-flex justify-content-between align-items-center">
@@ -367,6 +368,7 @@ import { mapState } from 'pinia';
 
 import axios from 'axios';
 import Bootstrap5Pagination from 'laravel-vue-pagination';
+import currencyformat from "@/layouts/partials/components/currency-format.vue";
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/css/index.css';
 
@@ -379,7 +381,8 @@ const base_url = import.meta.env.VITE_MY_ENV_VARIABLE;
 export default {
 	components: {
 		Loading,
-		Bootstrap5Pagination
+		Bootstrap5Pagination,
+		currencyformat
 	},
 	computed: {
 		...mapState(UserStore, ['authUser'])
