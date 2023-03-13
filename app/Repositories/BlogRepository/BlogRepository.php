@@ -41,9 +41,8 @@ class BlogRepository implements BlogInterfacesRepository
         $Blog->meta_keyword     =   $request->meta_keyword;
         $Blog->is_featured      =   $request->is_featured;
         $Blog->status           =   $request->status;
-        $Blog->visibility       =   $request->visibility;
         $Blog->tag_ids          =   (isset($request->tag_ids)) ? json_encode($request->tag_ids) : NULL;
-        $Blog->published_by     =   $request->published_by;
+        $Blog->user_id     =   $request->published_by;
         $Blog->save();
     }
 
@@ -63,9 +62,8 @@ class BlogRepository implements BlogInterfacesRepository
         $Blog->meta_keyword     =   $request->meta_keyword;
         $Blog->is_featured      =   $request->is_featured;
         $Blog->status           =   $request->status;
-        $Blog->visibility       =   $request->visibility;
         $Blog->tag_ids          =   (isset($request->tag_ids)) ? json_encode($request->tag_ids) : NULL;
-        $Blog->published_by     =   $request->published_by;
+        $Blog->user_id          =   $request->published_by;
         $result                 = $Blog->save();
     }
 

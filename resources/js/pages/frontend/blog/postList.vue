@@ -23,34 +23,47 @@
     <div class="container">
       <div class="row">
         <!-- Sidebar Starts -->
-        <!--<div class="col-xl-3 col-lg-4">
+        <div class="col-xl-3 col-lg-4">
           <form action="">
-            Filters
+            <div class="product-widget" v-if="categories">
+              <h5 class="pt-title"><span>Categories</span></h5>
+              <div class="widget-content widget-category-list  mt-20">
+                <div class="single-widget-category" v-for="category in categories" :key="category.id">
+                  <a href="#" @click="filterByCategory(category.id)">
+                    {{ category.category }}
+                  </a>
+                </div>
+              </div>
+            </div>
           </form>
-        </div>-->
+        </div>
         <!-- Sidebar Ends -->
         <!-- Posts Starts -->
-        <div class="col-xl-9 col-lg-12">
-
-          <div class="row g-4">
+        <div class="col-xl-9 col-lg-8">
+          <div class="row">
             <!-- Blog Item Starts-->
             <div class="col-lg-4 col-md-6 mb-40" v-for="post in posts.data" :key="post.id">
               <div class="card blog-categority">
-                <router-link :to="{ name: 'BlogPost', params: { slug: post.slug } }"
-                  class="blog-img sliderBackground bg-size"
-                  style="background-image: url('//mdbootstrap.com/img/new/standard/nature/184.jpg');">
-                  <img src="https://mdbootstrap.com/img/new/standard/nature/184.jpg" alt=""
-                    class="card-img-top bg-img d-none">
+                <router-link v-if="post.featured_image" :to="{ name: 'BlogPost', params: { slug: post.slug } }"
+                  class="blog-img sliderBackground bg-size" v-bind:style="{ 'background-image': 'url(' + post.featured_image + ')' }">
                 </router-link>
+                <router-link v-else  :to="{ name: 'BlogPost', params: { slug: post.slug } }"
+                  class="blog-img sliderBackground bg-size" style="background-color: #f1f1f1;">
+                  <img src="@/asset/images/default.png" alt=""
+                    class="card-img-top bg-img  d-none">
+                </router-link>
+                
                 <div class="card-body">
-                  <h5>Post Category</h5>
+                  <h5 v-if="post.post_categories">
+                    Post Category
+                  </h5>
                   <router-link :to="{ name: 'BlogPost', params: { slug: post.slug } }">
                     <h2 class="card-title">{{ post.title }}</h2>
                   </router-link>
                   <div class="blog-profile">
                     <div class="image-name">
-                      <h3>John Wick</h3>
-                      <h6>15 Aug 2022</h6>
+                      <h3>{{ post.user }}</h3>
+                      <h6>{{ post.published_date }}</h6>
                     </div>
                   </div>
                 </div>
@@ -61,9 +74,9 @@
           <!--<div v-else>
             <div class="alert alert-warning">No post found!</div>
           </div>-->
-          <Bootstrap5Pagination align="center" class="mb-30" :data="posts" :limit="2" :show-disabled="false"
-            @pagination-change-page="list" />
-          <!--<Pagination :data="posts" @pagination-change-page="posts" />-->
+          <h3 v-if="posts.data==''">Sorry, no match was found!</h3>
+          <Bootstrap5Pagination align="center" class="mb-30" :data="posts" :limit="2" :show-disabled="true"
+            @pagination-change-page="list"  />
         </div>
         <!-- Posts Ends -->
       </div>
@@ -73,7 +86,6 @@
 </template>
 <script>
 import { ref } from 'vue';
-
 import axios from 'axios';
 import { useRoute, useRouter } from 'vue-router';
 import router from '@/router';
@@ -84,10 +96,8 @@ export default {
   name: "Blog",
   data() {
     return {
-      posts: {
-        type: Object,
-        default: null
-      },
+      posts: [],
+      categories: [],
       isLoading: true,
       fullPage: true
     }
@@ -101,18 +111,48 @@ export default {
 
   },
   mounted() {
-    this.list()
+    this.list(),
+      this.blog_categories()
   },
   methods: {
+    filterByCategory(name, page = 1) {
+      this.isLoading = true
+      axios
+        .get("/api/blogs", {
+          params: {
+            page: page,
+            'filtercat': name,
+          },
+        })
+        .then((response) => {
+          this.posts = response.data;
+          //this.links = response.data.meta.links;
+          this.isLoading = false
+        })
+        .catch((error) => {
+          console.log(error);
+          this.isLoading = false
+        });
+    },
     async list(page = 1) {
       this.isLoading = true
-      await axios.get(`/api/blogs?page=${page}`).then(response => {
-        this.posts = response.data.response
+      await axios.get(`/api/blogs`, {
+        params: {
+          page: page
+        },
+      }).then(response => {
+        //console.log(response.data.data)
+        this.posts = response.data
         this.isLoading = false
         // alert(res.data.response.per_page);
-        console.log(response.data)
       });
-    }
+    },
+    async blog_categories() {
+      await axios.get(`/api/blog_categories`).then(response => {
+        this.categories = response.data.response
+        console.log(this.categories)
+      });
+    },
   },
 }
 </script>
@@ -136,6 +176,7 @@ export default {
   position: relative;
   overflow: hidden;
   background-position: center;
+  background-size: cover;
 }
 
 .blog-categority .blog-img:after {

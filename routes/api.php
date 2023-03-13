@@ -123,11 +123,11 @@ Route::controller(ProductApiController::class)->group(function(){
 Route::controller(BlogApiController::class)->group(function(){
     Route::post('get_post','get_post');
     Route::get('blogs','blogs');
+    Route::get('blog_categories','blog_categories');
 });
 
 Route::controller(DealerRegistrationApiController::class)->group(function(){
     Route::post('dealer-register','store');
-    //Route::get('blogs','blogs');
 });
 
 //Route::post('password/reset', [PasswordResetApiController::class, 'resetPasswordSendLink']);

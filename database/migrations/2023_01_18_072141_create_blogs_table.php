@@ -20,15 +20,12 @@ return new class extends Migration
             $table->longText('description')->nullable();
             $table->string('thumbnail_img')->nullable();
             $table->string('category_ids')->nullable();
-
             $table->longText('meta_description')->nullable();
             $table->string('meta_keyword')->nullable();
             $table->string('is_featured')->nullable();
             $table->string('status')->nullable();
-            $table->string('visibility')->nullable();
             $table->string('tag_ids')->nullable();
-            $table->string('published_by')->nullable();
-
+            $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
