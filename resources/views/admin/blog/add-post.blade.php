@@ -39,7 +39,7 @@ Add New Post
                     </div>
                     <div>
                         <label>Post Description</label>
-                        <textarea  name="description" class="form-control aiz-text-editor"></textarea>
+                        <textarea name="description" class="form-control aiz-text-editor"></textarea>
                     </div>
                 </div>
             </div>
@@ -101,7 +101,6 @@ Add New Post
                     <h5 class="card-title mb-0">Publish</h5>
                 </div>
                 <div class="card-body">
-                       <input type="hidden" id="blogs-date" value="123">
                     <div class="mb-3">
                         <label for="choices-publish-status-input"  class="form-label">Status</label>
                         <select class="form-select" name="status" id="choices-publish-status-input">
@@ -110,13 +109,13 @@ Add New Post
                         </select>
                     </div>
 
-                    <div>
+                    <!--<div>
                         <label for="choices-publish-visibility-input"class="form-label">Visibility</label>
                         <select class="form-select"  name="visibility"  id="choices-publish-visibility-input" data-choices data-choices-search-false>
                             <option value="Public" >Public</option>
                             <option value="Hidden">Hidden</option>
                         </select>
-                    </div>
+                    </div>-->
                     <div class="text-end mb-3 mt-3">
                         <button type="submit" class="btn btn-success w-sm">Submit</button>
                     </div>
