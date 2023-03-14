@@ -60,9 +60,9 @@
                                             <?php
                                                 $dealer_data = json_decode($dealer->data);
                                             ?>
-                                            <td>{{$dealer_data->company_name}}</td>
+                                            <td>{{$dealer_data->company_name ?? $dealer_data->first_name." ".$dealer_data->last_name}}</td>
                                             <td>{{$dealer->email}}</td>
-                                            <td>{{ucfirst($dealer_data->mobile_number)}}</td>
+                                            <td>{{$dealer_data->mobile_number}}</td>
                                             <td>{{ucfirst($dealer_data->registration_type)}}</td>
                                             <td>{{$dealer_data->identity_number}}</td>
                                             <td>{{$dealer_data->occupation}}</td>
