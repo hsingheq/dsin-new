@@ -1,5 +1,7 @@
 <script>
 import axios from 'axios';
+import { useRouter } from 'vue-router';
+
 export default {
     data() {
         return {
@@ -14,12 +16,14 @@ export default {
             await axios.post('/api/verifyMail', {
                 token: this.$route.params.token,
             }).then(response => {
-                this.error = "";
-                this.success = response.data.message;
+                this.error = ""
+                this.success = response.data.message
+                //useRouter().go({ path: "/login" })
             })
         } catch (dataerror) {
-            this.success = "";
-            this.error = dataerror.response.data.message;
+            this.success = ""
+            //useRouter().go({ path: '/login' })
+            this.error = dataerror.response.data.message
         }
     }
 }

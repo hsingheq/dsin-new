@@ -72,12 +72,12 @@ Route::controller(HomeApiController::class)->group(function () {
 Route::controller(UserApiController::class)->group(function(){
     Route::post('create_user', 'create_user');
     Route::post('update_customer', 'update_customer');
-    //Route::get('arjun', 'arjun');
     Route::post('changePassword', 'changePassword');
     Route::post('get_user_data','get_user_data');
     Route::post('google_auth_login','google_auth_login');
     Route::get('google_avatar','google_avatar');
     Route::post('user_info','user_info');
+    Route::get('/checkEmail/{email}','checkEmail'); 
 });
 
 Route::controller(AuthController::class)->group(function () {
