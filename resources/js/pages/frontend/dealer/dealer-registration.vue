@@ -112,7 +112,7 @@ export default {
                         this.submitStatus = "Success"
                         this.message = response.data.message
                     })
-                } catch(response) {
+                } catch (response) {
                     this.isLoading = false
                     this.submitStatus = "Error"
                     this.message = response.response.data.message
@@ -165,18 +165,18 @@ export default {
                     <form @submit.prevent="handleDealerRegistration" v-if="showForm">
                         <!-- Email input -->
                         <!--<div class="form-outline my-4 row mb-3">
-                                                                                <div class="col-md-12">
-                                                                                <label class="form-label" for="email">Email</label>
-                                                                                <input type="email" readonly v-model="email" id="email" name="email"
-                                                                                    class="form-control" />
+                                                                                    <div class="col-md-12">
+                                                                                    <label class="form-label" for="email">Email</label>
+                                                                                    <input type="email" readonly v-model="email" id="email" name="email"
+                                                                                        class="form-control" />
                                                                             </div>
                                                                         </div>-->
                     <!-- Registration Type -->
                     <div class="form-outline row my-4 mb-3">
                         <div class="col-md-12 form-group required">
-                                <label class="form-label row control-label" for="">Registration Type</label>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" v-model="registration_type"
+                            <label class="form-label row control-label" for="">Registration Type</label>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" v-model="registration_type"
                                         id="registration_type_individual" name="registration_type" value="individual"
                                         checked />
                                     <label class="form-check-label" for="registration_type_individual">Individual</label>
@@ -220,11 +220,11 @@ export default {
                             </div>
                             <!-- Gender -->
                             <!---<div class="form-outline row mb-3">
-                                                        <div class="col-md-12">
-                                                            <label class="form-label row" for="">Gender</label>
-                                                        <div class="form-check form-check-inline">
-                                                            <input class="form-check-input" type="radio" name="gender" id="gender-male"
-                                                                value="male">
+                                                            <div class="col-md-12">
+                                                                <label class="form-label row" for="">Gender</label>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="gender" id="gender-male"
+                                                                    value="male">
                                                             <label class="form-check-label" for="gender-male">Male</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
@@ -259,8 +259,8 @@ export default {
                                     <input type="file" id="nric_back" name="nric_back" class="form-control" />
                                 </div>
                                 </div>-->
-                        </div>
-                        <!-- Personal Information Ends-->
+                    </div>
+                    <!-- Personal Information Ends-->
                         <!-- Company Information Starts-->
                         <div id="company-information-box" v-if="registration_type == 'company'">
                             <div class="form-outline row my-4 mb-0">
@@ -298,14 +298,14 @@ export default {
                             </div>
                             <!-- Company SSM Certificate of Incorporation -->
                             <!-- 
-                                                    <div class="form-outline row mb-3">
-                                                        <div class="col-md-12">
-                                                            <label class="form-label" for="company_ssm_certificate">Please upload company SSM
-                                                                Certificate of Incorporation</label>
-                                                            <input type="file" id="company_ssm_certificate" name="company_ssm_certificate"
-                                                                class="form-control" />
-                                                        </div>
-                                                    </div>-->
+                                                        <div class="form-outline row mb-3">
+                                                            <div class="col-md-12">
+                                                                <label class="form-label" for="company_ssm_certificate">Please upload company SSM
+                                                                    Certificate of Incorporation</label>
+                                                                <input type="file" id="company_ssm_certificate" name="company_ssm_certificate"
+                                                                    class="form-control" />
+                                                            </div>
+                                                        </div>-->
                         </div>
                         <!-- Address -->
                         <div class="form-outline row mb-3">
@@ -354,42 +354,42 @@ export default {
                         <!-- Company Information Ends-->
                         <!-- Appointment Starts -->
                         <!--
-                                                                            <div class="form-outline row my-4 mb-0">
-                                                                                <div class="col-md-12">
-                                                                                    <h5>APPOINTMENT</h5>
-                                                                                    <hr>
-                                                                                    <p>Please let us know when it's the best time we can arrange our sales team to meet you
-                                                                                    </p>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="form-outline row mb-3">
-                                                                                <div class="col-md-12">
-                                                                                    <label class="form-label row mb-1" for="company_ssm_certificate">First Preferred
-                                                                                        Date/Time</label>
-                                                                                    <div class="form-check-inline">
-                                                                                        <input type="date" id="company_ssm_certificate" name="company_ssm_certificate"
-                                                                                            class="form-control" />
-                                                                                    </div>
-                                                                                    <div class="form-check form-check-inline">
-                                                                                        <input type="time" id="company_ssm_certificate" name="company_ssm_certificate"
-                                                                                            class="form-control" />
+                                                                                <div class="form-outline row my-4 mb-0">
+                                                                                    <div class="col-md-12">
+                                                                                        <h5>APPOINTMENT</h5>
+                                                                                        <hr>
+                                                                                        <p>Please let us know when it's the best time we can arrange our sales team to meet you
+                                                                                        </p>
                                                                                     </div>
                                                                                 </div>
-                                                                            </div>
-                                                                            <div class="form-outline row mb-3">
-                                                                                <div class="col-md-12">
-                                                                                    <label class="form-label row mb-1" for="company_ssm_certificate">Second Preferred
-                                                                                        Date/Time</label>
-                                                                                    <div class="form-check-inline">
-                                                                                        <input type="date" id="company_ssm_certificate" name="company_ssm_certificate"
-                                                                                            class="form-control" />
-                                                                                    </div>
-                                                                                    <div class="form-check form-check-inline">
-                                                                                        <input type="time" id="company_ssm_certificate" name="company_ssm_certificate"
-                                                                                            class="form-control" />
+                                                                                <div class="form-outline row mb-3">
+                                                                                    <div class="col-md-12">
+                                                                                        <label class="form-label row mb-1" for="company_ssm_certificate">First Preferred
+                                                                                            Date/Time</label>
+                                                                                        <div class="form-check-inline">
+                                                                                            <input type="date" id="company_ssm_certificate" name="company_ssm_certificate"
+                                                                                                class="form-control" />
+                                                                                        </div>
+                                                                                        <div class="form-check form-check-inline">
+                                                                                            <input type="time" id="company_ssm_certificate" name="company_ssm_certificate"
+                                                                                                class="form-control" />
+                                                                                        </div>
                                                                                     </div>
                                                                                 </div>
-                                                                            </div>-->
+                                                                                <div class="form-outline row mb-3">
+                                                                                    <div class="col-md-12">
+                                                                                        <label class="form-label row mb-1" for="company_ssm_certificate">Second Preferred
+                                                                                            Date/Time</label>
+                                                                                        <div class="form-check-inline">
+                                                                                            <input type="date" id="company_ssm_certificate" name="company_ssm_certificate"
+                                                                                                class="form-control" />
+                                                                                        </div>
+                                                                                        <div class="form-check form-check-inline">
+                                                                                            <input type="time" id="company_ssm_certificate" name="company_ssm_certificate"
+                                                                                                class="form-control" />
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>-->
                         <!-- Appointment Ends -->
                         <!-- Declaration Starts -->
                         <div class="form-outline row my-4 mb-0">

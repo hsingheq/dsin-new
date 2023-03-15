@@ -39,7 +39,7 @@ class WalletTransactionController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'amount' => 'required',
+            'amount' => 'required|numeric|min:10',
             'type' => 'required'
         ]);
 
