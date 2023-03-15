@@ -1,8 +1,8 @@
 <template>
 	<div>
-		
-        <loaderComponent />
-     
+
+		<loaderComponent />
+
 		<!-- breadcrubms -->
 		<breadcrumb v-bind:page_name="page_name">
 		</breadcrumb>
@@ -26,9 +26,10 @@
 												<i class="bi bi-wallet"></i>
 											</div>
 											<div class="">
-											
 												<h5>Wallet Balance</h5>
-												<h5 class="fw-extrabold mb-1">345,678</h5>
+												<h5 class="fw-extrabold mb-1">
+													RM {{ balance }}
+												</h5>
 											</div>
 										</div>
 									</div>
@@ -37,8 +38,7 @@
 							<div class="card">
 								<div class="card-body">
 									<div class="row d-block d-flex align-items-center">
-										<div
-											class="col-12 text-center d-flex align-items-center justify-content-center">
+										<div class="col-12 text-center d-flex align-items-center justify-content-center">
 											<div class="rounded me-4">
 												<i class="bi bi-bar-chart-fill"></i>
 											</div>
@@ -103,8 +103,8 @@
 										</tr>
 									</tbody>
 								</table>
-							
-						
+
+
 							</div>
 						</div>
 						<!-- Recent Transactions Ends -->
@@ -116,14 +116,13 @@
 </template>
 
 <script >
-import { ref, onMounted, reactive} from 'vue';
+import { ref, onMounted, reactive } from 'vue';
 import axios from 'axios';
 import { useRoute, useRouter } from 'vue-router';
 import { UserStore } from '@/store/UserStore';
 import UserMenu from '@/layouts/partials/userMenuComponent.vue';
 // import breadcrumb from '../../../layouts/partials/breadCrumbComponent.vue';
 import breadcrumb from '@/layouts/partials/breadCrumbComponent.vue';
-
 import TokencheckAndLogout from '@/mixins/TokencheckAndLogout';
 import loaderComponent from '../../../layouts/partials/loaderComponent.vue';
 
@@ -132,42 +131,48 @@ export default {
 	components: { UserMenu, breadcrumb },
 	async created() {
 		this.TokencheckAndLogout()
-	this.toggleLoader()
-	
-		
-	},
-	
+		this.toggleLoader()
 
-	data(){
+
+	},
+	data() {
 		return {
 			isLoading: true,
+			balance: '',
 		}
 	},
-
-
-	methods:{
+	methods: {
 		toggleLoader() {
-      this.isLoading = true;
-      setTimeout(() => {
-        this.isLoading = false;
-      }, 2000);
-    },
+			this.isLoading = true;
+			setTimeout(() => {
+				this.isLoading = false;
+			}, 2000);
+		},
+		async getBalance() {
+            await axios.get("/api/transact", {
+                headers: {
+                    Authorization: 'Bearer ' + sessionStorage.getItem('token'),
+                }
+            }).then(({ data }) => ([this.balance = data.balance]));
+        }
 	},
-	
-	mounted(){
-		
-		
-		
+    created() {
+        this.getBalance();
+    },
+	mounted() {
+
+
+
 	},
 
 	setup() {
-		
-		
+
+
 
 		const page_name = ref('My Account');
 		return {
 			page_name,
-			
+
 		}
 	},
 
@@ -186,6 +191,4 @@ export default {
 
 
 
-<style>
-
-</style>
+<style></style>
