@@ -335,13 +335,41 @@ $data=[
 
     public function user_info(Request $request){ 
         $id =  $request->id;  
+        $u_info  =  User::where('id','=', $id)->get()->toArray();
         $profile_picture  =  UserInfo::where([['user_id', $id], ['user_key','profile_picture']])->first();
         $data=[
-            'profile_picture'=> $profile_picture
+            'profile_picture'=> $profile_picture,
+            'roles'=> $u_info[0]['roles'],
         ];
         return response()->json($data);       
     }
-    
+    public function user_info_detail(Request $request){ 
+        $id =  $request->id;
+        // $u_info  =  User::where('id','=', $id)->join('dealer_profiles')->where('dealer_profiles.user_id','=','users.id')->get()->toArray();
+        // $u_info = DB::table('users')
+        // ->join('dealer_profiles')->where('dealer_profiles.user_id','=','users.id')
+        // ->where('users.id','=',$id)
+        // ->where('dealer_profiles.user_id','=',$id)
+        // ->get()->toArray();
+        $u_info =  DB::table('users')
+        ->join('dealer_profiles',function ($join){
+         //multiple conditions
+         $join->on('users.id','=','dealer_profiles.user_id');
+ 
+        })
+          ->where('users.id','=',$id)
+        ->where('dealer_profiles.user_id','=',$id)->get()->toArray();
+        $profile_picture  =  UserInfo::where([['user_id', $id], ['user_key','profile_picture']])->first();
+        $data=[
+            'profile_picture'=> $profile_picture,
+            'roles'=> $u_info[0]->roles,
+            'status'=> $u_info[0]->status,
+            'comment'=> $u_info[0]->comment,
+
+            // 'status'=> $u_info[0]['status'],
+        ];
+        return response()->json($data);       
+    }
     protected function createNewToken($token, $user){
         return response()->json([
             'access_token' => $token,

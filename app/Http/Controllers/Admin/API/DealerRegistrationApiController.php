@@ -18,6 +18,7 @@ class DealerRegistrationApiController extends Controller
 {
     //
     public function store(Request $request) {
+        dd($request);die();
         //identity_number is used as NRIC/Company registration no.
         $adminEmail =  ExtraSettings::where('setting_name', '=', 'footer_email')->get()->first();
         $dealer_status = "submitted";
