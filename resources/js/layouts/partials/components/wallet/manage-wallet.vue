@@ -1,4 +1,5 @@
 <template>
+    <loading v-model:active="isLoading" :can-cancel="false" :on-cancel="onCancel" :is-full-page="fullPage" />
     <!-- Top Wallet Starts-->
     <div class="d-flex text-center mb-2">
         <div class="card">
@@ -24,15 +25,19 @@
             Add Money
         </div>
         <div class="card-body">
-            <form @submit.prevent="makeTransaction()">
+            <form @submit.prevent="makeTransaction">
                 <input type="hidden" v-model="type" name="type" id="type">
                 <div class="form-outline my-2 mb-4">
                     <label class="form-label" for="password">Enter Amount to be Added in wallet (RM)<span
                             class="text-danger">*</span></label>
-                    <input type="text" name="amount" v-model="amount" class="form-control" placeholder="Enter Amount" />
+                    <input type="number" class="form-control" name="amount" v-model="v$.amount.$model"
+                        :class="{ valid: !v$.amount.$error && v$.amount.$dirty, 'is-invalid': v$.amount.$error }" />
+                    <div class="invalid-feedback" v-for="(error, index) in v$.amount.$errors" :key="index">
+                        {{ error.$message }}
+                    </div>
                 </div>
                 <div class="text-lg-start mt-4 pt-2">
-                    <button type="submit" class="site-btn">Add Money</button>
+                    <button type="submit" class="site-btn" :disabled="v$.$invalid">Add Money</button>
                 </div>
             </form>
         </div>
@@ -56,9 +61,9 @@
                 </thead>
                 <tbody v-if="history">
                     <tr v-for="transaction in history" :key="transaction.id">
-                        <td>{{ transaction.id }}</td>   
+                        <td>{{ transaction.id }}</td>
                         <td>RM {{ transaction.amount }}</td>
-                        <td>{{ format_date(transaction.created_at)}}</td>
+                        <td>{{ format_date(transaction.created_at) }}</td>
                         <td>
                             <span class="badge bg-success" v-if="transaction.confirmed">Confirmed</span>
                             <span class="badge bg-warning" v-else>Pending</span>
@@ -70,7 +75,7 @@
                 </tbody>
                 <tbody v-else>
                     <tr>
-                        <td colspan="5">No transaction history found.</td>   
+                        <td colspan="5">No transaction history found.</td>
                     </tr>
                 </tbody>
             </table>
@@ -127,39 +132,68 @@ import axios from 'axios';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 import moment from 'moment'
+import useVuelidate from "@vuelidate/core";
+import { required, minValue, helpers, numeric } from "@vuelidate/validators";
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/css/index.css';
 export default {
     name: 'userWallet',
     data() {
         return {
             balance: '',
             type: '1',
-            amount: '',
+            amount: '10',
             errors: '',
-            history: ''
+            history: '',
+            isLoading: false,
+            fullPage: true
         }
     },
+    components: {
+        Loading,
+    },
+    validations() {
+        const localRules = {
+            amount: {
+                required: helpers.withMessage("Amount is required.", required),
+                numeric: helpers.withMessage("Amount should be numeric only.", numeric),
+                minValue: helpers.withMessage("Minimum RM 10 is allowed.", minValue(10)),
+            },
+        }
+        return localRules
+    },
+    setup: () => ({ v$: useVuelidate() }),
     methods: {
         async makeTransaction() {
-            await axios.post('api/transact', {
-                type: this.type,
-                amount: this.amount
-            }, {
-                headers: {
-                    Authorization: 'Bearer ' + sessionStorage.getItem('token'),
-                },
-            }).then(() => {
-                this.getBalance();
-                this.amount = ""
-                //$('#addnew').modal('hide');
-                //Fire.$emit('entry');
-                toast("The money has been added to your wallet.", {
-                    type: "success",
-                    autoClose: 1500,
-                });
-            })
-                .catch(error => {
+            this.v$.$touch()
+            if (this.v$.$invalid) {
+                //this.submitStatus = 'Error'
+                //this.message = "Please check above errors."
+                //this.isLoading = false
+            } else {
+                this.loading = true
+                await axios.post('api/transact', {
+                    type: this.type,
+                    amount: this.amount
+                }, {
+                    headers: {
+                        Authorization: 'Bearer ' + sessionStorage.getItem('token'),
+                    },
+                }).then(() => {
+                    this.getBalance();
+                    this.amount = 10
+                    this.loading = false
+                    //$('#addnew').modal('hide');
+                    //Fire.$emit('entry');
+                    toast("The money has been added to your wallet.", {
+                        type: "success",
+                        autoClose: 1500,
+                    });
+                }).catch(error => {
+                    this.loading = false
                     alert(error.response.data.message)
                 })
+            }
         },
         newModal() {
             //this.form.reset();
@@ -176,9 +210,9 @@ export default {
             ]
             ));
         },
-        format_date(value){
+        format_date(value) {
             if (value) {
-            return moment(String(value)).format('MMM D, YYYY HH:mm:ss')
+                return moment(String(value)).format('MMM D, YYYY HH:mm:ss')
             }
         },
     },
