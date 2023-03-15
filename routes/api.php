@@ -90,10 +90,7 @@ Route::controller(AuthController::class)->group(function () {
 
 Route::group(['middleware'=>'jwt.verify'],function(){
     Route::get('user','App\Http\Controllers\Admin\API\AuthController@getUser');
-
-    //for customer and dealer
-    
-   // Route::resource('d','dController');
+	Route::apiResources(['transact' => 'App\Http\Controllers\Admin\API\WalletTransactionController']);
 });
 
 
