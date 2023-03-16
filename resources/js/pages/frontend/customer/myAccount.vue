@@ -28,7 +28,7 @@
 											<div class="">
 												<h5>Wallet Balance</h5>
 												<h5 class="fw-extrabold mb-1">
-													RM {{ balance }}
+													<currencyformat :value="balance" />
 												</h5>
 											</div>
 										</div>
@@ -125,10 +125,10 @@ import UserMenu from '@/layouts/partials/userMenuComponent.vue';
 import breadcrumb from '@/layouts/partials/breadCrumbComponent.vue';
 import TokencheckAndLogout from '@/mixins/TokencheckAndLogout';
 import loaderComponent from '../../../layouts/partials/loaderComponent.vue';
-
+import currencyformat from "@/layouts/partials/components/currency-format.vue";
 export default {
 	mixins: [TokencheckAndLogout],
-	components: { UserMenu, breadcrumb },
+	components: { UserMenu, breadcrumb, currencyformat },
 	async created() {
 		this.TokencheckAndLogout()
 		this.toggleLoader()
@@ -149,16 +149,16 @@ export default {
 			}, 2000);
 		},
 		async getBalance() {
-            await axios.get("/api/transact", {
-                headers: {
-                    Authorization: 'Bearer ' + sessionStorage.getItem('token'),
-                }
-            }).then(({ data }) => ([this.balance = data.balance]));
-        }
+			await axios.get("/api/transact", {
+				headers: {
+					Authorization: 'Bearer ' + sessionStorage.getItem('token'),
+				}
+			}).then(({ data }) => ([this.balance = data.balance]));
+		}
 	},
-    created() {
-        this.getBalance();
-    },
+	created() {
+		this.getBalance();
+	},
 	mounted() {
 
 

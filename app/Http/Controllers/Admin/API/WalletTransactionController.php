@@ -46,10 +46,9 @@ class WalletTransactionController extends Controller
         $amount = $request->amount;
         $id = auth()->user()->id;
         $user = User::where('id', $id)->first();
-
+        $info = array("via"=>'Add money');
         if ($request->type == 1) {
-            //$user->deposit($amount);
-            $user->deposit($amount);
+            $user->deposit($amount, $info);
             
         } elseif ($request->type == 2) {
             $user->withdraw($amount);
