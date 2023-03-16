@@ -78,6 +78,7 @@ Route::controller(UserApiController::class)->group(function(){
     Route::get('google_avatar','google_avatar');
     Route::post('user_info','user_info');
     Route::post('user_info_detail','user_info_detail');
+    Route::post('user_data','user_data');
     Route::get('/checkEmail/{email}','checkEmail'); 
 });
 

@@ -343,6 +343,25 @@ $data=[
         ];
         return response()->json($data);       
     }
+    public function user_data(Request $request){ 
+        $id =  $request->id;  
+        // $u_info  =  User::where('id','=', $id)->get()->toArray();
+        $data =  DB::table('users')
+        ->join('dealer_profiles',function ($join){
+         //multiple conditions
+         $join->on('users.id','=','dealer_profiles.user_id');
+ 
+        })
+          ->where('users.id','=',$id)
+        ->where('dealer_profiles.user_id','=',$id)->select('data')->get();
+        // dd($u_info);die();
+        // $profile_picture  =  UserInfo::where([['user_id', $id], ['user_key','profile_picture']])->first();
+        // $data=[
+        //     'profile_picture'=> $profile_picture,
+        //     'roles'=> $u_info[0]['roles'],
+        // ];
+        return response()->json($data);       
+    }
     public function user_info_detail(Request $request){ 
         $id =  $request->id;
         // $u_info  =  User::where('id','=', $id)->join('dealer_profiles')->where('dealer_profiles.user_id','=','users.id')->get()->toArray();
@@ -355,7 +374,6 @@ $data=[
         ->join('dealer_profiles',function ($join){
          //multiple conditions
          $join->on('users.id','=','dealer_profiles.user_id');
- 
         })
           ->where('users.id','=',$id)
         ->where('dealer_profiles.user_id','=',$id)->get()->toArray();

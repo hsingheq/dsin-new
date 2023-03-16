@@ -20,17 +20,17 @@ export default {
     return {
       number: 1,
       showForm: true,
-      registration_type: "individual",
-      first_name: "Ajay",
-      last_name: "Singh",
-      nric_no: "4343434",
+      registration_type: "",
+      first_name: "",
+      last_name: "",
+      nric_no: "",
       company_name: "",
       company_registration_no: "",
-      address: "Test address",
-      mobile: "43434343322",
-      occupation: "test",
-      acceptance: "yes",
-      notes: "dsdsds",
+      address: "",
+      mobile: "",
+      occupation: "",
+      acceptance: "",
+      notes: "",
       showAll: false,
       submitStatus: null,
       message: null,
@@ -120,7 +120,26 @@ export default {
       // any initialisation options go here
       preferredCountries: ["my", "us", "ca"],
     });
+    //--------------
+    axios
+      .get("/api/user", {
+        headers: {
+          Authorization: sessionStorage.getItem("token"),
+        },
+      })
+      .then((userresponse) => {
+        axios.post("/api/user_data", {
+          id: userresponse.data.id,
+        });
+        this.uid = userresponse.data.id;
+      });
+    //--------------
   },
+  created() {
+    this.user_info();
+    // this.user_info_detail();
+  },
+
   methods: {
     async handleDealerRegistration(values, actions) {
       this.isLoading = true;
@@ -132,6 +151,8 @@ export default {
       } else {
         // do your submit logic here
         try {
+          // ---------------
+          // -------------------
           await axios
             .post("/api/dealer-register", {
               registration_type: this.registration_type,
@@ -145,6 +166,7 @@ export default {
               occupation: this.occupation,
               notes: this.notes,
               acceptance: this.acceptance,
+              uid: this.uid,
             })
             .then((response) => {
               this.isLoading = false;
@@ -158,6 +180,53 @@ export default {
           this.message = response.response.data.message;
         }
       }
+    },
+    async user_info() {
+      this.loading = true;
+      //AXIOS GETTING AUTHENTICATED USER_ID
+      try {
+        await axios
+          .get("/api/user", {
+            headers: {
+              Authorization: sessionStorage.getItem("token"),
+            },
+          })
+          .then((userresponse) => {
+            axios
+              .post("/api/user_data", {
+                id: userresponse.data.id,
+              })
+              .then((res) => {
+                var data = JSON.parse(res.data[0].data);
+                console.log(data.registration_type);
+                this.registration_type = data.registration_type;
+                this.first_name = data.first_name;
+                this.last_name = data.last_name;
+                this.nric_no = data.identity_number;
+                this.company_name =
+                  this.company_registration_no =
+                  this.address =
+                    data.address;
+                this.mobile = data.mobile_number;
+                this.occupation = data.occupation;
+                this.notes = data.notes;
+                // this.acceptance=
+                // if (res?.data?.profile_picture?.user_value) {
+                //   this.profile_picture = res.data.profile_picture.user_value;
+                // }
+                // let role = res.data.roles;
+                // // console.log(role);
+                // const roleArray = JSON.parse(role);
+                // this.user_role = roleArray[0];
+              });
+          });
+      } catch (error) {
+        console.log(error);
+      } finally {
+        this.loading = false;
+      }
+
+      /*  */
     },
   },
 };

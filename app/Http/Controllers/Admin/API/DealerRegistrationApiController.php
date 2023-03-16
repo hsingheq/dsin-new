@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers\Admin\APi;
-
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -18,11 +16,12 @@ class DealerRegistrationApiController extends Controller
 {
     //
     public function store(Request $request) {
-        dd($request);die();
+       
         //identity_number is used as NRIC/Company registration no.
         $adminEmail =  ExtraSettings::where('setting_name', '=', 'footer_email')->get()->first();
         $dealer_status = "submitted";
-        $user_id = 4;
+        $user_id =$request->uid;
+        
         $user = User::find($user_id);
         $email = $adminEmail->setting_value;
         if(!$user) {
