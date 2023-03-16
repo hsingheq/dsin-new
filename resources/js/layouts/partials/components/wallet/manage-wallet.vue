@@ -11,7 +11,7 @@
                         </div>
                         <div class="">
                             <h4>Wallet Balance</h4>
-                            <h3 class="fw-extrabold mb-1 text-success">RM {{ balance }}</h3>
+                            <h3 class="fw-extrabold mb-1 text-success"><currencyformat :value="balance" /></h3>
                         </div>
                     </div>
                 </div>
@@ -62,7 +62,7 @@
                 <tbody v-if="history">
                     <tr v-for="transaction in history" :key="transaction.id">
                         <td>{{ transaction.id }}</td>
-                        <td>RM {{ transaction.amount }}</td>
+                        <td><currencyformat :value="transaction.amount" /></td>
                         <td>{{ format_date(transaction.created_at) }}</td>
                         <td>
                             <span class="badge bg-success" v-if="transaction.confirmed">Confirmed</span>
@@ -136,6 +136,7 @@ import useVuelidate from "@vuelidate/core";
 import { required, minValue, helpers, numeric } from "@vuelidate/validators";
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/css/index.css';
+import currencyformat from "@/layouts/partials/components/currency-format.vue";
 export default {
     name: 'userWallet',
     data() {
@@ -151,6 +152,7 @@ export default {
     },
     components: {
         Loading,
+        currencyformat
     },
     validations() {
         const localRules = {
