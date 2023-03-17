@@ -44,7 +44,6 @@ class ProductApiController extends Controller
             });
         }
         
-        
         if($requestss->checkedBrand){
             $brand = $requestss->checkedBrand;
             $data = $data->Where(function ($query) use($brand) {
@@ -115,6 +114,11 @@ class ProductApiController extends Controller
         $product = Products::where('slug',$slug)->get()->first();
         return response()->json(['response'=> $product]); 
     }
+    public function  products($pid){
+    
+        $product = Products::where('id',$pid)->get()->first();
+        return response()->json(['response'=> $product]); 
+    }
 
    
     public function  get_brand(Request $request){
@@ -158,8 +162,6 @@ class ProductApiController extends Controller
          ->join('products','products.id','shopping_carts.product_id')
          ->join('uploads','uploads.id','products.thumbnail_img')
          ->get();  
-       
-        
           return response()->json(['response'=> $data]);
     }
 
