@@ -85,12 +85,13 @@
           <label for="inputAddress" class="form-label-biling"
             >Billing Detail</label
           >
-          <form class="row g-3">
+          <form @submit.prevent="handleDealerRegistration" class="row g-3">
             <div class="row g-3">
               <div class="col">
                 <label for="inputAddress" class="form-label">First Name</label>
                 <input
                   type="text"
+                  v-model="first_name"
                   class="form-control"
                   placeholder="First name"
                   aria-label="First name"
@@ -100,6 +101,7 @@
                 <label for="inputAddress" class="form-label">Second Name</label>
                 <input
                   type="text"
+                  v-model="second_name"
                   class="form-control"
                   placeholder="Last name"
                   aria-label="Last name"
@@ -112,6 +114,7 @@
               >
               <input
                 type="text"
+                v-model="company_name"
                 class="form-control"
                 id="inputcompany"
                 placeholder="Enter Company Name"
@@ -121,6 +124,7 @@
               <label for="inputAddress" class="form-label">Address</label>
               <input
                 type="text"
+                v-model="address"
                 class="form-control"
                 id="inputAddress"
                 placeholder="House No and Street Number"
@@ -130,43 +134,100 @@
               <label for="inputAddress2" class="form-label">Address 2</label>
               <input
                 type="text"
+                v-model="address2"
                 class="form-control"
                 id="inputAddress2"
-                placeholder="Apartment, studio, or floor"
+                placeholder="Area"
               />
             </div>
-            <div class="col-md-6">
-              <label for="inputCity" class="form-label">Town/City</label>
-              <input type="text" class="form-control" id="inputCity" />
+            <div class="col-md-4">
+              <b-form-group
+                  id="input-group-city"
+                  label="City"
+                  label-for="input-city"
+                >
+                  <b-form-select
+                    v-model="city"
+                    class=""
+                    :options="city_array"
+                    value-field="id"
+                    text-field="name"
+                  >
+                    <template v-slot:first>
+                      <b-form-select-option :value="0" disabled
+                        >-- Select City --</b-form-select-option
+                      >
+                    </template>
+                  </b-form-select>
+                </b-form-group>
+              <!-- <label for="inputCity" class="form-label">Town/City</label>
+              <input
+                type="text"
+                v-model="city"
+                class="form-control"
+                id="inputCity" -->
+              
             </div>
             <div class="col-md-4">
-              <label for="inputState" class="form-label">State</label>
-              <select id="inputState" class="form-select">
+              <b-form-group
+              id="input-group-state_id"
+              label="State"
+              label-for="input-state_id"
+            >
+              <b-form-select
+                v-model="state"
+                class=""
+                :options="state_array"
+                value-field="id"
+                text-field="name"
+                @change="getcity"
+              >
+                <template v-slot:first>
+                  <b-form-select-option :value="0" disabled
+                    >-- Select State --</b-form-select-option
+                  >
+                </template>
+              </b-form-select>
+            </b-form-group>
+              <!-- <label for="inputState" class="form-label">State</label>
+              <input
+                type="text"
+                v-model="state"
+                class="form-control"
+                id="inputCity" -->
+          
+              <!-- <select id="inputState" class="form-select">
                 <option selected>Choose...</option>
                 <option>...</option>
-              </select>
+              </select> -->
             </div>
-            <div class="col-md-2">
+            <div class="col-md-4">
               <label for="inputZip" class="form-label">Zip</label>
-              <input type="text" class="form-control" id="inputZip" />
+              <input
+                type="text"
+                v-model="zip"
+                class="form-control"
+                id="inputZip"
+              />
             </div>
-            <div class="col-12">
+            <!-- <div class="col-12">
               <div class="form-check">
                 <input
                   class="form-check-input"
                   type="checkbox"
                   id="gridCheck"
-                />
-                <label class="form-check-label" for="gridCheck">
+                 <label class="form-check-label" for="gridCheck">
                   Check me out
-                </label>
+                </label> 
               </div>
-            </div>
+            </div> -->
             <div class="row g-3">
               <div class="col">
                 <label for="inputAddress" class="form-label">Phone</label>
                 <input
                   type="text"
+                  v-model="phone"
+                  maxlength="10"
                   class="form-control"
                   placeholder="Enter Phone no "
                   aria-label="First name"
@@ -176,31 +237,56 @@
                 <label for="inputAddress" class="form-label">Email</label>
                 <input
                   type="text"
+                  v-model="email"
+                  @blur="validateEmail"
                   class="form-control"
                   placeholder="Enter Email"
                   aria-label="Last name"
                 />
               </div>
             </div>
+
+            <div class="col-sm-6">
+              <div class="beck-billing-billing">
+                <input type="radio" value="cod" v-model="payment_mode" />
+                <label for="one">Cash On Delivery</label>
+
+                <input type="radio" value="prepaid" v-model="payment_mode" />
+                <label for="two">Prepaid</label>
+                <!-- <label>
+                    <input type="radio" v-model="paymentMethod" />
+                    Cash on Delivery </label
+                  ><br />
+                  <label>
+                    <input type="radio" v-model="payment_mode" :paymentMethod="prepaid" />
+                    Prepaid </label><br />
+                  <div v-if="payment_mode === 'cashOnDelivery'">
+                    <p class="payment_class">
+                      Please make sure you have cash ready when the delivery
+                      arrives.
+                    </p>
+                  </div>
+                  <div v-else-if="payment_mode === 'prepaid'">
+                    <p class="payment_class">
+                      You will be redirected to our secure payment gateway to
+                      complete your payment.
+                    </p>
+                </div> -->
+              </div>
+            </div>
             <div class="col-12">
-              <button type="submit" class="btn btn-primary">Sign in</button>
+              <button type="submit" class="btn btn-primary">Pay</button>
+              <p v-if="paymentSuccessful">Payment successful! Thank you for your purchase.</p>
             </div>
           </form>
-        </div>
-      </div>
-      <div class="col-sm-6">
-        <div class="beck-billing-billing">
-          <label for="inputAddress" class="form-label-biling"
-            >Payment Mode</label
-          ><br />
-
-          <label for="inputAddress" class="form-label">Cash on Delivery</label>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
+// import state from "../../api/state.js";
+// import city from "../../api/city.js";
 export default {
   props: ["pid"],
   data() {
@@ -209,6 +295,12 @@ export default {
       quantity: 1,
       isLoggedIn: null,
       product: [],
+      city: 0,
+      city_array: [],
+      state: 0,
+      state_array: [],
+      paymentSuccessful: false,
+      paymentMethod: "cashOnDelivery",
     };
   },
   mounted() {
@@ -267,6 +359,87 @@ export default {
         this.quantity = this.product.product_stocks;
       }
     },
+    getcity() {
+      let formData = new FormData();
+      // formData.append('name', this.name);
+      formData.append("state", this.state);
+      formData.append("type", "get");
+      city
+        .addCity(formData)
+        .then((response) => {
+          // this.items=response.data.data;
+          this.city_array = response.data.data;
+        })
+        .catch((error) => {
+          console.log(error);
+          if (error.response.status == 422) {
+            this.errors_create = error.response.data.errors;
+          }
+        });
+    },
+    getstate() {
+      let formData = new FormData();
+      // formData.append('name', this.name);
+      // formData.append("country_id", this.country_id);
+      formData.append("type", "get_state");
+
+      state
+        .addState(formData)
+        .then((response) => {
+          this.state_array = response.data.data;
+        })
+        .catch((error) => {
+          console.log(error);
+          if (error.response.status == 422) {
+            this.errors_create = error.response.data.errors;
+          }
+        });
+    },
+    handleDealerRegistration() {
+      // this.isLoading = true;
+      // this.v$.$touch();
+      // if (this.v$.$invalid) {
+      //   this.submitStatus = "Error";
+      //   this.message = "Please check above errors.";
+      //   this.isLoading = false;
+      // } else {
+      // do your submit logic here
+
+      // ---------------
+      // -------------------
+      axios
+        .post("/api/order_place_detail", {
+          first_name: this.first_name,
+          second_name: this.second_name,
+          company_name: this.company_name,
+          address: this.address,
+          address2: this.address2,
+          city: this.city,
+          state: this.state,
+          zip: this.zip,
+          phone: this.phone,
+          email: this.email,
+          payment_mode: this.payment_mode,
+        })
+        .then((response) => {
+          // this.isLoading = false;
+          // this.showForm = false;
+          // this.submitStatus = "Success";
+          this.msg = response.data;
+          this.paymentSuccessful = true
+          console.log(msg);
+          alert(response.data.msg);
+        });
+
+      //  }
+    },
+    validateEmail() {
+      if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.email)) {
+        this.msg["email"] = "Please enter a valid email address";
+      } else {
+        this.msg["email"] = "";
+      }
+    },
   },
 };
 </script>
@@ -301,5 +474,12 @@ export default {
   background-color: rgba(248, 249, 250);
   padding: 5%;
   color: black;
+}
+.payment_class {
+  font-weight: bold;
+  font-size: 15px;
+  margin-bottom: 15px;
+  color: #3c80d2;
+  width: 700px;
 }
 </style>
