@@ -125,6 +125,15 @@ const routes = [
         },
     },
 
+    // {
+    //     name: "ConfirmBilling",
+    //     path: "/shop/confirmbilling/",
+    //     component: () => import("./pages/frontend/ecommerce/confirmbilling.vue"),
+    //     meta: {
+    //         requiredAuth: false,
+    //     },
+    // },
+
     /*PRODUCTS ROUTINGS*/
     {
         name: "Product",

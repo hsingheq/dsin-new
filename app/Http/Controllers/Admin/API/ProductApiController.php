@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DB;
 use App\Models\Products;
+use App\Models\order_place_detail;
 use App\Models\Brands;
 use App\Models\ShoppingCart;
 use App\Models\Attribute;
@@ -43,7 +44,6 @@ class ProductApiController extends Controller
                 }      
             });
         }
-        
         
         if($requestss->checkedBrand){
             $brand = $requestss->checkedBrand;
@@ -115,6 +115,11 @@ class ProductApiController extends Controller
         $product = Products::where('slug',$slug)->get()->first();
         return response()->json(['response'=> $product]); 
     }
+    public function  products($pid){
+    
+        $product = Products::where('id',$pid)->get()->first();
+        return response()->json(['response'=> $product]); 
+    }
 
    
     public function  get_brand(Request $request){
@@ -158,9 +163,31 @@ class ProductApiController extends Controller
          ->join('products','products.id','shopping_carts.product_id')
          ->join('uploads','uploads.id','products.thumbnail_img')
          ->get();  
-       
-        
           return response()->json(['response'=> $data]);
+    }
+    public function order_place_detail(Request $request)
+    {
+        
+        $data[] = [
+            'first_name' => $request->first_name,
+            'second_name'=> $request->second_name,
+            'company_name'=> $request->company_name,
+            'address' => $request->address,
+            'address2' => $request->address2,
+            'city' => $request->city,
+            'state' => $request->state,
+            'zip' => $request->zip,
+            'phone' => $request->phone,
+            'email' => $request->email,
+            'payment_mode' => $request->payment_mode,
+            'qty' => $request->qty,
+            'amount' => $request->amount,
+        ];
+        order_place_detail::insert($data);
+        // $dealer_data = new order_place_detail();
+        // $dealer_data->data = json_encode($data);
+        // $dealer_data->save();
+        return response()->json(['msg'=> 'Order Placed']);
     }
 
     public function getAtribute(Request $request)

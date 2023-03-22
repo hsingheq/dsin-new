@@ -8,6 +8,8 @@ use App\Http\Controllers\Admin\API\UserApiController;
 use App\Http\Controllers\Admin\API\BlogApiController;
 use App\Http\Controllers\Admin\API\DealerRegistrationApiController;
 use App\Http\Controllers\Admin\API\PasswordResetApiController;
+use App\Http\Controllers\Admin\API\OrderController;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -77,13 +79,15 @@ Route::controller(UserApiController::class)->group(function(){
     Route::post('google_auth_login','google_auth_login');
     Route::get('google_avatar','google_avatar');
     Route::post('user_info','user_info');
+    Route::post('user_info_detail','user_info_detail');
+    Route::post('user_data','user_data');
     Route::get('/checkEmail/{email}','checkEmail'); 
 });
 
 Route::controller(AuthController::class)->group(function () {
    Route::post('register','register');
    Route::post('login','login');
-      /* Verify Email Added Routes */
+      /* Verify Email Added Routes */   
       Route::get('/verify/{email}','verifyAccount'); 
       Route::post('/verifyMail','verficationMail');
 });
@@ -92,7 +96,9 @@ Route::group(['middleware'=>'jwt.verify'],function(){
     Route::get('user','App\Http\Controllers\Admin\API\AuthController@getUser');
 	Route::apiResources(['transact' => 'App\Http\Controllers\Admin\API\WalletTransactionController']);
 });
-
+// Route::controller(OrderController::class)->group(function(){
+//     Route::post('order_place_detail','App\Http\Controllers\Admin\API\OrderController@order_place_detail');
+// });
 
 
 
@@ -113,6 +119,8 @@ Route::controller(ProductApiController::class)->group(function(){
     Route::post('getCartItems','getCartItems');
     Route::get('getAtribute','getAtribute');
     Route::get('new_arriaval_products','new_arriaval_products');
+    Route::get('products/{pid}','products');
+    Route::post('order_place_detail','order_place_detail');
     
 });
 
