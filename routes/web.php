@@ -61,13 +61,6 @@ Route::get('/admin', [DashboardController::class, 'index'])->middleware('isLogge
 Route::group(['middleware' => 'isLoggedIn'], function () {
 
     
-
-
-
-
-
-
-
 Route::post('/admin/users/add-user/', [DashboardController::class, 'add_user'])->name('admin.add_user');
 Route::post('/admin/users/change-password/', [DashboardController::class, 'change_password'])->name('admin.change_password');
 //user
