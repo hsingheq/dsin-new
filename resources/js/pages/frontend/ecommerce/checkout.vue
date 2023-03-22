@@ -249,10 +249,10 @@
             <div class="col-sm-6">
               <div class="beck-billing-billing">
                 <input type="radio" value="cod" v-model="payment_mode" />
-                <label for="one">Cash On Delivery</label>
-
+                <label for="one"> Cash On Delivery</label>
+                 <br>
                 <input type="radio" value="prepaid" v-model="payment_mode" />
-                <label for="two">Prepaid</label>
+                <label for="two"> Prepaid</label>
                 <!-- <label>
                     <input type="radio" v-model="paymentMethod" />
                     Cash on Delivery </label
@@ -276,7 +276,7 @@
             </div>
             <div class="col-12">
               <button type="submit" class="btn btn-primary">Pay</button>
-              <p v-if="paymentSuccessful">Payment successful! Thank you for your purchase.</p>
+              <p v-if="paymentSuccessful"><h3><b>Payment successful! Thank you for your purchase.</b></h3></p>
             </div>
           </form>
         </div>
@@ -426,9 +426,11 @@ export default {
           // this.showForm = false;
           // this.submitStatus = "Success";
           this.msg = response.data;
-          this.paymentSuccessful = true
-          console.log(msg);
-          alert(response.data.msg);
+          this.paymentSuccessful = true;
+          localStorage.removeItem('cart_items');
+          setTimeout(function(){ window.location.href = "/" }, 2000);
+          //console.log(msg);
+          //alert(response.data.msg);
         });
 
       //  }
