@@ -717,7 +717,7 @@ export default {
               </div>
             </div>
             <!-- Declaration Ends -->
-            <div class="text-lg-start mt-4 pt-2 row">
+            <div class="text-lg-start mt-4 pt-2 row"> 
               <div class="col-md-12">
                 <button type="submit" class="site-btn" :disabled="v$.$invalid">
                   Submit
