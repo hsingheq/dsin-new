@@ -471,6 +471,7 @@ export default {
 
 		getAtribute() {
 			axios.get('api/getAtribute').then((response) => {
+				// console.log(response);
 				this.colors = response.data.response.colors;
 				this.size = response.data.response.size;
 				this.brands = response.data.response.brands;
