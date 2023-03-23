@@ -85,7 +85,7 @@
           <label for="inputAddress" class="form-label-biling"
             >Billing Detail</label
           >
-          <form @submit.prevent="handleDealerRegistration" class="row g-3">
+          <form  class="row g-3" @submit.prevent="handleDealerRegistration">
             <div class="row g-3">
               <div class="col">
                 <label for="inputAddress" class="form-label">First Name</label>
@@ -98,7 +98,7 @@
                 />
               </div>
               <div class="col">
-                <label for="inputAddress" class="form-label">Second Name</label>
+                <label for="inputAddress" class="form-label">Last Name</label>
                 <input
                   type="text"
                   v-model="second_name"
@@ -201,7 +201,7 @@
                 <option>...</option>
               </select> -->
             </div>
-            <div class="col-md-4">
+            <!-- <div class="col-md-4">
               <label for="inputZip" class="form-label">Zip</label>
               <input
                 type="text"
@@ -209,7 +209,7 @@
                 class="form-control"
                 id="inputZip"
               />
-            </div>
+            </div> -->
             <!-- <div class="col-12">
               <div class="form-check">
                 <input
@@ -222,7 +222,7 @@
               </div>
             </div> -->
             <div class="row g-3">
-              <div class="col">
+              <div class="col-md-4">
                 <label for="inputAddress" class="form-label">Phone</label>
                 <input
                   type="text"
@@ -233,7 +233,7 @@
                   aria-label="First name"
                 />
               </div>
-              <div class="col">
+              <div class="col-md-4">
                 <label for="inputAddress" class="form-label">Email</label>
                 <input
                   type="text"
@@ -244,11 +244,26 @@
                   aria-label="Last name"
                 />
               </div>
+              <div class="col-md-4">
+                <label for="inputAddress" class="form-label">ZIP</label>
+                <input
+                  type="text"
+                  v-model="zip"
+                  
+                  class="form-control"
+                  placeholder="Enter Zip"
+                  aria-label="Zip"
+                />
+              </div>
+              <div class="d-grid gap-2">
+                <button type="submit"  class="btn btn-primary">PAY</button>
+                <p v-if="paymentSuccessful"><h3><b>Payment successful! Thank you for your purchase.</b></h3></p>
+              </div>
             </div>
-
+            <div class="row g-3">
             <div class="col-sm-6">
               <div class="beck-billing-billing">
-                <input type="radio" value="cod" v-model="payment_mode" />
+                <input type="radio" value="cod" v-model="payment_mode" checked />
                 <label for="one"> Cash On Delivery</label>
                  <br>
                 <input type="radio" value="prepaid" v-model="payment_mode" />
@@ -274,13 +289,54 @@
                 </div> -->
               </div>
             </div>
-            <div class="col-12">
-              <button type="submit" class="btn btn-primary">Pay</button>
-              <p v-if="paymentSuccessful"><h3><b>Payment successful! Thank you for your purchase.</b></h3></p>
             </div>
+            
           </form>
         </div>
       </div>
+      <div class="col-sm-6">
+        <div class="back-billing">
+          <label for="inputAddress" class="form-label-biling"
+            >Cart Items</label
+          >
+          <table class="table cart-table">
+            <thead>
+              <tr class="table-head">
+                <th scope="col">Image</th>
+                <th scope="col">Product name</th>
+                <th scope="col">Price</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+               <tr>
+                <!-- <td>{{ item.image }}</td> -->
+                <!-- <tr> -->
+											<td>
+                        
+                        <img :src="product.file_name" alt="" v-if="product.file_name">
+                     <img src="https://vue.pixelstrap.com/voxo/_nuxt/img/3.4faefb8.jpg" alt="" v-if="!product.file_name">
+                      </td>
+                <td>{{product.product_title}}</td>
+                <td>{{product.unit_price}}</td>
+                <td>{{quantity}}</td>
+                <td>{{total}}</td>
+              </tr>
+            </tbody>
+          </table>
+          
+          <!-- <div class="col-12">
+            <button type="submit" @submit.prevent="handleDealerRegistration" class="btn btn-primary">Pay</button>
+            <p v-if="paymentSuccessful"><h3><b>Payment successful! Thank you for your purchase.</b></h3></p>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row">
+      
     </div>
   </div>
 </template>
@@ -291,21 +347,33 @@ export default {
   props: ["pid"],
   data() {
     return {
+      items: [],
       address: "",
       quantity: 1,
       isLoggedIn: null,
       product: [],
       city: 0,
+      zip:'',
+      first_name:"",
+      second_name:"",
+      payment_mode:"cod",
+      phone:"",
+      email:"",
       city_array: [],
       state: 0,
       state_array: [],
       paymentSuccessful: false,
       paymentMethod: "cashOnDelivery",
+      cartData:[],
     };
   },
   mounted() {
     this.isLoggedIn = sessionStorage.getItem("token") != null;
+    if(sessionStorage.getItem('token')){
+      this.getUser();
+    }
   },
+
   beforeMount() {
     var cartData;
     /* Code to detect if localstora ge is supported*/
@@ -316,7 +384,13 @@ export default {
     // console.log("cartData: " + cartData.id);
     axios.get(`/api/products/${cartData.id}`).then((res) => {
       this.product = res.data.response;
+      this.product_id = cartData.id;
+      this.product_amount = res.data.response.unit_price;
+
+      this.quantity=cartData.quantity;
+      this.total=(this.quantity)*(res.data.response.unit_price)
       console.log(this.product);
+      // console.log(cartData.quantity);
       // console.log(res.data.response.product_title);
     });
     //   .then((res) => (this.product = response.data));
@@ -329,12 +403,34 @@ export default {
     //     "Bearer " + localStorage.getItem("bigStore.jwt");
     // }
   },
+  created() {
+    // this.getCartItems();
+  },
 
   methods: {
+    async getUser() {
+      console.log(sessionStorage.getItem('token'));
+      if(sessionStorage.getItem('token')){
+          const res = await  axios.get('/api/user', {
+              headers: {
+                  Authorization: 'Bearer ' + sessionStorage.getItem('token'),
+              },
+
+          }).then( ({data})=>{
+              console.log(data);
+              this.authUser = data;
+              this.first_name = data.first_name;
+              this.second_name = data.last_name;
+              this.phone = data.mobile;
+              this.email = data.email;
+          });  
+      }
+    },
     login() {
       this.$router.push({
         name: "Login",
         params: { nextUrl: this.$route.fullPath },
+        
       });
     },
     register() {
@@ -395,20 +491,24 @@ export default {
           }
         });
     },
+    // getCartItems() {
+    //   cartData = localStorage.getItem("cart_items");
+    // cartData = JSON.parse(cartData);
+    // cartData = cartData["0"];
+    // axios.get(`/api/products/${cartData.id}`).then((res) => {
+    //   this.product = res.data.response;
+    //   console.log(this.product);
+    //   // console.log(res.data.response.product_title);
+    // });
+    // //   .then((res) =
+    // },
+    
     handleDealerRegistration() {
-      // this.isLoading = true;
-      // this.v$.$touch();
-      // if (this.v$.$invalid) {
-      //   this.submitStatus = "Error";
-      //   this.message = "Please check above errors.";
-      //   this.isLoading = false;
-      // } else {
-      // do your submit logic here
+      
 
-      // ---------------
-      // -------------------
       axios
         .post("/api/order_place_detail", {
+          uid: this.authUser.id,
           first_name: this.first_name,
           second_name: this.second_name,
           company_name: this.company_name,
@@ -420,6 +520,11 @@ export default {
           phone: this.phone,
           email: this.email,
           payment_mode: this.payment_mode,
+          product_id: this.product_id,
+          quantity: this.quantity,
+          amount: this.product_amount,
+          total: this.total, 
+
         })
         .then((response) => {
           // this.isLoading = false;
@@ -429,11 +534,11 @@ export default {
           this.paymentSuccessful = true;
           localStorage.removeItem('cart_items');
           setTimeout(function(){ window.location.href = "/" }, 2000);
-          //console.log(msg);
+          console.log(this.msg);
           //alert(response.data.msg);
         });
 
-      //  }
+       
     },
     validateEmail() {
       if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.email)) {
@@ -483,5 +588,122 @@ export default {
   margin-bottom: 15px;
   color: #3c80d2;
   width: 700px;
+}
+.cart-section .cart-table {
+	overflow: hidden;
+	margin-bottom: 0;
+}
+
+.cart-section .cart-table thead th {
+	border-bottom-width: 1px;
+	font-weight: 600;
+	color: #212529;
+	text-transform: uppercase;
+	font-size: 15px;
+	border-top: 0;
+	text-align: center;
+	border-bottom: 1px solid #eff2f7 !important;
+	padding: 12px;
+	background-color: #eff2f7;
+}
+
+.cart-section tbody tr td {
+	vertical-align: middle;
+	color: #212529;
+	border-top: 0;
+	border-bottom: 1px solid #c7c7c5 !important;
+	text-align: center;
+	min-width: 175px;
+}
+
+.cart-table tbody tr td a {
+	color: #7e7e7e;
+	white-space: nowrap;
+	font-weight: 400;
+	font-size: 14px;
+	text-transform: capitalize;
+	margin-bottom: 0;
+	display: inline-block;
+}
+
+.cart-table tbody tr td a.remove-cart-porduct {
+	font-size: 20px;
+	font-weight: bold;
+	margin-right: 10px;
+}
+
+.cart-section tbody tr td a img {
+	height: 80px;
+}
+
+.cart-section tbody tr td .mobile-cart-content {
+	display: none;
+	justify-content: center;
+	margin-top: 10px;
+}
+
+.cart-section tbody tr td h2 {
+	font-size: 20px;
+	color: var(--color-primary);
+	font-weight: 400;
+}
+
+.cart-section tbody tr td .qty-box .input-group {
+	display: block;
+}
+
+.cart-section tbody tr td .qty-box .input-group .form-control {
+	width: 75px;
+	margin: 0 auto;
+	text-align: center;
+	padding: 5px;
+	height: 50px;
+}
+
+.cart-section .left-side-button {
+	display: flex;
+	align-items: center;
+}
+
+.cart-section .cart-checkout-section {
+	margin-top: 30px;
+}
+
+.cart-section .cart-checkout-section .checkout-button {
+	text-align: right;
+}
+
+.cart-section .cart-checkout-section .cart-checkout-box {
+	background-color: #eff2f7;
+	border-radius: 10px;
+	overflow: hidden;
+	padding: 0;
+}
+
+.cart-section .cart-checkout-section .cart-checkout-box .cart-box-details .total-details .top-details {
+	border-bottom: 1px solid #c7c7c5;
+	padding: 22px;
+	margin-bottom: 0;
+}
+
+.cart-section .cart-checkout-section .cart-checkout-box .cart-box-details .total-details .top-details h6 {
+	line-height: 1.9;
+	color: #212529;
+}
+
+.cart-section .cart-checkout-section .cart-checkout-box .cart-box-details .total-details span {
+	float: right;
+}
+
+.cart-section .cart-checkout-section .cart-checkout-box .cart-box-details .total-details .bottom-details a {
+	background-color: #0163d2;
+	background-color: var(--color-primary);
+	width: 100%;
+	display: block;
+	padding: 12px 0;
+	text-align: center;
+	color: #fff;
+	font-weight: 500;
+	letter-spacing: 1.2px;
 }
 </style>
