@@ -6,7 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DB;
 use App\Models\Products;
-use App\Models\order_place_detail;
+use App\Models\order_billing;
+use App\Models\items_detail;
 use App\Models\Brands;
 use App\Models\ShoppingCart;
 use App\Models\Attribute;
@@ -165,12 +166,26 @@ class ProductApiController extends Controller
          ->get();  
           return response()->json(['response'=> $data]);
     }
+    
+    function generateRandomString($length = 10) {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[random_int(0, $charactersLength - 1)];
+        }
+        return $randomString;
+    }
+ 
     public function order_place_detail(Request $request)
-    {
+    {   
+        $orderId = date('Y_m_').$this->generateRandomString(5)."_".date('d');
         
         $data[] = [
+            'user_id' => $request->uid,
+            'order_id' => $orderId,
             'first_name' => $request->first_name,
-            'second_name'=> $request->second_name,
+            'last_name'=> $request->second_name,
             'company_name'=> $request->company_name,
             'address' => $request->address,
             'address2' => $request->address2,
@@ -180,13 +195,34 @@ class ProductApiController extends Controller
             'phone' => $request->phone,
             'email' => $request->email,
             'payment_mode' => $request->payment_mode,
-            'qty' => $request->qty,
+            'qty' => $request->quantity,
             'amount' => $request->amount,
         ];
-        order_place_detail::insert($data);
-        // $dealer_data = new order_place_detail();
-        // $dealer_data->data = json_encode($data);
-        // $dealer_data->save();
+        order_billing::insert($data);
+        $items[] = [
+            'user_id' => $request->uid,
+            'order_id' => $orderId,
+            'product_id' => $request->product_id,
+            'quantity' => $request->quantity,
+            'amount' => $request->amount,
+            'total' => $request->total,
+        ];
+        items_detail::insert($items);
+        // $table->integer('user_id');
+        // $table->integer('order_id');
+        // $table->string('first_name');
+        // $table->string('last_name');
+        // $table->string('company_name')->nullable();
+        // $table->string('address');
+        // $table->string('address2');
+        // $table->string('city');
+        // $table->string('state');
+        // $table->string('zip');
+        // $table->string('phone');
+        // $table->string('email');
+        // $table->string('payment_mode')->nullable();
+        // $table->string('qty')->nullable();
+        // $table->string('amount')->nullable();
         return response()->json(['msg'=> 'Order Placed']);
     }
 

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use JWTAuth;
 use App\Models\UserInfo;
+use App\Models\order_billing;
 use Hash;
 use DB;
 use Mail;
@@ -404,6 +405,13 @@ $data=[
         }else {
             return true;
         }
+    }
+    public function billing_detail(Request $request)
+    {
+       
+        $uid=$request->id;
+        $user = order_billing::where('user_id', '=', $uid)->get();
+        return $user;
     }
     
 }
