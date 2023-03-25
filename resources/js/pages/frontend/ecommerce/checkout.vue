@@ -85,12 +85,18 @@
           <label for="inputAddress" class="form-label-biling"
             >Billing Detail</label
           >
+          <!-- <div class="card-body">
+            <b-alert show variant="danger" v-if='create_error'>{{create_error}}</b-alert>
+    <div :class="['form-group m-1 p-3', (successful ? 'alert-success' : '')]" v-show="successful">
+      <span v-if="successful" class="label label-sucess">Transaction Detail Enter Sucessfully</span>
+    </div> -->
           <form  class="row g-3" @submit.prevent="handleDealerRegistration">
             <div class="row g-3">
               <div class="col">
                 <label for="inputAddress" class="form-label">First Name</label>
                 <input
                   type="text"
+                  required="required"
                   v-model="first_name"
                   class="form-control"
                   placeholder="First name"
@@ -101,6 +107,7 @@
                 <label for="inputAddress" class="form-label">Last Name</label>
                 <input
                   type="text"
+                  required="required"
                   v-model="second_name"
                   class="form-control"
                   placeholder="Last name"
@@ -115,6 +122,7 @@
               <input
                 type="text"
                 v-model="company_name"
+                required="required"
                 class="form-control"
                 id="inputcompany"
                 placeholder="Enter Company Name"
@@ -124,6 +132,7 @@
               <label for="inputAddress" class="form-label">Address</label>
               <input
                 type="text"
+                required="required"
                 v-model="address"
                 class="form-control"
                 id="inputAddress"
@@ -134,6 +143,7 @@
               <label for="inputAddress2" class="form-label">Address 2</label>
               <input
                 type="text"
+                required="required"
                 v-model="address2"
                 class="form-control"
                 id="inputAddress2"
@@ -226,6 +236,7 @@
                 <label for="inputAddress" class="form-label">Phone</label>
                 <input
                   type="text"
+                  required="required"
                   v-model="phone"
                   maxlength="10"
                   class="form-control"
@@ -237,6 +248,7 @@
                 <label for="inputAddress" class="form-label">Email</label>
                 <input
                   type="text"
+                  required="required"
                   v-model="email"
                   @blur="validateEmail"
                   class="form-control"
@@ -249,16 +261,13 @@
                 <input
                   type="text"
                   v-model="zip"
-                  
+                  required="required"
                   class="form-control"
                   placeholder="Enter Zip"
                   aria-label="Zip"
                 />
               </div>
-              <div class="d-grid gap-2">
-                <button type="submit"  class="btn btn-primary">PAY</button>
-                <p v-if="paymentSuccessful"><h3><b>Payment successful! Thank you for your purchase.</b></h3></p>
-              </div>
+              
             </div>
             <div class="row g-3">
             <div class="col-sm-6">
@@ -288,10 +297,15 @@
                     </p>
                 </div> -->
               </div>
+              <div class="d-grid gap-2">
+                <button type="submit"  class="btn btn-primary">PAY</button>
+                <p v-if="paymentSuccessful"><h3><b>Payment successful! Thank you for your purchase.</b></h3></p>
+              </div>
             </div>
             </div>
             
           </form>
+        <!-- </div> -->
         </div>
       </div>
       <div class="col-sm-6">
@@ -325,7 +339,7 @@
               </tr>
             </tbody>
           </table>
-          
+       
           <!-- <div class="col-12">
             <button type="submit" @submit.prevent="handleDealerRegistration" class="btn btn-primary">Pay</button>
             <p v-if="paymentSuccessful"><h3><b>Payment successful! Thank you for your purchase.</b></h3></p>
@@ -352,12 +366,18 @@ export default {
       quantity: 1,
       isLoggedIn: null,
       product: [],
+      company_name:'',
+      address2:'',
       city: 0,
       zip:'',
       first_name:"",
       second_name:"",
       payment_mode:"cod",
       phone:"",
+      successful: false,
+        sortBy: 'date',
+        errors_create:[],
+        create_error:'',
       email:"",
       city_array: [],
       state: 0,
@@ -368,11 +388,14 @@ export default {
     };
   },
   mounted() {
+    
     this.isLoggedIn = sessionStorage.getItem("token") != null;
     if(sessionStorage.getItem('token')){
       this.getUser();
+      this.getbilling_detail();
     }
   },
+
 
   beforeMount() {
     var cartData;
@@ -423,6 +446,9 @@ export default {
               this.second_name = data.last_name;
               this.phone = data.mobile;
               this.email = data.email;
+              this.address = data.address;
+              this.id=data.id;
+              // this.getbilling_detail(data.id);
           });  
       }
     },
@@ -491,22 +517,8 @@ export default {
           }
         });
     },
-    // getCartItems() {
-    //   cartData = localStorage.getItem("cart_items");
-    // cartData = JSON.parse(cartData);
-    // cartData = cartData["0"];
-    // axios.get(`/api/products/${cartData.id}`).then((res) => {
-    //   this.product = res.data.response;
-    //   console.log(this.product);
-    //   // console.log(res.data.response.product_title);
-    // });
-    // //   .then((res) =
-    // },
-    
     handleDealerRegistration() {
-      
-
-      axios
+       axios
         .post("/api/order_place_detail", {
           uid: this.authUser.id,
           first_name: this.first_name,
@@ -524,21 +536,70 @@ export default {
           quantity: this.quantity,
           amount: this.product_amount,
           total: this.total, 
-
         })
         .then((response) => {
           // this.isLoading = false;
           // this.showForm = false;
           // this.submitStatus = "Success";
           this.msg = response.data;
+          this.address = response.data.address;
+          this.uid=response.data.id;
+          
+          console.log(this.address);
           this.paymentSuccessful = true;
           localStorage.removeItem('cart_items');
           setTimeout(function(){ window.location.href = "/" }, 2000);
           console.log(this.msg);
           //alert(response.data.msg);
-        });
+        })
+        .catch((error) => {
+              console.log(error);
+              if (error.response.status == 422) {
+                  this.errors_create = error.response.data.errors;
+              }
+          });
+    },
+//     getbilling_detail()
+//     {
+// axios.get("/api/billing_detail",{uid})
+// .then((response) => {
+// 				this.our_products = response.data;
+// 				console.log(this.our_products);
+// 			});
+//     },
+async getbilling_detail() {
+      //AXIOS GETTING AUTHENTICATED USER_ID
+      try {
+        await axios
+          .get("/api/user", {
+            headers: {
+              Authorization: sessionStorage.getItem("token"),
+            },
+          })
+          .then((userresponse) => {
+            axios
+              .post("/api/billing_detail", {
+                id: userresponse.data.id,
+              })
+              .then((res) => {
+                // var data = JSON.parse(res.data[0].data);
+                console.log(res.data[0].address);
+                console.log(res.data[0].address2);
 
-       
+                this.address=res.data[0].address;
+                this.address2=res.data[0].address2;
+                this.zip=res.data[0].zip;
+
+                
+              });
+          });
+      } catch (error) {
+        console.log(error);
+      } finally {
+        this.loading = false;
+      }
+
+      /  /
     },
     validateEmail() {
       if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.email)) {

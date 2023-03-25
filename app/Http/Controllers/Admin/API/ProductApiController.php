@@ -195,7 +195,7 @@ class ProductApiController extends Controller
             'phone' => $request->phone,
             'email' => $request->email,
             'payment_mode' => $request->payment_mode,
-            'qty' => $request->qty,
+            'qty' => $request->quantity,
             'amount' => $request->amount,
         ];
         order_billing::insert($data);

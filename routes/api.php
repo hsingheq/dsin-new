@@ -82,6 +82,8 @@ Route::controller(UserApiController::class)->group(function(){
     Route::post('user_info_detail','user_info_detail');
     Route::post('user_data','user_data');
     Route::get('/checkEmail/{email}','checkEmail'); 
+    Route::post('billing_detail','billing_detail');
+
 });
 
 Route::controller(AuthController::class)->group(function () {
